@@ -18,3 +18,6 @@ set visible-stats on
 $if Bash
   Space: magic-space
 $endif
+
+# include system inputrc
+$include /etc/inputrc
