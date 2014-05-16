@@ -1,7 +1,7 @@
 DEFAULT_ARGS = {dir: ENV['HOME'], force: nil}
 
 desc "Create symlinks."
-multitask :links, [:dir, :force] => [:vimrc, :tmux, :bashrc]
+multitask :links, [:dir, :force] => [:vimrc, :tmux, :bashrc, :inputrc]
 
 task :vimrc, [:dir, :force] do |t, args|
   args.with_defaults(DEFAULT_ARGS)
@@ -16,6 +16,11 @@ end
 task :bashrc, [:dir, :force] do |t, args|
   args.with_defaults(DEFAULT_ARGS)
   create_ln('bashrc', '.bashrc', args.dir, args.force)
+end
+
+task :inputrc, [:dir, :force] do |t, args|
+  args.with_defaults(DEFAULT_ARGS)
+  create_ln('inputrc', '.inputrc', args.dir, args.force)
 end
 
 def create_ln(old, new, dir, force)

@@ -1,0 +1,20 @@
+# none, visible or audible
+set bell-style visible
+
+# vi mode
+set editing-mode vi
+
+# incremental search with up/down
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+
+# ignore case for tab completion
+set completion-ignore-case on
+
+# show / for directories and * for executables
+set visible-stats on
+
+# magic space to expand history commands
+$if Bash
+  Space: magic-space
+$endif
