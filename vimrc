@@ -1,14 +1,5 @@
 "---[ vimrc ]--------------------------------------------------------
     " by: grant welch
-"---[ history ]------------------------------------------------------
-    " 2013-08-29
-    " . Initial settings
-    "    - James Walden, Prof. - NKU
-    "    - http://nvie.com/posts/how-i-boosted-my-vim/
-    "    - https://github.com/tpope
-    "    - http://www.bestofvim.com/
-    "   Plugins
-    "    - pathogen, vim-fugitive, vim-sensible, vim-sorround, NERDTree
 "---[ notes ]--------------------------------------------------------
     " q· record to some register, <number>@· to replay macro
     " m· mark a location, `· return to the mark
@@ -103,11 +94,6 @@
     set noequalalways   " prevent vim from resizing windows
 
 "---[ navigation ]----------------------------------------------------
-    " stop using arrow keys for navigation hjkl
-    map <up> <nop>
-    map <down> <nop>
-    map <left> <nop>
-    map <right> <nop>
     " let j/k move through wrapped lines
     nnoremap j gj
     nnoremap k gk
