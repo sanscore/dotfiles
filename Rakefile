@@ -4,39 +4,43 @@ require 'net/https'
 
 DEFAULT_ARGS = {dir: ENV['HOME'], force: nil}
 
+VIM_AUTOLOAD_DIR = File.join(ENV['HOME'], '.vim', 'autoload')
+VIM_BUNDLE_DIR = File.join(ENV['HOME'], '.vim', 'bundle')
+
 desc "Create symlinks."
 multitask :links, [:dir, :force] => [:vimrc, :tmux, :bashrc, :inputrc]
 
 desc 'Create a bare bones vim directory with only pathogen'
-task :vim do |t|
-  v_auto = File.join(ENV['HOME'], '.vim', 'autoload')
-  v_bundle = File.join(ENV['HOME'], '.vim', 'bundle')
+task :vim, [:dir] do |t, args|
+  args.with_defaults(DEFAULT_ARGS)
 
-  mkdir_p v_auto
-  mkdir_p v_bundle
+  mkdir_p VIM_AUTOLOAD_DIR
+  mkdir_p VIM_BUNDLE_DIR
 
   pathogen_url =
     "https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim"
-  pathogen_file = File.join(v_auto, 'pathogen.vim')
+  pathogen_file = File.join(VIM_AUTOLOAD_DIR, 'pathogen.vim')
 
   fetch_file(pathogen_url, pathogen_file)
 end
 
 desc 'Install preferred vim plugins.'
-task :vim_bundle => :vim do
-  puts 'TODO'
-  puts """  bufexplorer
-  ctrlp
-  nerdtree
-  snipmate?
-  syntastic?
-  tagbar
-  undotree
-  airline
-  fugitive
-  gitgutter
-  sensible
-  surround"""
+task :vim_plugins, [:dir] => [:vim] do |t, args|
+  args.with_defaults(dir: VIM_BUNDLE_DIR)
+  git_clone_or_pull('jlanzarotta', 'bufexplorer', args.dir)
+  git_clone_or_pull('kien', 'ctrlp.vim', args.dir)
+  git_clone_or_pull('scrooloose', 'nerdtree', args.dir)
+  git_clone_or_pull('scrooloose', 'syntastic', args.dir)
+  git_clone_or_pull('garbas', 'vim-snipmate', args.dir)
+  git_clone_or_pull('majutsushi', 'tagbar', args.dir)
+  git_clone_or_pull('mbbill', 'undotree', args.dir)
+  git_clone_or_pull('bling', 'vim-airline', args.dir)
+  git_clone_or_pull('tpope', 'vim-fugitive', args.dir)
+  git_clone_or_pull('tpope', 'vim-sensible', args.dir)
+  git_clone_or_pull('tpope', 'vim-surround', args.dir)
+  git_clone_or_pull('airblade', 'vim-gitgutter', args.dir)
+  git_clone_or_pull('tomasr', 'molokai', args.dir)
+  git_clone_or_pull('marcweber', 'vim-addon-mw-utils', args.dir)
 end
 
 task :vimrc, [:dir, :force] do |t, args|
@@ -59,6 +63,31 @@ task :inputrc, [:dir, :force] do |t, args|
   create_ln('inputrc', '.inputrc', args.dir, args.force)
 end
 
+def git_clone_or_pull(user, repo, dir)
+  dir = File.join(File.expand_path(dir), repo)
+  if(File.exists?(dir))
+    git_pull(repo, dir)
+  else
+    git_clone(user,repo,dir)
+  end
+end
+
+def git_clone(user, repo, dir)
+  if system "git clone https://github.com/#{user}/#{repo}.git #{dir}"
+    puts "Successfully cloned: #{repo}"
+  else
+    puts "Failed to clone: #{repo}"
+  end
+end
+
+def git_pull(repo, dir)
+  if system "cd #{dir}; git pull"
+    puts "Successfully updated: #{repo}"
+  else
+    puts "Failed to update: #{repo}"
+  end
+end
+
 def create_ln(old, new, dir, force)
   old = File.join(Dir.pwd, old)
   new = File.join(File.expand_path(dir), new)
@@ -76,7 +105,7 @@ def create_ln(old, new, dir, force)
 end
 
 def fetch_file(url, file, limit=10)
-  if File.exists?(file) 
+  if File.exists?(file)
     puts "#{file} already exists"
     return
   end
@@ -91,9 +120,10 @@ def fetch_file(url, file, limit=10)
 
   case resp
   when Net::HTTPSuccess then
-    open("pathogen","w") { |f| f.write(resp.body) }
+    open(file,"w") { |f| f.write(resp.body) }
+    puts "#{fil} saved."
   when Net::HTTPRedirection then
-    fetch(resp['location'], file, limit-1)
+    fetch_file(resp['location'], file, limit-1)
   else
     resp.value
   end
