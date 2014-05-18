@@ -7,11 +7,12 @@ DEFAULT_ARGS = {dir: ENV['HOME'], force: nil}
 VIM_AUTOLOAD_DIR = File.join(ENV['HOME'], '.vim', 'autoload')
 VIM_BUNDLE_DIR = File.join(ENV['HOME'], '.vim', 'bundle')
 
-desc "Create symlinks."
+desc "Create symlinks; Default dir: #{ENV['HOME']}"
 multitask :links, [:dir, :force] => [:vimrc, :tmux, :bashrc, :inputrc]
 
-desc 'Create a bare bones vim directory with only pathogen'
-task :vim, [:dir] do |t, args|
+desc "Create a bare bones vim directory with pathogen; " \
+      "Default dir: #{ENV['HOME']}"
+task :vim, [:dir, :force] do |t, args|
   args.with_defaults(DEFAULT_ARGS)
 
   mkdir_p VIM_AUTOLOAD_DIR
@@ -21,10 +22,10 @@ task :vim, [:dir] do |t, args|
     "https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim"
   pathogen_file = File.join(VIM_AUTOLOAD_DIR, 'pathogen.vim')
 
-  fetch_file(pathogen_url, pathogen_file)
+  fetch_file(pathogen_url, pathogen_file, args.force)
 end
 
-desc 'Install preferred vim plugins.'
+desc "Install preferred vim plugins; Default dir: #{VIM_BUNDLE_DIR}"
 task :vim_plugins, [:dir] => [:vim] do |t, args|
   args.with_defaults(dir: VIM_BUNDLE_DIR)
   git_clone_or_pull('jlanzarotta', 'bufexplorer', args.dir)
@@ -104,8 +105,8 @@ def create_ln(old, new, dir, force)
   end
 end
 
-def fetch_file(url, file, limit=10)
-  if File.exists?(file)
+def fetch_file(url, file, overwrite, limit=10)
+  if (!overwrite && File.exists?(file))
     puts "#{file} already exists"
     return
   end
@@ -121,7 +122,7 @@ def fetch_file(url, file, limit=10)
   case resp
   when Net::HTTPSuccess then
     open(file,"w") { |f| f.write(resp.body) }
-    puts "#{fil} saved."
+    puts "#{file} saved."
   when Net::HTTPRedirection then
     fetch_file(resp['location'], file, limit-1)
   else
