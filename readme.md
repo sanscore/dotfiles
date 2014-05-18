@@ -1,15 +1,15 @@
 # dotfiles
-## bashrc
+## Bash
  * Commit and Append History after each command
 
-## inputrc
+## Inputrc
   * Visible Bell
   * VI key bindings
   * Incremental Search using up/down arrows
   * Igonre case on tab completion
   * Magic Space in bash
 
-## tmux.conf
+## Tmux
   * Switch to C-a prefix
   * VI Keys
   * Status line: Windows on left; hostname, session name, and date/time on right.
@@ -21,9 +21,7 @@
   * C-a C-x, kill window
   * C-a r, source tmux.conf
 
-## vim
-  * vimrc
-    * TODO: too many details...
+## VIM
   * Leader shortcuts
     * Leader: ','
     * Buffers: ',b*'; n(next), p(prev), N(new), l(list)
@@ -69,7 +67,7 @@ Install symbolic links for all the dotfiles.
 rake links[dir,force]
 ```
 
-### Defaults
+##### Defaults
  * dir: $HOME
  * force: false
 
@@ -80,7 +78,7 @@ Create a .vim/ directory and download pathogen to .vim/autoload/.
 rake vim[dir,force]
 ```
 
-### Defaults
+##### Defaults
  * dir: $HOME
  * force: false
 
@@ -91,7 +89,7 @@ Install the vim plugins to .vim/bundle/.
 rake vim_plugins[dir]
 ```
 
-### Defaults
+##### Defaults
  * dir: $HOME/.vim/bundle/
 
 
@@ -105,6 +103,3 @@ git clone https://github.com/sanscore/dotfiles.git
 # bashrc
  * add aliases
  * add functions
-
-# inputrc
-  * more?
