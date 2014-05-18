@@ -205,7 +205,7 @@
     endif
     endfunction
 
-    nmap <silent>  <leader>x  :call ToggleSyntax()<CR>
+    nmap <silent>  <leader>s  :call ToggleSyntax()<CR>
 
 "---[ abbreviations ]-------------------------------------------------
     " Horizontal bars
