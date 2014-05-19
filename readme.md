@@ -46,6 +46,7 @@
     * Nerdtree: ',N'
     * Sensible
     * Snipmate
+      * Vim-Snippets
     * Surround
     * Syntastic
     * TagBar: ',T'
