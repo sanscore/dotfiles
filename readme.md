@@ -59,6 +59,13 @@
     * 'Ydl': Date stamp, long form
     * 'Ydtl': Date\Timp stamp, long form
 
+# Ruby
+## IRB
+  * Tab Completion
+  * Auto Indent
+  * Use Readlines
+  * Require 'pp'
+
 # Rake Tasks
 
 ## links

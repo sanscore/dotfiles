@@ -8,7 +8,7 @@ VIM_AUTOLOAD_DIR = File.join(ENV['HOME'], '.vim', 'autoload')
 VIM_BUNDLE_DIR = File.join(ENV['HOME'], '.vim', 'bundle')
 
 desc "Create symlinks; Default dir: #{ENV['HOME']}"
-multitask :links, [:dir, :force] => [:vimrc, :tmux, :bashrc, :inputrc]
+multitask :links, [:dir, :force] => [:vimrc, :tmux, :bashrc, :inputrc, :irbrc]
 
 desc "Create a bare bones vim directory with pathogen; " \
       "Default dir: #{ENV['HOME']}"
@@ -64,6 +64,11 @@ end
 task :inputrc, [:dir, :force] do |t, args|
   args.with_defaults(DEFAULT_ARGS)
   create_ln('inputrc', '.inputrc', args.dir, args.force)
+end
+
+task :irbrc, [:dir, :force] do |t, args|
+  args.with_defaults(DEFAULT_ARGS)
+  create_ln('irbrc', '.irbrc', args.dir, args.force)
 end
 
 def git_clone_or_pull(user, repo, dir)
