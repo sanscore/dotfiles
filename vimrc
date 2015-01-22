@@ -1,75 +1,75 @@
-"---[ vimrc ]--------------------------------------------------------
-    " by: grant welch
+"---[ vimrc ]-------------------------------------------------------a-
+" by: grant welch
 "---[ notes ]--------------------------------------------------------
-    " q· record to some register, <number>@· to replay macro
-    " m· mark a location, `· return to the mark
-    " * search forward for word under cursor, # search backward
-    " == indent current line
+" q· record to some register, <number>@· to replay macro
+" m· mark a location, `· return to the mark
+" * search forward for word under cursor, # search backward
+" == indent current line
 
 "---[ nocompatible ]-------------------------------------------------
-    set nocompatible
+set nocompatible
 
 "---[ pathogen ]-----------------------------------------------------
-    " Use pathogen to easily modify the runtime path to include all
-    " plugins under the ~/.vim/bundle directory
-    execute pathogen#infect()
-    call pathogen#helptags()
+" Use pathogen to easily modify the runtime path to include all
+" plugins under the ~/.vim/bundle directory
+execute pathogen#infect()
+call pathogen#helptags()
 
 "---[ options ]------------------------------------------------------
-    " vim-sensible handles backspace, incsearch, listchars, and scrolloff
-    set showcmd         " show command is it's typed
-    set ruler           " show cursor position
-    set number          " show line numbers
-    set tabstop=2       " a tab is four spaces
-    set shiftwidth=2    " number of spaces to use for autoindenting
-    set expandtab       " use spaces in place of tabs
-    set smarttab        " insert tabs on the start of a line according to
-                        "    shiftwidth, not tabstop
-    set autoindent      " always set autoindenting on
-    set copyindent      " copy the previous indentation on autoindenting
-    set shiftround      " use multiple of shiftwidth when indenting with '<' and '>'
-    set showmatch       " set show matching parenthesis
-    set ignorecase      " ignore case when searching
-    set smartcase       " ignore case if search pattern is all lowercase,
-                        "    case-sensitive otherwise
-    set hlsearch        " highlight search terms
-    set title           " change the terminal's title
-    set visualbell      " don't beep
-    set noerrorbells    " don't beep
-    set nobackup        " don't save a backup file
-    set noswapfile      " don't creat a swap file
-    set history=1000    " remember more commands and search history
-    set undolevels=1000 " use many muchos levels of undo
-    set timeoutlen=4000 " extend timeout length to 4 seconds
-    set fileformat=unix " default to unix file format
-    " stop hitting shift all day
-    nnoremap ; :
-    filetype plugin indent on
+" vim-sensible handles backspace, incsearch, listchars, and scrolloff
+set showcmd         " show command is it's typed
+set ruler           " show cursor position
+set number          " show line numbers
+set tabstop=2       " a tab is four spaces
+set shiftwidth=2    " number of spaces to use for autoindenting
+set expandtab       " use spaces in place of tabs
+set smarttab        " insert tabs on the start of a line according to
+"    shiftwidth, not tabstop
+set autoindent      " always set autoindenting on
+set copyindent      " copy the previous indentation on autoindenting
+set shiftround      " use multiple of shiftwidth when indenting with '<' and '>'
+set showmatch       " set show matching parenthesis
+set ignorecase      " ignore case when searching
+set smartcase       " ignore case if search pattern is all lowercase,
+"    case-sensitive otherwise
+set hlsearch        " highlight search terms
+set title           " change the terminal's title
+set visualbell      " don't beep
+set noerrorbells    " don't beep
+set nobackup        " don't save a backup file
+set noswapfile      " don't creat a swap file
+set history=1000    " remember more commands and search history
+set undolevels=1000 " use many muchos levels of undo
+set timeoutlen=4000 " extend timeout length to 4 seconds
+set fileformat=unix " default to unix file format
+" stop hitting shift all day
+nnoremap ; :
+filetype plugin indent on
 
 "---[ statusline ]----------------------------------------------------
-    set laststatus=2            " always display status line
-    set statusline=%F%m%r%h%w\  " display pathname and flags
-    set statusline+=\|b=%n\|    " buffer number
-    set statusline+=f=%{&ff}    " format (unix or windows)
-    set statusline+=\|t=%Y      " filetype (for syntax hilighting)
-    set statusline+=\|%L        " number of lines in file
-    set statusline+=\|p=%l,%v\| " line and column position in file
-    set statusline+=%=%p%%\     " right justify; place in file by percentage
-    set statusline+=%{strftime(\"%m/%d/%y\ %H:%M\")}
+set laststatus=2            " always display status line
+set statusline=%F%m%r%h%w\  " display pathname and flags
+set statusline+=\|b=%n\|    " buffer number
+set statusline+=f=%{&ff}    " format (unix or windows)
+set statusline+=\|t=%Y      " filetype (for syntax hilighting)
+set statusline+=\|%L        " number of lines in file
+set statusline+=\|p=%l,%v\| " line and column position in file
+set statusline+=%=%p%%\     " right justify; place in file by percentage
+set statusline+=%{strftime(\"%m/%d/%y\ %H:%M\")}
 
 "---[ airline ]-------------------------------------------------------
-    let g:airline_section_a = airline#section#create_left(['mode', 'paste', 'iminsert'])
-    let g:airline_section_b = airline#section#create(['%<', 'file'])
-    let g:airline_section_c = airline#section#create(['filetype'])
-    "let g:airline_section_gutter = airline#section#create([' ', 'readonly', '%='])
-    let g:airline_section_x = airline#section#create_right(['tagbar'])
-    let g:airline_section_y = airline#section#create_right(['%10(%l:%-2v %p%%%)'])
-    let g:airline_section_z = airline#section#create_right(['hunks', 'branch'])
-    "let g:airline_section_warning = airline#section#create(['syntastic', 'whitespace'])
+let g:airline_section_a = airline#section#create_left(['mode', 'paste', 'iminsert'])
+let g:airline_section_b = airline#section#create(['filetype'])
+let g:airline_section_c = airline#section#create(['%<', 'file'])
+"let g:airline_section_gutter = airline#section#create([' ', 'readonly', '%='])
+let g:airline_section_x = airline#section#create_right(['tagbar'])
+let g:airline_section_y = airline#section#create_right(['%10(%l:%-2v %p%%%)'])
+let g:airline_section_z = airline#section#create_right(['hunks', 'branch'])
+"let g:airline_section_warning = airline#section#create(['syntastic', 'whitespace'])
 
-    " change seperators
-    let g:airline_left_sep = '▙'
-    let g:airline_right_sep = '▟'
+" change seperators
+    let g:airline_left_sep = ''
+    let g:airline_right_sep = ''
 
     let g:airline_theme='badwolf'
 
@@ -82,7 +82,7 @@
     set nolist          " don't list special chars
     set fo+=l           " do not break up lines in insert mode
     set fo+=r           " add comment leader in insert mode
-    set fo+=j           " remove comment leader when joining lines
+    "set fo+=j           " remove comment leader when joining lines
     set fdls=99         " start vim unfolded
 
 "---[ buffers\windows ]-----------------------------------------------
@@ -135,13 +135,14 @@
     endif
 
 "---[ mappings ]------------------------------------------------------
-    " write system files
-    cmap w!! w !sudo tee % >/dev/null
     " no Ex mode
     nnoremap Q <nop>
     " Change working directory to that of current file
     cmap cwd lcd %:p:h
-
+    " Write no a write-protected file with root
+    cmap w!! %!sudo tee > /dev/null %
+    " Use jk instead of Esc
+    :imap jk <Esc>
 "---[ leader mappings ]-----------------------------------------------
     let mapleader=","   " change the mapleader from \ to ,
     " Quickly edit/source the vimrc file
@@ -178,8 +179,14 @@
         " list
         map  <leader>tl <Esc>:tabs<CR>
     " windows
-        map  <leader>ww <c-w><c-w>
+        map  <leader>wn <c-w>n
+        map  <leader>wN <Esc>:vne<CR>
         map  <leader>wp <c-w>p
+        map  <leader>wq <c-w>q
+        map  <leader>ws <c-w>s
+        map  <leader>wv <c-w>v
+        map  <leader>ww <c-w><c-w>
+        map  <leader>wW <c-w>W
     " plugins
         " toggle nerdtree
         map  <leader>N <Esc>:NERDTreeToggle<CR>
