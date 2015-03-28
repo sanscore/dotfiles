@@ -93,19 +93,6 @@ let g:airline_section_z = airline#section#create_right(['hunks', 'branch'])
     set splitright      " split right of the current window
     set noequalalways   " prevent vim from resizing windows
 
-"---[ navigation ]----------------------------------------------------
-    " let j/k move through wrapped lines
-    nnoremap j gj
-    nnoremap k gk
-    " Easy window navigation
-    map <C-h> <C-w>h
-    map <C-j> <C-w>j
-    map <C-k> <C-w>k
-    map <C-l> <C-w>l
-    " Window only/close shortcuts
-    map <C-O> <C-W>o
-    map <C-C> <C-W>c
-
 "---[ highlighting ]-------------------------------------------------
     set background=dark
 
@@ -134,74 +121,88 @@ let g:airline_section_z = airline#section#create_right(['hunks', 'branch'])
     else
     endif
 
+"---[ navigation ]----------------------------------------------------
+    " let j/k move through wrapped lines
+    nnoremap j gj
+    nnoremap k gk
+    " Easy window navigation
+    nnoremap <C-h> <C-w>h
+    nnoremap <C-j> <C-w>j
+    nnoremap <C-k> <C-w>k
+    nnoremap <C-l> <C-w>l
+    " Window only/close shortcuts
+    nnoremap <C-O> <C-W>o
+    nnoremap <C-C> <C-W>c
+
 "---[ mappings ]------------------------------------------------------
     " no Ex mode
     nnoremap Q <nop>
     " Change working directory to that of current file
-    cmap cwd lcd %:p:h
+    cnoremap cwd lcd %:p:h
     " Write no a write-protected file with root
-    cmap w!! %!sudo tee > /dev/null %
+    cnoremap w!! %!sudo tee > /dev/null %
     " Use jk instead of Esc
-    :imap jk <Esc>
+    inoremap jk <Esc>
+    inoremap <Esc> <nop>
 "---[ leader mappings ]-----------------------------------------------
     let mapleader=","   " change the mapleader from \ to ,
     " Quickly edit/source the vimrc file
-    nmap <silent> <leader>ve :e $MYVIMRC<CR>
-    nmap <silent> <leader>vs :so $MYVIMRC<CR>
+    nnoremap <silent> <leader>ve :e $MYVIMRC<CR>
+    nnoremap <silent> <leader>vs :so $MYVIMRC<CR>
     " clear search
-    nmap <silent> <leader>/ :nohlsearch<CR>
+    nnoremap <silent> <leader>/ :nohlsearch<CR>
     " toggle line numbers
-    map  <leader>n :set number!<CR>
+    nnoremap  <leader>n :set number!<CR>
     " toggle relative line numbers
-    map  <leader>r :set relativenumber!<CR>
+    nnoremap  <leader>r :set relativenumber!<CR>
     " toggle list characters
-    map  <leader>l :set list! list?<CR>
+    nnoremap  <leader>l :set list! list?<CR>
     " toggle pastemode
     set pastetoggle=<leader>.
     " buffers
         " previous
-        map  <leader>bp <Esc>:bp<CR>
+        nnoremap  <leader>bp <Esc>:bp<CR>
         " next
-        map  <leader>bn <Esc>:bn<CR>
+        nnoremap  <leader>bn <Esc>:bn<CR>
         " new
-        map  <leader>bN <Esc>:enew<CR>
+        nnoremap  <leader>bN <Esc>:enew<CR>
         " list
-        map  <leader>bl <Esc>:ls<CR>
+        nnoremap  <leader>bl <Esc>:ls<CR>
         " open BufExplorer
-        map  <leader>be <Esc>:BufExplorer<CR>
+        nnoremap  <leader>be <Esc>:BufExplorer<CR>
     " tabs
         " previous
-        map  <leader>tp <Esc>:tabp<CR>
+        nnoremap  <leader>tp <Esc>:tabp<CR>
         " next
-        map  <leader>tn <Esc>:tabn<CR>
+        nnoremap  <leader>tn <Esc>:tabn<CR>
         " new
-        map  <leader>tN <Esc>:tabnew<CR>
+        nnoremap  <leader>tN <Esc>:tabnew<CR>
         " list
-        map  <leader>tl <Esc>:tabs<CR>
+        nnoremap  <leader>tl <Esc>:tabs<CR>
     " windows
-        map  <leader>wn <c-w>n
-        map  <leader>wN <Esc>:vne<CR>
-        map  <leader>wp <c-w>p
-        map  <leader>wq <c-w>q
-        map  <leader>ws <c-w>s
-        map  <leader>wv <c-w>v
-        map  <leader>ww <c-w><c-w>
-        map  <leader>wW <c-w>W
+        nnoremap  <leader>wn <c-w>n
+        nnoremap  <leader>wN <Esc>:vne<CR>
+        nnoremap  <leader>wp <c-w>p
+        nnoremap  <leader>wq <c-w>q
+        nnoremap  <leader>ws <c-w>s
+        nnoremap  <leader>wv <c-w>v
+        nnoremap  <leader>ww <c-w><c-w>
+        nnoremap  <leader>wW <c-w>W
     " plugins
         " toggle nerdtree
-        map  <leader>N <Esc>:NERDTreeToggle<CR>
+        nnoremap  <leader>N <Esc>:NERDTreeToggle<CR>
         " airline
-        map <leader>a <Esc>:AirlineToggle<CR>
+        nnoremap <leader>a <Esc>:AirlineToggle<CR>
         " ctrlp
         let g:ctrlp_map = ''
-        map <leader>p <Esc>:CtrlP<CR>
+        nnoremap <leader>p <Esc>:CtrlP<CR>
         " syntastic
-        map <leader>c <Esc>:SyntasticCheck<CR>
+        nnoremap <leader>c <Esc>:SyntasticCheck<CR>
         " Tagbar
-        map <leader>T <Esc>:TagbarToggle<CR>
-        map <leader>wT 99<c-w>l
+        nnoremap <leader>T <Esc>:TagbarToggle<CR>
+        nnoremap <leader>wT 99<c-w>l
         " Undotree
-        map <leader>u <Esc>:UndotreeToggle<CR>
+        nnoremap <leader>u <Esc>:UndotreeToggle<CR>
 "---[ functions ]-----------------------------------------------------
     "Toggle syntax highlighting on and off with <leader>s
     function! ToggleSyntax()
@@ -212,7 +213,7 @@ let g:airline_section_z = airline#section#create_right(['hunks', 'branch'])
     endif
     endfunction
 
-    nmap <silent>  <leader>s  :call ToggleSyntax()<CR>
+    nnoremap <silent>  <leader>s  :call ToggleSyntax()<CR>
 
 "---[ abbreviations ]-------------------------------------------------
     " Horizontal bars
