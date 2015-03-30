@@ -42,8 +42,10 @@ task :vim_plugins, [:dir] => [:vim] do |t, args|
   git_clone_or_pull('airblade', 'vim-gitgutter', args.dir)
   git_clone_or_pull('tomasr', 'molokai', args.dir)
   git_clone_or_pull('marcweber', 'vim-addon-mw-utils', args.dir)
+  git_clone_or_pull('sjl', 'badwolf', args.dir)
   git_clone_or_pull('honza', 'vim-snippets', args.dir)
   git_clone_or_pull('tomtom', 'tlib_vim', args.dir)
+  git_clone_or_pull('klen', 'python-mode', args.dir)
 end
 
 task :vimrc, [:dir, :force] do |t, args|
