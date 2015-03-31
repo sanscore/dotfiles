@@ -13,6 +13,9 @@ PROMPT_COMMAND='history -a'
 # Ignore lines prepended with a space
 HISTCONTROL=ignorespace
 
+# Use VIM as editor
+export EDITOR=vim
+
 # PS1: username@hostname:directory[history_number]$ 
 export PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\\$ \[\e[0m\]"
 
