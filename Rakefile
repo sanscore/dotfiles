@@ -84,17 +84,17 @@ end
 
 def git_clone(user, repo, dir)
   if system "git clone https://github.com/#{user}/#{repo}.git #{dir}"
-    puts "Successfully cloned: #{repo}"
+    prints "Successfully cloned: #{repo}\n"
   else
-    puts "Failed to clone: #{repo}"
+    prints "Failed to clone: #{repo}\n"
   end
 end
 
 def git_pull(repo, dir)
   if system "cd #{dir}; git pull"
-    puts "Successfully updated: #{repo}"
+    prints "Successfully updated: #{repo}\n"
   else
-    puts "Failed to update: #{repo}"
+    prints "Failed to update: #{repo}\n"
   end
 end
 
@@ -103,20 +103,20 @@ def create_ln(old, new, dir, force)
   new = File.join(File.expand_path(dir), new)
   
   unless(File.exists?(old))
-    puts "#{old} doesn't exist."
+    prints "#{old} doesn't exist.\n"
     return
   end
 
   if(!File.exists?(new) || force)
     ln_s old, new, force: force
   else
-    puts "#{new} already exists."
+    prints "#{new} already exists.\n"
   end
 end
 
 def fetch_file(url, file, overwrite, limit=10)
   if (!overwrite && File.exists?(file))
-    puts "#{file} already exists"
+    prints "#{file} already exists\n"
     return
   end
 
@@ -131,7 +131,7 @@ def fetch_file(url, file, overwrite, limit=10)
   case resp
   when Net::HTTPSuccess then
     open(file,"w") { |f| f.write(resp.body) }
-    puts "#{file} saved."
+    prints "#{file} saved.\n"
   when Net::HTTPRedirection then
     fetch_file(resp['location'], file, limit-1)
   else
