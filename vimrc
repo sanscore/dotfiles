@@ -143,24 +143,35 @@
   nnoremap  <leader>r :set relativenumber!<CR>
   " toggle list characters
   nnoremap  <leader>l :set list! list?<CR>
+  " toggle spell checking
+  nnoremap <leader>sp :set invspell<CR>
+  " toggle syntax highlighting
+  nnoremap <silent>  <leader>sh  :call ToggleSyntax()<CR>
   " toggle pastemode
   set pastetoggle=<leader>.
+  " toggle cursorline
+  nnoremap <leader>cl :set cul!<CR>
+  " toggle cursorcolumn
+  nnoremap <leader>cc :set cuc!<CR>
+  " errors
+    nnoremap <leader>el <Esc>:lnext<CR>
+    nnoremap <leader>eL <Esc>:lprevious<CR>
+    nnoremap <leader>ec <Esc>:cnext<CR>
+    nnoremap <leader>eC <Esc>:cprevious<CR>
   " buffers
     " previous
-    nnoremap  <leader>bp <Esc>:bp<CR>
+    nnoremap  <leader>bp <Esc>:bprevious<CR>
     " next
-    nnoremap  <leader>bn <Esc>:bn<CR>
+    nnoremap  <leader>bn <Esc>:bnext<CR>
     " new
     nnoremap  <leader>bN <Esc>:enew<CR>
-    " list
-    nnoremap  <leader>bl <Esc>:ls<CR>
     " open BufExplorer
     nnoremap  <leader>be <Esc>:BufExplorer<CR>
   " tabs
     " previous
-    nnoremap  <leader>tp <Esc>:tabp<CR>
+    nnoremap  <leader>tp <Esc>:tabprevious<CR>
     " next
-    nnoremap  <leader>tn <Esc>:tabn<CR>
+    nnoremap  <leader>tn <Esc>:tabnext<CR>
     " new
     nnoremap  <leader>tN <Esc>:tabnew<CR>
     " list
@@ -186,14 +197,14 @@
     let g:pymode_doc_bind = '<leader>pk'
     nnoremap <leader>pc <Esc>:PymodeLint<CR>
     " syntastic
-    nnoremap <leader>c <Esc>:SyntasticCheck<CR>
+    nnoremap <leader>sc <Esc>:SyntasticCheck<CR>
     " Tagbar
     nnoremap <leader>T <Esc>:TagbarToggle<CR>
     nnoremap <leader>wT 99<c-w>l
     " Undotree
     nnoremap <leader>u <Esc>:UndotreeToggle<CR>
 "---[ functions ]-----------------------------------------------------
-  "Toggle syntax highlighting on and off with <leader>s
+  "Toggle syntax highlighting on and off
   function! ToggleSyntax()
     if exists("g:syntax_on")
       syntax off
@@ -201,9 +212,6 @@
       syntax enable
     endif
   endfunction
-
-  nnoremap <silent>  <leader>s  :call ToggleSyntax()<CR>
-
 "---[ abbreviations ]-------------------------------------------------
   " Horizontal bars
   iab Yr "---[ ]---------------------------------------------------------------
