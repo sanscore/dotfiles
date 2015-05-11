@@ -194,7 +194,6 @@
     let g:pymode_doc_bind = '<leader>pd'
     let g:pymode_run_bind = '<leader>pr'
     let g:pymode_breakpoint_bind = '<leader>pb'
-    let g:pymode_doc_bind = '<leader>pk'
     nnoremap <leader>pc <Esc>:PymodeLint<CR>
     " syntastic
     nnoremap <leader>sc <Esc>:SyntasticCheck<CR>
