@@ -1,4 +1,6 @@
 # .bashrc
+#Disable Flow Control
+stty ixany
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
@@ -11,7 +13,7 @@ shopt -s histappend
 PROMPT_COMMAND='history -a'
 
 # Ignore lines prepended with a space
-HISTCONTROL=ignorespace
+HISTCONTROL=ignoreboth:erasedups
 
 # Use VIM as editor
 export EDITOR=vim

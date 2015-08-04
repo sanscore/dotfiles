@@ -177,14 +177,7 @@
     " list
     nnoremap  <leader>tl <Esc>:tabs<CR>
   " windows
-    nnoremap  <leader>wn <c-w>n
-    nnoremap  <leader>wN <Esc>:vne<CR>
-    nnoremap  <leader>wp <c-w>p
-    nnoremap  <leader>wq <c-w>q
-    nnoremap  <leader>ws <c-w>s
-    nnoremap  <leader>wv <c-w>v
-    nnoremap  <leader>ww <c-w><c-w>
-    nnoremap  <leader>wW <c-w>W
+    nnoremap  <leader>w <c-w>
   " plugins
     " toggle nerdtree
     nnoremap  <leader>N <Esc>:NERDTreeToggle<CR>
