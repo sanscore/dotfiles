@@ -9,11 +9,53 @@
 "---[ nocompatible ]-------------------------------------------------
   set nocompatible
 
-"---[ pathogen ]-----------------------------------------------------
-" Use pathogen to easily modify the runtime path to include all
-" plugins under the ~/.vim/bundle directory
-  execute pathogen#infect('bundle/{}')
-  call pathogen#helptags()
+"---[ vundle ]-------------------------------------------------------
+  set rtp+=~/.vim/bundle/Vundle.vim
+
+"---[ plugins ]------------------------------------------------------
+  call vundle#begin()
+  " let Vundle manage Vundle, required
+  Plugin 'gmarik/Vundle.vim'
+  " Ruby plugin
+  Plugin 'vim-ruby/vim-ruby'
+  " Vim-Sensible sets some univerally accepted vim defaults
+  Plugin 'tpope/vim-sensible'
+  " buffer explorer provides a menu to switch buffers
+  Plugin 'jlanzarotta/bufexplorer'
+  " NerdTree provides a file tree to navigate a directory structure
+  Plugin 'scrooloose/nerdtree'
+  " Ctrl+P opens files using fuzzy search
+  Plugin 'kien/ctrlp.vim'
+  " Tagbar provides easy navigational access to class, func, etc definitions
+  Plugin 'majutsushi/tagbar'
+  " Undotree provides better access to VIM undo structure
+  Plugin 'mbbill/undotree'
+  " Vim-Fugitive is a git wrapper, ex: :Git status; :Git branch
+  Plugin 'tpope/vim-fugitive'
+  " Vim-GitGutter shows git diff lines in the 'gutter' (left of line numbers)
+  Plugin 'airblade/vim-gitgutter'
+  " Python-mode turns VIM into a Python IDE
+  Plugin 'klen/python-mode'
+  " Syntastic does syntax checking
+  Plugin 'scrooloose/syntastic'
+  " Requirements for snipmate, below
+  Plugin 'marcweber/vim-addon-mw-utils'
+  Plugin 'tomtom/tlib_vim'
+  " Snipmate provides UltiSnips functionality
+  Plugin 'garbas/vim-snipmate'
+  " vim-snippets provides the actual snippets
+  Plugin 'honza/vim-snippets'
+  " Vim-Surround provides easy shortcuts to change surrounding quotes, brackets, etc
+  Plugin 'tpope/vim-surround'
+  " Vim-Airline makes pretty status lines
+  Plugin 'bling/vim-airline'
+  " Tabular filter and align text
+  Plugin 'godlygeek/tabular'
+  " Molokai is a high-contrast, colorful colortheme
+  Plugin 'tomasr/molokai'
+  " Badwolf, ditto
+  Plugin 'sjl/badwolf'
+  call vundle#end()
 
 "---[ options ]------------------------------------------------------
 " vim-sensible handles backspace, incsearch, listchars, and scrolloff
