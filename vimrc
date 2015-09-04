@@ -1,10 +1,10 @@
-"---[ vimrc ]-------------------------------------------------------a-
+"---[ vimrc ]--------------------------------------------------------
 " by: grant welch
 "---[ notes ]--------------------------------------------------------
 " q· record to some register, <number>@· to replay macro
 " m· mark a location, `· return to the mark
 " * search forward for word under cursor, # search backward
-" == indent current line
+" >> indent current line
 
 "---[ nocompatible ]-------------------------------------------------
   set nocompatible
@@ -100,8 +100,8 @@
   set statusline+=%{strftime(\"%m/%d/%y\ %H:%M\")}
 
 "---[ airline ]-------------------------------------------------------
-  let g:airline_left_sep = ''
-  let g:airline_right_sep = ''
+  let g:airline_left_sep = ''
+  let g:airline_right_sep = ''
   let g:airline_theme='badwolf'
 
 "---[ formatting ]----------------------------------------------------
@@ -130,6 +130,7 @@
 
   if &t_Co >= 256 || has("gui_running")
     colorscheme badwolf
+    let &colorcolumn=join(range(81,999),",")
   endif
 
   if &t_Co > 2 || has("gui_running")
