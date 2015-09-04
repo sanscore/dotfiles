@@ -18,6 +18,8 @@
   Plugin 'gmarik/Vundle.vim'
   " Ruby plugin
   Plugin 'vim-ruby/vim-ruby'
+  " add ⌘ r to run ruby code
+  Plugin 'henrik/vim-ruby-runner'
   " Vim-Sensible sets some univerally accepted vim defaults
   Plugin 'tpope/vim-sensible'
   " buffer explorer provides a menu to switch buffers
@@ -53,12 +55,14 @@
   Plugin 'godlygeek/tabular'
   " Molokai is a high-contrast, colorful colortheme
   Plugin 'tomasr/molokai'
-  " Badwolf, ditto
-  Plugin 'sjl/badwolf'
+  " Badwolf, ditto; the original sjl version lacks contrasting Diff colors
+  " Plugin 'sjl/badwolf'
+  Plugin 'alx741/badwolf'
   call vundle#end()
 
 "---[ options ]------------------------------------------------------
-" vim-sensible handles backspace, incsearch, listchars, and scrolloff
+" vim-sensible handles backspace, incsearch
+  set shortmess+=I    " removes intro message
   set showcmd         " show command is it's typed
   set ruler           " show cursor position
   set number          " show line numbers
@@ -84,6 +88,22 @@
   set undolevels=1000 " use many muchos levels of undo
   set timeoutlen=4000 " extend timeout length to 4 seconds
   set fileformat=unix " default to unix file format
+  set nowrap          " don't wrap
+  set nolist          " don't list special chars, set listchars
+  set listchars=trail:·,tab:»·,extends:>,precedes:<,nbsp:+
+  set linebreak       " use linebreak wrapping
+  set scrolloff=10    " minimum number of rows before/after of cursor
+  set sidescrolloff=10  " minimum number of cols left/right of cursor
+  set textwidth=0     " prevent hard wrapping
+  set wrapmargin=0    " prevent hard wrapping
+  set colorcolumn=80  " add visual demarkation at 80 char
+  set showbreak=↪     " change the wrap character
+  set fo+=l           " do not break up lines in insert mode
+  set fo+=r           " add comment leader in insert mode
+  "set fo+=j           " remove comment leader when joining lines
+  set fdls=99         " start vim unfolded
+  set foldmethod=indent   " fold based on indent level
+
   " stop hitting shift all day
   nnoremap ; :
   filetype plugin indent on
@@ -103,19 +123,6 @@
   let g:airline_left_sep = ''
   let g:airline_right_sep = ''
   let g:airline_theme='badwolf'
-
-"---[ formatting ]----------------------------------------------------
-  set nowrap          " don't wrap
-  set textwidth=0     " prevent hard wrapping
-  set wrapmargin=0    " prevent hard wrapping
-  set colorcolumn=80  " add visual demarkation at 80 char
-  set showbreak=↪     " change the wrap character
-  set nolist          " don't list special chars
-  set fo+=l           " do not break up lines in insert mode
-  set fo+=r           " add comment leader in insert mode
-  "set fo+=j           " remove comment leader when joining lines
-  set fdls=99         " start vim unfolded
-  set foldmethod=indent   " fold based on indent level
 
 "---[ buffers\windows ]-----------------------------------------------
   set hidden          " hide buffers
@@ -165,8 +172,14 @@
   nnoremap <C-l> <C-w>l
 
 "---[ mappings ]------------------------------------------------------
+  " make Y consistent with D and C; yank rest of line, not the whole line
+  nnoremap Y y$
+  " no more help
+  nnoremap <F1> <nop>
   " no Ex mode
   nnoremap Q <nop>
+  " no more manpages
+  nnoremap K <nop>
   " Change working directory to that of current file
   cnoremap cwd lcd %:p:h
   " Write no a write-protected file with root
@@ -184,8 +197,12 @@
   nnoremap  <leader>n :set number!<CR>
   " toggle relative line numbers
   nnoremap  <leader>r :set relativenumber!<CR>
+  " toggle linebreak
+  nnoremap <leader>lb :set linebreak! linebreak?<CR>
   " toggle list characters
-  nnoremap  <leader>l :set list! list?<CR>
+  nnoremap  <leader>li :set list! list?<CR>
+  " toggle line wrapping
+  nnoremap <leader>lw :set wrap! wrap?<CR>
   " toggle spell checking
   nnoremap <leader>sp :set invspell<CR>
   " toggle syntax highlighting

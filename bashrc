@@ -7,6 +7,7 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
+export PATH=$HOME/bin/:$PATH
 # Append history
 shopt -s histappend
 # And, commit previous command to history
@@ -19,7 +20,7 @@ HISTCONTROL=ignoreboth:erasedups
 export EDITOR=vim
 
 # PS1: username@hostname:directory[history_number]$ 
-export PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\\$ \[\e[0m\]"
+export PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\$(__git_ps1 \"(%s)\")\\$ \[\e[0m\]"
 
 # Functions
 function p {
