@@ -63,6 +63,7 @@
 "---[ options ]------------------------------------------------------
 " vim-sensible handles backspace, incsearch
   set shortmess+=I    " removes intro message
+  set virtualedit=onemore " cursor goes past last char
   set showcmd         " show command is it's typed
   set ruler           " show cursor position
   set number          " show line numbers
@@ -172,6 +173,8 @@
   nnoremap <C-l> <C-w>l
 
 "---[ mappings ]------------------------------------------------------
+  " 'jk' to Esc and keep cursor at its current location
+  inoremap jk <Esc>l
   " make Y consistent with D and C; yank rest of line, not the whole line
   nnoremap Y y$
   " no more help
@@ -180,6 +183,8 @@
   nnoremap Q <nop>
   " no more manpages
   nnoremap K <nop>
+  " ZJ quits all windows
+  nnoremap ZJ :qa<CR>
   " Change working directory to that of current file
   cnoremap cwd lcd %:p:h
   " Write no a write-protected file with root
