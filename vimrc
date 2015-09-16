@@ -22,6 +22,14 @@
   Plugin 'henrik/vim-ruby-runner'
   " Vim-Sensible sets some univerally accepted vim defaults
   Plugin 'tpope/vim-sensible'
+  " Vim-Unimpaired adds square bracket mappings
+  Plugin 'tpope/vim-unimpaired'
+  " Vim-Surround provides easy shortcuts to change surrounding quotes, brackets, etc
+  Plugin 'tpope/vim-surround'
+  " Vim-Fugitive is a git wrapper, ex: :Git status; :Git branch
+  Plugin 'tpope/vim-fugitive'
+  " Vim-GitGutter shows git diff lines in the 'gutter' (left of line numbers)
+  Plugin 'airblade/vim-gitgutter'
   " buffer explorer provides a menu to switch buffers
   Plugin 'jlanzarotta/bufexplorer'
   " NerdTree provides a file tree to navigate a directory structure
@@ -32,10 +40,6 @@
   Plugin 'majutsushi/tagbar'
   " Undotree provides better access to VIM undo structure
   Plugin 'mbbill/undotree'
-  " Vim-Fugitive is a git wrapper, ex: :Git status; :Git branch
-  Plugin 'tpope/vim-fugitive'
-  " Vim-GitGutter shows git diff lines in the 'gutter' (left of line numbers)
-  Plugin 'airblade/vim-gitgutter'
   " Python-mode turns VIM into a Python IDE
   Plugin 'klen/python-mode'
   " Syntastic does syntax checking
@@ -47,8 +51,6 @@
   Plugin 'garbas/vim-snipmate'
   " vim-snippets provides the actual snippets
   Plugin 'honza/vim-snippets'
-  " Vim-Surround provides easy shortcuts to change surrounding quotes, brackets, etc
-  Plugin 'tpope/vim-surround'
   " Vim-Airline makes pretty status lines
   Plugin 'bling/vim-airline'
   " Tabular filter and align text
