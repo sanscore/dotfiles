@@ -16,4 +16,5 @@ if [[ -d "${PYENV_ROOT}" ]]; then
   export PYENV_BIN="${PYENV_ROOT}/bin"
   export PATH="${PYENV_BIN}:${PATH}"
   eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
 fi
