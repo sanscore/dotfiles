@@ -106,9 +106,6 @@
   "set fo+=j           " remove comment leader when joining lines
   set fdls=99         " start vim unfolded
   set foldmethod=indent   " fold based on indent level
-
-  " stop hitting shift all day
-  nnoremap ; :
   filetype plugin indent on
 
 "---[ statusline ]----------------------------------------------------
@@ -137,10 +134,11 @@
 
 "---[ highlighting ]-------------------------------------------------
   set background=dark
-
   if &t_Co >= 256 || has("gui_running")
     colorscheme badwolf
-    let &colorcolumn=join(range(81,999),",")
+    highlight ColorColumn ctermbg=196 guibg=#ff2c4b
+    highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+    match OverLength /\%80v.\+/
   endif
 
   if &t_Co > 2 || has("gui_running")
@@ -168,11 +166,6 @@
   " let j/k move through wrapped lines
   nnoremap j gj
   nnoremap k gk
-  " Easy window navigation
-  nnoremap <C-h> <C-w>h
-  nnoremap <C-j> <C-w>j
-  nnoremap <C-k> <C-w>k
-  nnoremap <C-l> <C-w>l
 
 "---[ mappings ]------------------------------------------------------
   " 'jk' to Esc and keep cursor at its current location
@@ -201,67 +194,40 @@
   " clear search
   nnoremap <silent> <leader>/ :nohlsearch<CR>
   " toggle line numbers
-  nnoremap  <leader>n :set number!<CR>
+  nnoremap  <leader>ln :set number!<CR>
   " toggle relative line numbers
-  nnoremap  <leader>r :set relativenumber!<CR>
+  nnoremap  <leader>lr :set relativenumber!<CR>
   " toggle linebreak
   nnoremap <leader>lb :set linebreak! linebreak?<CR>
   " toggle list characters
   nnoremap  <leader>li :set list! list?<CR>
   " toggle line wrapping
   nnoremap <leader>lw :set wrap! wrap?<CR>
-  " toggle spell checking
-  nnoremap <leader>sp :set invspell<CR>
   " toggle syntax highlighting
   nnoremap <silent>  <leader>sh  :call ToggleSyntax()<CR>
+  " syntastic
+  nnoremap <leader>sc <Esc>:SyntasticCheck<CR>
+  " toggle spell checking
+  nnoremap <leader>sp :set invspell<CR>
   " toggle pastemode
   set pastetoggle=<leader>.
-  " toggle cursorline
-  nnoremap <leader>cl :set cul!<CR>
-  " toggle cursorcolumn
-  nnoremap <leader>cc :set cuc!<CR>
-  " errors
-    nnoremap <leader>el <Esc>:lnext<CR>
-    nnoremap <leader>eL <Esc>:lprevious<CR>
-    nnoremap <leader>ec <Esc>:cnext<CR>
-    nnoremap <leader>eC <Esc>:cprevious<CR>
-  " buffers
-    " previous
-    nnoremap  <leader>bp <Esc>:bprevious<CR>
-    " next
-    nnoremap  <leader>bn <Esc>:bnext<CR>
-    " new
-    nnoremap  <leader>bN <Esc>:enew<CR>
-    " open BufExplorer
-    nnoremap  <leader>be <Esc>:BufExplorer<CR>
-  " tabs
-    " previous
-    nnoremap  <leader>tp <Esc>:tabprevious<CR>
-    " next
-    nnoremap  <leader>tn <Esc>:tabnext<CR>
-    " new
-    nnoremap  <leader>tN <Esc>:tabnew<CR>
-    " list
-    nnoremap  <leader>tl <Esc>:tabs<CR>
+  " open BufExplorer
+  nnoremap  <leader>be <Esc>:BufExplorer<CR>
   " windows
     nnoremap  <leader>w <c-w>
-  " plugins
-    " toggle nerdtree
-    nnoremap  <leader>N <Esc>:NERDTreeToggle<CR>
-    " airline
-    nnoremap <leader>a <Esc>:AirlineToggle<CR>
-    " pymode
-    let g:pymode_doc_bind = '<leader>pd'
-    let g:pymode_run_bind = '<leader>pr'
-    let g:pymode_breakpoint_bind = '<leader>pb'
-    nnoremap <leader>pc <Esc>:PymodeLint<CR>
-    " syntastic
-    nnoremap <leader>sc <Esc>:SyntasticCheck<CR>
-    " Tagbar
-    nnoremap <leader>T <Esc>:TagbarToggle<CR>
-    nnoremap <leader>wT 99<c-w>l
-    " Undotree
-    nnoremap <leader>u <Esc>:UndotreeToggle<CR>
+  " toggle nerdtree
+  nnoremap  <leader>N <Esc>:NERDTreeToggle<CR>
+  " airline
+  nnoremap <leader>a <Esc>:AirlineToggle<CR>
+  " pymode
+  let g:pymode_doc_bind = '<leader>pd'
+  let g:pymode_run_bind = '<leader>pr'
+  let g:pymode_breakpoint_bind = '<leader>pb'
+  nnoremap <leader>pc <Esc>:PymodeLint<CR>
+  " Tagbar
+  nnoremap <leader>T <Esc>:TagbarToggle<CR>
+  " Undotree
+  nnoremap <leader>u <Esc>:UndotreeToggle<CR>
 "---[ functions ]-----------------------------------------------------
   "Toggle syntax highlighting on and off
   function! ToggleSyntax()
