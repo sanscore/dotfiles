@@ -89,7 +89,7 @@
   set noswapfile      " don't creat a swap file
   set history=1000    " remember more commands and search history
   set undolevels=1000 " use many muchos levels of undo
-  set timeoutlen=4000 " extend timeout length to 4 seconds
+  set timeoutlen=2000 " extend timeout length to 4 seconds
   set fileformat=unix " default to unix file format
   set nowrap          " don't wrap
   set nolist          " don't list special chars, set listchars
@@ -120,6 +120,7 @@
   set statusline+=%{strftime(\"%m/%d/%y\ %H:%M\")}
 
 "---[ airline ]-------------------------------------------------------
+  " Using Liberation Mono for Powerline, 13pt
   let g:airline_left_sep = ''
   let g:airline_right_sep = ''
   let g:airline_theme='badwolf'
@@ -134,16 +135,18 @@
 
 "---[ highlighting ]-------------------------------------------------
   set background=dark
-  if &t_Co >= 256 || has("gui_running")
-    colorscheme badwolf
-    highlight ColorColumn ctermbg=196 guibg=#ff2c4b
-    highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-    match OverLength /\%80v.\+/
-  endif
-
   if &t_Co > 2 || has("gui_running")
     " switch syntax highlighting on, when the terminal has colors
     syntax on
+  endif
+
+  if &t_Co >= 256 || has("gui_running")
+    colorscheme badwolf
+    "highlight 80th column
+    highlight ColorColumn ctermbg=196 guibg=#ff2c4b
+    "highlight text that runs over 80 chars
+    highlight OverLength ctermbg=196 guibg=#ff2c4b ctermfg=white
+    match OverLength /\%81v.\+/
   endif
 
 "---[ gui ]-----------------------------------------------------------
@@ -181,30 +184,30 @@
   " ZJ quits all windows
   nnoremap ZJ :qa<CR>
   " Change working directory to that of current file
-  cnoremap cwd lcd %:p:h
+  cabbrev cwd lcd %:p:h
   " Write no a write-protected file with root
-  cnoremap w!! %!sudo tee > /dev/null %
+  cabbrev w!! %!sudo tee > /dev/null %
   " space open/closes folds
   nnoremap <space> za
 "---[ leader mappings ]-----------------------------------------------
   let mapleader=","   " change the mapleader from \ to ,
   " Quickly edit/source the vimrc file
-  nnoremap <silent> <leader>ve :e $MYVIMRC<CR>
-  nnoremap <silent> <leader>vs :so $MYVIMRC<CR>
+  nnoremap <leader>ve :e $MYVIMRC<CR>
+  nnoremap <leader>vs :so $MYVIMRC<CR>
   " clear search
-  nnoremap <silent> <leader>/ :nohlsearch<CR>
+  nnoremap <leader>/ :nohlsearch<CR>
   " toggle line numbers
-  nnoremap  <leader>ln :set number!<CR>
+  nnoremap <leader>ln :set number!<CR>
   " toggle relative line numbers
-  nnoremap  <leader>lr :set relativenumber!<CR>
+  nnoremap <leader>lr :set relativenumber!<CR>
   " toggle linebreak
   nnoremap <leader>lb :set linebreak! linebreak?<CR>
   " toggle list characters
-  nnoremap  <leader>li :set list! list?<CR>
+  nnoremap <leader>li :set list! list?<CR>
   " toggle line wrapping
   nnoremap <leader>lw :set wrap! wrap?<CR>
   " toggle syntax highlighting
-  nnoremap <silent>  <leader>sh  :call ToggleSyntax()<CR>
+  nnoremap <leader>sh  :call ToggleSyntax()<CR>
   " syntastic
   nnoremap <leader>sc <Esc>:SyntasticCheck<CR>
   " toggle spell checking
@@ -212,11 +215,11 @@
   " toggle pastemode
   set pastetoggle=<leader>.
   " open BufExplorer
-  nnoremap  <leader>be <Esc>:BufExplorer<CR>
+  nnoremap <leader>be <Esc>:BufExplorer<CR>
   " windows
-    nnoremap  <leader>w <c-w>
+    nnoremap <leader>w <c-w>
   " toggle nerdtree
-  nnoremap  <leader>N <Esc>:NERDTreeToggle<CR>
+  nnoremap <leader>N <Esc>:NERDTreeToggle<CR>
   " airline
   nnoremap <leader>a <Esc>:AirlineToggle<CR>
   " pymode
@@ -239,15 +242,15 @@
   endfunction
 "---[ abbreviations ]-------------------------------------------------
   " Horizontal bars
-  iab Yr "---[ ]---------------------------------------------------------------
-  iab Y- "---------------------------------------------------------------------
+  iabbrev Yr "---[ ]---------------------------------------------------------------
+  iabbrev Y- "---------------------------------------------------------------------
   " Timestamps
   " date standard, date/time
-  iab Yds     <C-R>=strftime("%Y-%m-%d")<CR>
-  iab Ydts    <C-R>=strftime("%Y-%m-%d - %X")<CR>
+  iabbrev Yds     <C-R>=strftime("%Y-%m-%d")<CR>
+  iabbrev Ydts    <C-R>=strftime("%Y-%m-%d - %X")<CR>
   " long form date, date/time
-  iab Ydl     <C-R>=strftime("%b %d, %Y")<CR>
-  iab Ydtl    <C-R>=strftime("%b %d, %Y - %X")<CR>
+  iabbrev Ydl     <C-R>=strftime("%b %d, %Y")<CR>
+  iabbrev Ydtl    <C-R>=strftime("%b %d, %Y - %X")<CR>
 "---[ Buffer Explorer ]-----------------------------------------------
   " Show no name buffers
   let g:bufExplorerShowNoName=1
