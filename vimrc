@@ -184,6 +184,10 @@
   nnoremap <leader>vs :so $MYVIMRC<CR>
   " clear search
   nnoremap <leader>/ :nohlsearch<CR>
+  " clear signs
+  " nnoremap <leader>lg :sign unplace *<CR>
+  " let g:gitgutter_sign_column_always = 1
+  nnoremap <leader>lg :GitGutterToggle<CR>
   " toggle line numbers
   nnoremap <leader>ln :set number!<CR>
   " toggle relative line numbers

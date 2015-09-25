@@ -1,7 +1,7 @@
 [user]
   name = Grant Welch
 [core]
-  editor = /usr/bin/vim
+  editor = /usr/bin/env vim
 [push]
   default = upstream
 [color]
@@ -64,3 +64,5 @@
   latest = "! git for-each-ref --sort='-authordate:iso8601' --format=' %(authordate:relative)%09%(refname:short)' refs/remotes/origin"
   hs = "!git shortlog -s -n --no-merges"
   wc = "!git diff --stat -w"
+[pull]
+	rebase = true
