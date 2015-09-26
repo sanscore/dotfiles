@@ -5,13 +5,10 @@
 " m· mark a location, `· return to the mark
 " * search forward for word under cursor, # search backward
 " >> indent current line
-
 "---[ nocompatible ]-------------------------------------------------
   set nocompatible
-
 "---[ vundle ]-------------------------------------------------------
   set rtp+=~/.vim/bundle/Vundle.vim
-
 "---[ plugins ]------------------------------------------------------
   call vundle#begin()
   " let Vundle manage Vundle, required
@@ -26,6 +23,8 @@
   Plugin 'tpope/vim-unimpaired'
   " Vim-Surround provides easy shortcuts to change surrounding quotes, brackets, etc
   Plugin 'tpope/vim-surround'
+  " Git syntax highlighting, indention, etc.
+  Plugin 'tpope/vim-git'
   " Vim-Fugitive is a git wrapper, ex: :Git status; :Git branch
   Plugin 'tpope/vim-fugitive'
   " Vim-GitGutter shows git diff lines in the 'gutter' (left of line numbers)
@@ -40,8 +39,6 @@
   Plugin 'majutsushi/tagbar'
   " Undotree provides better access to VIM undo structure
   Plugin 'mbbill/undotree'
-  " Python-mode turns VIM into a Python IDE
-  Plugin 'klen/python-mode'
   " Syntastic does syntax checking
   Plugin 'scrooloose/syntastic'
   " Requirements for snipmate, below
@@ -60,8 +57,11 @@
   " Badwolf, ditto; the original sjl version lacks contrasting Diff colors
   " Plugin 'sjl/badwolf'
   Plugin 'alx741/badwolf'
+  " Testing...
+  Plugin 'kana/vim-textobj-user'
+  Plugin 'bps/vim-textobj-python'
+  Plugin 'nvie/vim-flake8'
   call vundle#end()
-
 "---[ options ]------------------------------------------------------
 " vim-sensible handles backspace, incsearch
   set shortmess+=I    " removes intro message
@@ -69,7 +69,7 @@
   set showcmd         " show command is it's typed
   set ruler           " show cursor position
   set number          " show line numbers
-  set tabstop=2       " a tab is four spaces
+  set softtabstop=2   " a tab is two spaces
   set shiftwidth=2    " number of spaces to use for autoindenting
   set expandtab       " use spaces in place of tabs
   set smarttab        " insert tabs on the start of a line according to
@@ -103,11 +103,10 @@
   set showbreak=↪     " change the wrap character
   set fo+=l           " do not break up lines in insert mode
   set fo+=r           " add comment leader in insert mode
-  "set fo+=j           " remove comment leader when joining lines
+  set fo+=j           " remove comment leader when joining lines
   set fdls=99         " start vim unfolded
   set foldmethod=indent   " fold based on indent level
   filetype plugin indent on
-
 "---[ statusline ]----------------------------------------------------
   set laststatus=2            " always display status line
   set statusline=%F%m%r%h%w\  " display pathname and flags
@@ -118,13 +117,6 @@
   set statusline+=\|p=%l,%v\| " line and column position in file
   set statusline+=%=%p%%\     " right justify; place in file by percentage
   set statusline+=%{strftime(\"%m/%d/%y\ %H:%M\")}
-
-"---[ airline ]-------------------------------------------------------
-  " Using Liberation Mono for Powerline, 13pt
-  let g:airline_left_sep = ''
-  let g:airline_right_sep = ''
-  let g:airline_theme='badwolf'
-
 "---[ buffers\windows ]-----------------------------------------------
   set hidden          " hide buffers
   set wmh=0           " hide windows completely
@@ -132,7 +124,6 @@
   set splitbelow      " split under the current window
   set splitright      " split right of the current window
   set noequalalways   " prevent vim from resizing windows
-
 "---[ highlighting ]-------------------------------------------------
   set background=dark
   if &t_Co > 2 || has("gui_running")
@@ -148,7 +139,6 @@
     highlight OverLength ctermbg=196 guibg=#ff2c4b ctermfg=white
     match OverLength /\%81v.\+/
   endif
-
 "---[ gui ]-----------------------------------------------------------
   if has("gui_running")
     set go+=a       " copy Visual selection to c-p buffer
@@ -164,12 +154,10 @@
     set columns=88  " gvim default to 88 columns
   else
   endif
-
 "---[ navigation ]----------------------------------------------------
   " let j/k move through wrapped lines
   nnoremap j gj
   nnoremap k gk
-
 "---[ mappings ]------------------------------------------------------
   " 'jk' to Esc and keep cursor at its current location
   inoremap jk <Esc>l
@@ -208,29 +196,12 @@
   nnoremap <leader>lw :set wrap! wrap?<CR>
   " toggle syntax highlighting
   nnoremap <leader>sh  :call ToggleSyntax()<CR>
-  " syntastic
-  nnoremap <leader>sc <Esc>:SyntasticCheck<CR>
   " toggle spell checking
   nnoremap <leader>sp :set invspell<CR>
   " toggle pastemode
   set pastetoggle=<leader>.
-  " open BufExplorer
-  nnoremap <leader>be <Esc>:BufExplorer<CR>
   " windows
     nnoremap <leader>w <c-w>
-  " toggle nerdtree
-  nnoremap <leader>N <Esc>:NERDTreeToggle<CR>
-  " airline
-  nnoremap <leader>a <Esc>:AirlineToggle<CR>
-  " pymode
-  let g:pymode_doc_bind = '<leader>pd'
-  let g:pymode_run_bind = '<leader>pr'
-  let g:pymode_breakpoint_bind = '<leader>pb'
-  nnoremap <leader>pc <Esc>:PymodeLint<CR>
-  " Tagbar
-  nnoremap <leader>T <Esc>:TagbarToggle<CR>
-  " Undotree
-  nnoremap <leader>u <Esc>:UndotreeToggle<CR>
 "---[ functions ]-----------------------------------------------------
   "Toggle syntax highlighting on and off
   function! ToggleSyntax()
@@ -251,9 +222,30 @@
   " long form date, date/time
   iabbrev Ydl     <C-R>=strftime("%b %d, %Y")<CR>
   iabbrev Ydtl    <C-R>=strftime("%b %d, %Y - %X")<CR>
+"---[ Plugins ]-------------------------------------------------------
+"---[ airline ]-------------------------------------------------------
+  " Using Liberation Mono for Powerline, 13pt
+  let g:airline_left_sep = ''
+  let g:airline_right_sep = ''
+  let g:airline_theme='badwolf'
+  nnoremap <leader>a <Esc>:AirlineToggle<CR>
 "---[ Buffer Explorer ]-----------------------------------------------
   " Show no name buffers
   let g:bufExplorerShowNoName=1
+"---[ CtrlP ]---------------------------------------------------------
+  let g:ctrlp_working_path_mode = 0
+"---[ Nerdtree ]------------------------------------------------------
+  let NERDTreeIgnore=['\.pyc$','\.vim$', '\~$']
+  let NERDTreeShowHidden=1
+  let NERDTreeMinimalUI=1
+  nnoremap <leader>N <Esc>:NERDTreeToggle<CR>
+"---[ Syntastic ]-----------------------------------------------------
+  nnoremap <leader>sc <Esc>:SyntasticCheck<CR>
+"---[ Tagbar ]--------------------------------------------------------
+  if filereadable("/usr/local/Cellar/ctags/5.8/bin/ctags")
+    let g:tagbar_ctags_bin = "/usr/local/Cellar/ctags/5.8/bin/ctags"
+  endif
+  nnoremap <leader>T <Esc>:TagbarToggle<CR>
 "---[ Undotree ]------------------------------------------------------
   if has("persistent_undo")
     if !isdirectory($HOME . "/tmp/vim/undo")
@@ -262,7 +254,4 @@
     set undodir=~/tmp/vim/undo/
     set undofile
   endif
-"---[ ctags ]---------------------------------------------------------
-  if filereadable("/usr/local/Cellar/ctags/5.8/bin/ctags")
-    let g:tagbar_ctags_bin = "/usr/local/Cellar/ctags/5.8/bin/ctags"
-  endif
+  nnoremap <leader>u <Esc>:UndotreeToggle<CR>

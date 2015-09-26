@@ -33,6 +33,7 @@
 [rerere]
   enabled = true
 [alias]
+  amend = commit -a --amend --no-edit
   br = branch
   ci = commit
   co = checkout
@@ -54,7 +55,7 @@
   ulog = log --graph --pretty=format:\"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset\" --abbrev-commit --date=relative HEAD @{u}
   bleach = clean -fdx
   dryclean = clean -ndx
-  uncommit = reset --soft HEAD^
+  uncommit = reset HEAD^
   undo = reset --hard --
   unstage = reset HEAD --
   b = branch -vv
