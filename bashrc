@@ -29,8 +29,7 @@ export EDITOR=vim
   . /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh && \
   . /usr/local/opt/git/etc/bash_completion.d/git-completion.bash
 [[ -f /usr/lib/git-core/git-sh-prompt ]] && \
-  . /usr/lib/git-core/git-sh-prompt && \
-  . /usr/lib/git-core/git-completion.bash
+  . /usr/lib/git-core/git-sh-prompt
 if [[ __git_ps1 ]]; then
   # PS1: username@hostname:directory[history_number](git_branch)$
   export PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\$(__git_ps1 \"(%s)\")\\$ \[\e[0m\]"

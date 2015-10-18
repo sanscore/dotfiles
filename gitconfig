@@ -21,7 +21,6 @@
   linenumber = blue
 [status]
   showUntrackedFiles = no
-  relativePaths = false
   short = true
   branch = true
 [diff]
@@ -65,4 +64,4 @@
   hs = "!git shortlog -s -n --no-merges"
   wc = "!git diff --stat -w"
 [pull]
-	rebase = true
+  rebase = true

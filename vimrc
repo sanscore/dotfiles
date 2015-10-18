@@ -60,7 +60,7 @@
   " Testing...
   Plugin 'kana/vim-textobj-user'
   Plugin 'bps/vim-textobj-python'
-  Plugin 'nvie/vim-flake8'
+  Plugin 'Valloric/YouCompleteMe'
   call vundle#end()
 "---[ options ]------------------------------------------------------
 " vim-sensible handles backspace, incsearch
@@ -244,6 +244,7 @@
   let NERDTreeMinimalUI=1
   nnoremap <leader>N <Esc>:NERDTreeToggle<CR>
 "---[ Syntastic ]-----------------------------------------------------
+  let g:syntastic_python_checkers = ['pylint', 'pep8']
   nnoremap <leader>sc <Esc>:SyntasticCheck<CR>
 "---[ Tagbar ]--------------------------------------------------------
   if filereadable("/usr/local/Cellar/ctags/5.8/bin/ctags")
