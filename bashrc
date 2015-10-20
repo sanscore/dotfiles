@@ -1,6 +1,9 @@
 # .bashrc
-#Disable Flow Control
-stty ixany
+#Disable Flow Control for interactive sessions
+if [[ $- == *i* ]]; then
+  stty ixoff -ixon
+  stty ixany
+fi
 
 # Source global definitions
 #if [ -f /etc/bashrc ]; then

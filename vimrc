@@ -61,6 +61,7 @@
   Plugin 'kana/vim-textobj-user'
   Plugin 'bps/vim-textobj-python'
   Plugin 'Valloric/YouCompleteMe'
+  Plugin 'hynek/vim-python-pep8-indent'
   call vundle#end()
 "---[ options ]------------------------------------------------------
 " vim-sensible handles backspace, incsearch
