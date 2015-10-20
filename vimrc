@@ -62,6 +62,9 @@
   call vundle#end()
 "---[ options ]------------------------------------------------------
 " vim-sensible handles backspace, incsearch
+  set encoding=utf-8  " use utf-8 for encoding
+  set timeoutlen=3000 " mapping timeouts at 3secs, and...
+  set ttimeoutlen=100 "   keycode timeouts at 1/10sec
   set shortmess+=I    " removes intro message
   set virtualedit=onemore " cursor goes past last char
   set showcmd         " show command is it's typed
@@ -87,7 +90,6 @@
   set noswapfile      " don't creat a swap file
   set history=1000    " remember more commands and search history
   set undolevels=1000 " use many muchos levels of undo
-  set timeoutlen=2000 " extend timeout length to 4 seconds
   set fileformat=unix " default to unix file format
   set nowrap          " don't wrap
   set nolist          " don't list special chars, set listchars
@@ -227,8 +229,17 @@
 "---[ Plugins ]-------------------------------------------------------
 "---[ airline ]-------------------------------------------------------
   " Using Liberation Mono for Powerline, 13pt
+  if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+  endif
+
   let g:airline_left_sep = ''
+  let g:airline_left_alt_sep = ''
   let g:airline_right_sep = ''
+  let g:airline_right_alt_sep = ''
+  let g:airline_symbols.branch = ''
+  let g:airline_symbols.readonly = ''
+  let g:airline_symbols.linenr = ''
   let g:airline_theme='badwolf'
   nnoremap <leader>a <Esc>:AirlineToggle<CR>
 "---[ Buffer Explorer ]-----------------------------------------------
