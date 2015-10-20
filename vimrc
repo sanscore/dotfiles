@@ -57,11 +57,8 @@
   " Badwolf, ditto; the original sjl version lacks contrasting Diff colors
   " Plugin 'sjl/badwolf'
   Plugin 'alx741/badwolf'
-  " Testing...
-  Plugin 'kana/vim-textobj-user'
-  Plugin 'bps/vim-textobj-python'
-  Plugin 'Valloric/YouCompleteMe'
-  Plugin 'hynek/vim-python-pep8-indent'
+  " Python-mode, make vim a python IDE
+  Plugin 'klen/python-mode'
   call vundle#end()
 "---[ options ]------------------------------------------------------
 " vim-sensible handles backspace, incsearch
@@ -244,6 +241,13 @@
   let NERDTreeShowHidden=1
   let NERDTreeMinimalUI=1
   nnoremap <leader>N <Esc>:NERDTreeToggle<CR>
+"---[ pymode ]--------------------------------------------------------
+  let g:pymode_rope = 0
+  let g:pymode_lint_on_write = 0
+  let g:pymode_lint_cwindow = 0
+  let g:pymode_breakpoint_bind = '<leader>pb'
+  let g:pymode_run_bind = '<leader>pr'
+  let g:pymode_doc_bind = '<leader>pd'
 "---[ Syntastic ]-----------------------------------------------------
   let g:syntastic_python_checkers = ['pylint', 'pep8']
   nnoremap <leader>sc <Esc>:SyntasticCheck<CR>
