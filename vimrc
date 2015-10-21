@@ -240,7 +240,8 @@
   let g:airline_symbols.branch = ''
   let g:airline_symbols.readonly = ''
   let g:airline_symbols.linenr = ''
-  let g:airline_theme='badwolf'
+  let g:airline_theme = 'badwolf'
+  let g:airline#extensions#disable_rtp_load = 1
   nnoremap <leader>a <Esc>:AirlineToggle<CR>
 "---[ Buffer Explorer ]-----------------------------------------------
   " Show no name buffers
