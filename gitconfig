@@ -47,7 +47,7 @@
   last = cat-file -p HEAD
   logs = log --name-only
   a = "! git alog -20"
-  alog = log --graph --pretty=format:\"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset\" --abbrev-commit --date=relative --branches
+  alog = log --graph --pretty=format:\"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset\" --abbrev-commit --date=relative --all
   p = "! git plog -20"
   plog = log --graph --pretty=format:\"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset\" --abbrev-commit --date=relative
   u = "! git ulog -20"

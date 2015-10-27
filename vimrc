@@ -34,7 +34,7 @@
   " NerdTree provides a file tree to navigate a directory structure
   Plugin 'scrooloose/nerdtree'
   " Ctrl+P opens files using fuzzy search
-  Plugin 'kien/ctrlp.vim'
+  Plugin 'ctrlpvim/ctrlp.vim'
   " Tagbar provides easy navigational access to class, func, etc definitions
   Plugin 'majutsushi/tagbar'
   " Undotree provides better access to VIM undo structure
@@ -171,12 +171,14 @@
   nnoremap K <nop>
   " ZJ quits all windows
   nnoremap ZJ :qa<CR>
+  " space open/closes folds
+  nnoremap <space> za
   " Change working directory to that of current file
   cabbrev cwd lcd %:p:h
   " Write no a write-protected file with root
   cabbrev w!! %!sudo tee > /dev/null %
-  " space open/closes folds
-  nnoremap <space> za
+  " Typing h<Space> will open help in a vertical split
+  cabbrev h vert help
 "---[ leader mappings ]-----------------------------------------------
   let mapleader=","   " change the mapleader from \ to ,
   " Quickly edit/source the vimrc file
@@ -199,7 +201,7 @@
   " toggle line wrapping
   nnoremap <leader>lw :set wrap! wrap?<CR>
   " toggle syntax highlighting
-  nnoremap <leader>sh  :call ToggleSyntax()<CR>
+  nnoremap <leader>sh :call ToggleSyntax()<CR>
   " toggle spell checking
   nnoremap <leader>sp :set invspell<CR>
   " toggle pastemode
@@ -228,41 +230,50 @@
   iabbrev Ydtl    <C-R>=strftime("%b %d, %Y - %X")<CR>
 "---[ Plugins ]-------------------------------------------------------
 "---[ airline ]-------------------------------------------------------
-  " Using Liberation Mono for Powerline, 13pt
+  let g:airline#extensions#disable_rtp_load = 1
+
   if !exists('g:airline_symbols')
     let g:airline_symbols = {}
   endif
 
-  let g:airline_left_sep = ''
-  let g:airline_left_alt_sep = ''
-  let g:airline_right_sep = ''
-  let g:airline_right_alt_sep = ''
-  let g:airline_symbols.branch = ''
+  " Using Liberation Mono for Powerline, 13pt
+  let g:airline_left_sep         = ''
+  let g:airline_left_alt_sep     = ''
+  let g:airline_right_sep        = ''
+  let g:airline_right_alt_sep    = ''
+  let g:airline_symbols.branch   = ''
   let g:airline_symbols.readonly = ''
-  let g:airline_symbols.linenr = ''
-  let g:airline_theme = 'badwolf'
-  let g:airline#extensions#disable_rtp_load = 1
+  let g:airline_symbols.linenr   = ''
+  let g:airline_theme            = 'badwolf'
   nnoremap <leader>a <Esc>:AirlineToggle<CR>
 "---[ Buffer Explorer ]-----------------------------------------------
   " Show no name buffers
-  let g:bufExplorerShowNoName=1
+  let g:bufExplorerShowNoName = 1
 "---[ CtrlP ]---------------------------------------------------------
+  let g:ctrlp_cmd = "CtrlPMixed"
   let g:ctrlp_working_path_mode = 0
 "---[ Nerdtree ]------------------------------------------------------
-  let NERDTreeIgnore=['\.pyc$','\.vim$', '\~$']
-  let NERDTreeShowHidden=1
-  let NERDTreeMinimalUI=1
+  let NERDTreeIgnore     = ['\.pyc$', '\~$']
+  let NERDTreeShowHidden = 1
+  let NERDTreeMinimalUI  = 1
   nnoremap <leader>N <Esc>:NERDTreeToggle<CR>
 "---[ pymode ]--------------------------------------------------------
-  let g:pymode_rope = 0
-  let g:pymode_lint_on_write = 0
-  let g:pymode_lint_cwindow = 0
+  let g:pymode_rope            = 0
+  let g:pymode_lint_on_write   = 0
+  let g:pymode_lint_cwindow    = 0
   let g:pymode_breakpoint_bind = '<leader>pb'
-  let g:pymode_run_bind = '<leader>pr'
-  let g:pymode_doc_bind = '<leader>pd'
+  let g:pymode_run_bind        = '<leader>pr'
+  let g:pymode_doc_bind        = '<leader>pd'
 "---[ Syntastic ]-----------------------------------------------------
   let g:syntastic_python_checkers = ['pylint', 'pep8']
   nnoremap <leader>sc <Esc>:SyntasticCheck<CR>
+"---[ Tabular ]-------------------------------------------------------
+  nmap <Leader>t= :Tabularize /=<CR>
+  vmap <Leader>t= :Tabularize /=<CR>
+  nmap <Leader>t: :Tabularize /:\zs<CR>
+  vmap <Leader>t: :Tabularize /:\zs<CR>
+  nmap <Leader>t<Bar> :Tabularize /<Bar>/l1<CR>
+  vmap <Leader>t<Bar> :Tabularize /<Bar>/l1<CR>
 "---[ Tagbar ]--------------------------------------------------------
   if filereadable("/usr/local/Cellar/ctags/5.8/bin/ctags")
     let g:tagbar_ctags_bin = "/usr/local/Cellar/ctags/5.8/bin/ctags"
@@ -277,3 +288,23 @@
     set undofile
   endif
   nnoremap <leader>u <Esc>:UndotreeToggle<CR>
+
+function! Carousel()
+  let themes = split(globpath(&runtimepath, 'colors/*.vim'), '\n')
+  let i = 0
+  for theme in themes
+    let themes[i] = fnamemodify(theme, ':t:r')
+    let i = i + 1
+  endfor
+  let curr_index = index(themes, g:colors_name)
+  let next_theme = get(themes, curr_index+1, get(themes, 0))
+  try
+    execute 'colorscheme '.next_theme
+    redraw
+    echo next_theme
+  catch
+    echo "Failed to load colorscheme '.next_theme
+  endtry
+endfunction
+
+map <silent> <Leader>tc :call Carousel()<cr>
