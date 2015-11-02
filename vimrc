@@ -86,7 +86,11 @@
   set title           " change the terminal's title
   set visualbell      " don't beep
   set noerrorbells    " don't beep
-  set nobackup        " don't save a backup file
+  " put backup files in ~/tmp/
+  if !isdirectory($HOME . "/tmp/vim/backup")
+    silent! call mkdir($HOME . "/tmp/vim/backup", "p")
+  endif
+  set backupdir=~/tmp/vim/backup
   set noswapfile      " don't creat a swap file
   set history=1000    " remember more commands and search history
   set undolevels=1000 " use many muchos levels of undo
