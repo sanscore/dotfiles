@@ -24,6 +24,9 @@ shopt -s histappend
 # And, commit previous command to history
 PROMPT_COMMAND='history -a'
 
+# Enable extended globstar '**'
+shopt -s globstar
+
 # Use VIM as editor
 export EDITOR=vim
 
