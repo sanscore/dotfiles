@@ -75,13 +75,17 @@ esac
 export EDITOR=vim
 
 # source bash completions for __git_ps1
+# OS X
 [[ -f /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh ]] && \
-  . /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh && \
-  . /usr/local/opt/git/etc/bash_completion.d/git-completion.bash
+  source /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh && \
+  source /usr/local/opt/git/etc/bash_completion.d/git-completion.bash
+# Ubuntu
 [[ -f /usr/lib/git-core/git-sh-prompt ]] && \
-  . /usr/lib/git-core/git-sh-prompt
+  source /usr/lib/git-core/git-sh-prompt
+# Fedora
 [[ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]] && \
   source /usr/share/git-core/contrib/completion/git-prompt.sh
+
 if [[ __git_ps1 ]]; then
   # PS1: username@hostname:directory[history_number](git_branch)$
   export PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\$(__git_ps1 \"(%s)\")\\$ \[\e[0m\]"
