@@ -21,6 +21,7 @@ module SansCore; module DotFiles
     desc "install", "Install all DotFiles"
     def install
       invoke :bash
+      invoke :gitconfig
       invoke :inputrc
       invoke :irbrc
       invoke :tmux
@@ -32,6 +33,11 @@ module SansCore; module DotFiles
     def bash
       create_ln('bashrc', '.bashrc', options[:dir], options[:force])
       create_ln('bash_profile', '.bash_profile', options[:dir], options[:force])
+    end
+
+    desc "gitconfig", "Symlink gitconfig"
+    def gitconfig
+      create_ln('gitconfig', '.gitconfig', options[:dir], options[:force])
     end
 
     desc "inputrc", "Symlink inputrc"
@@ -72,11 +78,20 @@ module SansCore; module DotFiles
           return
         end
 
+        begin
+          link = File.readlink(new)
+        rescue Errno::EINVAL, Errno::ENOENT
+          link = new
+        end
+
         if(!File.exists?(new) || force)
           puts "Linking '#{old}' to '#{new}'"
           ln_s old, new, force: force
+        elsif(link == old)
+          print "Skipping: #{new} is already installed\n"
         else
-          print "Skipping: #{new} already exists. Use '-f' to overwrite the current file.\n"
+          print ("Skipping: #{new} already exists.\n"\
+            "\tUse '-f' to overwrite the current file.\n")
         end
       end
 
