@@ -56,7 +56,7 @@
   Plugin 'tomasr/molokai'
   " Badwolf, ditto; the original sjl version lacks contrasting Diff colors
   " Plugin 'sjl/badwolf'
-  Plugin 'alx741/badwolf'
+  Plugin 'sanscore/badwolf'
   " Python-mode, make vim a python IDE
   Plugin 'klen/python-mode'
   call vundle#end()
