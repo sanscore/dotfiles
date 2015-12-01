@@ -59,6 +59,8 @@
   Plugin 'sanscore/badwolf'
   " Python-mode, make vim a python IDE
   Plugin 'klen/python-mode'
+  " Editorconfig: http://editorconfig.org/
+  Plugin 'editorconfig/editorconfig-vim'
   call vundle#end()
 "---[ options ]------------------------------------------------------
 " vim-sensible handles backspace, incsearch
