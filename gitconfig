@@ -1,4 +1,6 @@
 [user]
+  name = Grant Welch
+  email = (none)
 [core]
   editor = /usr/bin/env vim
 [push]
