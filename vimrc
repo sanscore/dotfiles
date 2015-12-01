@@ -96,7 +96,7 @@
   set undolevels=1000 " use many muchos levels of undo
   set fileformat=unix " default to unix file format
   set nowrap          " don't wrap
-  set nolist          " don't list special chars, set listchars
+  set list            " list special chars, see listchars
   set listchars=trail:·,tab:»·,extends:>,precedes:<,nbsp:+
   set linebreak       " use linebreak wrapping
   set scrolloff=10    " minimum number of rows before/after of cursor
@@ -139,9 +139,22 @@
     colorscheme badwolf
     "highlight 80th column
     highlight ColorColumn ctermbg=196 guibg=#ff2c4b
+
     "highlight text that runs over 80 chars
     highlight OverLength ctermbg=196 guibg=#ff2c4b ctermfg=white
     match OverLength /\%81v.\+/
+
+    highlight ExtraWhitespace ctermbg=red guibg=red
+    " highlight trailing spaces
+    match ExtraWhitespace /\s\+$/
+    " match in all windows, not just current window
+    autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+    " don't highlight in insert mode
+    autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+    " highlight when leaving insert mode
+    autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+    " clear when buffer is removed from window
+    autocmd BufWinLeave * call clearmatches()
   endif
 "---[ gui ]-----------------------------------------------------------
   if has("gui_running")
@@ -241,20 +254,22 @@
   endif
 
   " Using Liberation Mono for Powerline, 13pt
-  let g:airline_left_sep         = ''
-  let g:airline_left_alt_sep     = ''
-  let g:airline_right_sep        = ''
-  let g:airline_right_alt_sep    = ''
-  let g:airline_symbols.branch   = ''
-  let g:airline_symbols.readonly = ''
-  let g:airline_symbols.linenr   = ''
-  let g:airline_theme            = 'badwolf'
+  let g:airline_left_sep           = ''
+  let g:airline_left_alt_sep       = ''
+  let g:airline_right_sep          = ''
+  let g:airline_right_alt_sep      = ''
+  let g:airline_symbols.branch     = ''
+  let g:airline_symbols.crypt      = '🔒'
+  let g:airline_symbols.linenr     = ''
+  let g:airline_symbols.readonly   = ''
+  let g:airline_symbols.whitespace = 'Ξ'
+  let g:airline_theme              = 'badwolf'
   nnoremap <leader>a <Esc>:AirlineToggle<CR>
 "---[ Buffer Explorer ]-----------------------------------------------
   " Show no name buffers
   let g:bufExplorerShowNoName = 1
 "---[ CtrlP ]---------------------------------------------------------
-  let g:ctrlp_cmd = "CtrlPMixed"
+  let g:ctrlp_cmd               = "CtrlPMixed"
   let g:ctrlp_working_path_mode = 0
 "---[ Nerdtree ]------------------------------------------------------
   let NERDTreeIgnore     = ['\.pyc$', '\~$']
@@ -269,6 +284,7 @@
   let g:pymode_run_bind        = '<leader>pr'
   let g:pymode_doc_bind        = '<leader>pd'
 "---[ Syntastic ]-----------------------------------------------------
+  highlight SyntasticError guibg=#FF0000
   let g:syntastic_python_checkers = ['pylint', 'pep8']
   nnoremap <leader>sc <Esc>:SyntasticCheck<CR>
 "---[ Tabular ]-------------------------------------------------------
