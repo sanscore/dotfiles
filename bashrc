@@ -5,10 +5,9 @@ if [[ $- == *i* ]]; then
   stty ixany
 fi
 
-# Source global definitions
-#if [ -f /etc/bashrc ]; then
-#	. /etc/bashrc
-#fi
+if [ -f $HOME/.bashrc.work ]; then
+  source $HOME/.bashrc.work
+fi
 
 if [[ -d "${HOME}/bin/" && ":${PATH}:" != *":${HOME}/bin/:"* ]]; then
   export PATH="${HOME}/bin/:${PATH}"
@@ -17,10 +16,13 @@ fi
 # Bigger History File
 HISTFILESIZE=400000000
 HISTSIZE=10000
+
 # Ignore lines prepended with a space
 HISTCONTROL=ignoreboth:erasedups
+
 # Append history
 shopt -s histappend
+
 # And, commit previous command to history
 PROMPT_COMMAND='history -a'
 

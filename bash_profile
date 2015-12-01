@@ -7,7 +7,9 @@ if [ -f $HOME/.bashrc ]; then
   source $HOME/.bashrc
 fi
 
-# rbenv
+## Virtual Managers
+
+# rbenv - Ruby
 export RBENV_ROOT="${HOME}/.rbenv"
 if [[ -d "${RBENV_ROOT}" ]]; then
   export RBENV_BIN="${RBENV_ROOT}/bin"
@@ -16,7 +18,7 @@ if [[ -d "${RBENV_ROOT}" ]]; then
     eval "$(rbenv init -)"
 fi
 
-# pyenv
+# pyenv - Python
 export PYENV_ROOT="${HOME}/.pyenv"
 if [[ -d "${PYENV_ROOT}" ]]; then
   export PYENV_BIN="${PYENV_ROOT}/bin"
@@ -24,4 +26,10 @@ if [[ -d "${PYENV_ROOT}" ]]; then
     export PATH="${PYENV_BIN}:${PATH}" && \
     eval "$(pyenv init -)" && \
     eval "$(pyenv virtualenv-init -)"
+fi
+
+# nvm - Node
+export NVM_DIR="${HOME}/.nvm"
+if [[ -s "$NVM_DIR/nvm.sh" ]]; then
+  source "$NVM_DIR/nvm.sh"
 fi
