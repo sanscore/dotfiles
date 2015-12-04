@@ -72,7 +72,8 @@
   set showcmd         " show command is it's typed
   set ruler           " show cursor position
   set number          " show line numbers
-  set softtabstop=2   " a tab is two spaces
+  set tabstop=2       " a tab is two spaces
+  set softtabstop=2
   set shiftwidth=2    " number of spaces to use for autoindenting
   set expandtab       " use spaces in place of tabs
   set smarttab        " insert tabs on the start of a line according to
@@ -203,28 +204,8 @@
   " Quickly edit/source the vimrc file
   nnoremap <leader>ve :e $MYVIMRC<CR>
   nnoremap <leader>vs :so $MYVIMRC<CR>
-  " clear search
-  nnoremap <leader>/ :nohlsearch<CR>
-  " clear signs
-  " nnoremap <leader>lg :sign unplace *<CR>
-  " let g:gitgutter_sign_column_always = 1
-  nnoremap <leader>lg :GitGutterToggle<CR>
-  " toggle line numbers
-  nnoremap <leader>ln :set number!<CR>
-  " toggle relative line numbers
-  nnoremap <leader>lr :set relativenumber!<CR>
-  " toggle linebreak
-  nnoremap <leader>lb :set linebreak! linebreak?<CR>
-  " toggle list characters
-  nnoremap <leader>li :set list! list?<CR>
-  " toggle line wrapping
-  nnoremap <leader>lw :set wrap! wrap?<CR>
   " toggle syntax highlighting
-  nnoremap <leader>sh :call ToggleSyntax()<CR>
-  " toggle spell checking
-  nnoremap <leader>sp :set invspell<CR>
-  " toggle pastemode
-  set pastetoggle=<leader>.
+  nnoremap <leader>S :call ToggleSyntax()<CR>
   " windows
     nnoremap <leader>w <c-w>
 "---[ functions ]-----------------------------------------------------
@@ -249,7 +230,10 @@
   iabbrev Ydtl    <C-R>=strftime("%b %d, %Y - %X")<CR>
 "---[ Plugins ]-------------------------------------------------------
 "---[ airline ]-------------------------------------------------------
+  " Disable autoloading plugins
   let g:airline#extensions#disable_rtp_load = 1
+  " Allow one space after tabs for multiline comments /** */
+  let g:airline#extensions#whitespace#mixed_indent_algo = 1
 
   if !exists('g:airline_symbols')
     let g:airline_symbols = {}
@@ -266,13 +250,16 @@
   let g:airline_symbols.readonly   = ''
   let g:airline_symbols.whitespace = 'Ξ'
   let g:airline_theme              = 'badwolf'
-  nnoremap <leader>a <Esc>:AirlineToggle<CR>
+  nnoremap <leader>A <Esc>:AirlineToggle<CR>
 "---[ Buffer Explorer ]-----------------------------------------------
   " Show no name buffers
   let g:bufExplorerShowNoName = 1
 "---[ CtrlP ]---------------------------------------------------------
   let g:ctrlp_cmd               = "CtrlPMixed"
   let g:ctrlp_working_path_mode = 0
+"---[ GitGutter ]-----------------------------------------------------
+  " Toggle GitGutter
+  nnoremap <leader>G :GitGutterToggle<CR>
 "---[ Nerdtree ]------------------------------------------------------
   let NERDTreeIgnore     = ['\.pyc$', '\~$']
   let NERDTreeShowHidden = 1
@@ -309,7 +296,7 @@
     set undodir=~/tmp/vim/undo/
     set undofile
   endif
-  nnoremap <leader>u <Esc>:UndotreeToggle<CR>
+  nnoremap <leader>U <Esc>:UndotreeToggle<CR>
 
 function! Carousel()
   let themes = split(globpath(&runtimepath, 'colors/*.vim'), '\n')
