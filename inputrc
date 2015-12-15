@@ -8,6 +8,14 @@ set editing-mode vi
 "\e[A": history-search-backward
 "\e[B": history-search-forward
 
+# ctrl-left, -right to move one word
+"\e[1;5D": backward-word
+
+"\e[1;5C": forward-word
+
+# reload initrc
+"\C-x\C-r": re-read-init-file
+
 # ignore case for tab completion
 set completion-ignore-case on
 
