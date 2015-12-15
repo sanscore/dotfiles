@@ -21,6 +21,8 @@
   Plugin 'tpope/vim-sensible'
   " Vim-Unimpaired adds square bracket mappings
   Plugin 'tpope/vim-unimpaired'
+  " Vim-Commentary adds mappings to easily comment sections of code
+  Plugin 'tpope/vim-commentary'
   " Vim-Surround provides easy shortcuts to change surrounding quotes, brackets, etc
   Plugin 'tpope/vim-surround'
   " Git syntax highlighting, indention, etc.
@@ -44,8 +46,8 @@
   " Requirements for snipmate, below
   Plugin 'marcweber/vim-addon-mw-utils'
   Plugin 'tomtom/tlib_vim'
-  " Snipmate provides UltiSnips functionality
-  Plugin 'garbas/vim-snipmate'
+  " UltiSnips
+  Plugin 'SirVer/ultisnips'
   " vim-snippets provides the actual snippets
   Plugin 'honza/vim-snippets'
   " Vim-Airline makes pretty status lines
@@ -102,8 +104,6 @@
   set list            " list special chars, see listchars
   set listchars=trail:·,tab:»·,extends:>,precedes:<,nbsp:+
   set linebreak       " use linebreak wrapping
-  set scrolloff=10    " minimum number of rows before/after of cursor
-  set sidescrolloff=10  " minimum number of cols left/right of cursor
   set textwidth=0     " prevent hard wrapping
   set wrapmargin=0    " prevent hard wrapping
   set colorcolumn=80  " add visual demarkation at 80 char
@@ -179,8 +179,8 @@
   nnoremap j gj
   nnoremap k gk
 "---[ mappings ]------------------------------------------------------
-  " 'jk' to Esc and keep cursor at its current location
-  inoremap jk <Esc>l
+  " 'jj' to Esc and keep cursor at its current location
+  inoremap jj <Esc>l
   " make Y consistent with D and C; yank rest of line, not the whole line
   nnoremap Y y$
   " no more help
@@ -201,6 +201,9 @@
   cabbrev h vert help
 "---[ leader mappings ]-----------------------------------------------
   let mapleader=","   " change the mapleader from \ to ,
+  " Inc/Dec numbers, recover C-a which is trumped by tmux
+  nnoremap <leader>a <C-a>
+  nnoremap <leader>x <C-x>
   " Quickly edit/source the vimrc file
   nnoremap <leader>ve :e $MYVIMRC<CR>
   nnoremap <leader>vs :so $MYVIMRC<CR>
@@ -316,4 +319,5 @@ function! Carousel()
   endtry
 endfunction
 
-map <silent> <Leader>tc :call Carousel()<cr>
+nnoremap <silent> <Leader>tc :call Carousel()<cr>
+cnoremap %% <C-R>=expand('%:h').'/'<CR>
