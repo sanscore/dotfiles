@@ -12,29 +12,54 @@
 "---[ plugins ]------------------------------------------------------
   call vundle#begin()
   " let Vundle manage Vundle, required
-  Plugin 'gmarik/Vundle.vim'
-  " Ruby plugin
-  Plugin 'vim-ruby/vim-ruby'
-  " add ⌘ r to run ruby code
-  Plugin 'henrik/vim-ruby-runner'
-  " Vim-Sensible sets some univerally accepted vim defaults
-  Plugin 'tpope/vim-sensible'
-  " Vim-Unimpaired adds square bracket mappings
-  Plugin 'tpope/vim-unimpaired'
-  " Vim-Commentary adds mappings to easily comment sections of code
-  Plugin 'tpope/vim-commentary'
-  " Vim-Surround provides easy shortcuts to change surrounding quotes, brackets, etc
-  Plugin 'tpope/vim-surround'
-  " Git syntax highlighting, indention, etc.
-  Plugin 'tpope/vim-git'
-  " Vim-Fugitive is a git wrapper, ex: :Git status; :Git branch
-  Plugin 'tpope/vim-fugitive'
+  Plugin 'VundleVim/Vundle.vim'
+  " RUBY
+    " Ruby
+    Plugin 'vim-ruby/vim-ruby'
+    " Rails
+    Plugin 'tpope/vim-rails'
+    " rbenv
+    Plugin 'tpope/vim-rbenv'
+    " Bundler
+    Plugin 'tpope/vim-bundler'
+    " Cucumber
+    Plugin 'tpope/vim-cucumber'
+    " HAML
+    Plugin 'tpope/vim-haml'
+    " run ruby in vim; depends on 'gem install seeing_is_believing'
+    Plugin 't9md/vim-ruby-xmpfilter'
+  " In Tim Pope We Trust
+    " Vim-Sensible sets some univerally accepted vim defaults
+    Plugin 'tpope/vim-sensible'
+    " Vim-Unimpaired adds square bracket mappings
+    Plugin 'tpope/vim-unimpaired'
+    " Vim-Commentary adds mappings to easily comment sections of code
+    Plugin 'tpope/vim-commentary'
+    " Vim-Surround provides easy shortcuts to change surrounding quotes, brackets, etc
+    Plugin 'tpope/vim-surround'
+    " Git syntax highlighting, indention, etc.
+    Plugin 'tpope/vim-git'
+    " Vim-Fugitive is a git wrapper, ex: :Git status; :Git branch
+    Plugin 'tpope/vim-fugitive'
+    " Enhancements to netrw
+    Plugin 'tpope/vim-vinegar'
+    " Dispatch
+    Plugin 'tpope/vim-dispatch'
+  " Completion
+    " SuperTab
+    Plugin 'ervandew/supertab'
+    " Code Completion
+    Plugin 'Valloric/YouCompleteMe'
+    " Snippets
+    Plugin 'SirVer/ultisnips'
+    " vim-snippets provides the actual snippets
+    Plugin 'honza/vim-snippets'
   " Vim-GitGutter shows git diff lines in the 'gutter' (left of line numbers)
   Plugin 'airblade/vim-gitgutter'
   " buffer explorer provides a menu to switch buffers
   Plugin 'jlanzarotta/bufexplorer'
   " NerdTree provides a file tree to navigate a directory structure
-  Plugin 'scrooloose/nerdtree'
+  " Plugin 'scrooloose/nerdtree'
   " Ctrl+P opens files using fuzzy search
   Plugin 'ctrlpvim/ctrlp.vim'
   " Tagbar provides easy navigational access to class, func, etc definitions
@@ -43,13 +68,6 @@
   Plugin 'mbbill/undotree'
   " Syntastic does syntax checking
   Plugin 'scrooloose/syntastic'
-  " Requirements for snipmate, below
-  Plugin 'marcweber/vim-addon-mw-utils'
-  Plugin 'tomtom/tlib_vim'
-  " UltiSnips
-  Plugin 'SirVer/ultisnips'
-  " vim-snippets provides the actual snippets
-  Plugin 'honza/vim-snippets'
   " Vim-Airline makes pretty status lines
   Plugin 'bling/vim-airline'
   " Tabular filter and align text
@@ -63,6 +81,8 @@
   Plugin 'klen/python-mode'
   " Editorconfig: http://editorconfig.org/
   Plugin 'editorconfig/editorconfig-vim'
+  " Autoformat code
+  Plugin 'Chiel92/vim-autoformat'
   call vundle#end()
 "---[ options ]------------------------------------------------------
 " vim-sensible handles backspace, incsearch
@@ -179,6 +199,10 @@
   nnoremap j gj
   nnoremap k gk
 "---[ mappings ]------------------------------------------------------
+  " copy everything to clipboard
+  nnoremap <leader>gc :%y+<Enter>
+  " paste everything from clipboard
+  nnoremap <leader>gv "*p
   " 'jj' to Esc and keep cursor at its current location
   inoremap jj <Esc>l
   " make Y consistent with D and C; yank rest of line, not the whole line
@@ -202,15 +226,15 @@
 "---[ leader mappings ]-----------------------------------------------
   let mapleader=","   " change the mapleader from \ to ,
   " Inc/Dec numbers, recover C-a which is trumped by tmux
-  nnoremap <leader>a <C-a>
-  nnoremap <leader>x <C-x>
+  nnoremap <Leader>a <C-a>
+  nnoremap <Leader>x <C-x>
   " Quickly edit/source the vimrc file
-  nnoremap <leader>ve :e $MYVIMRC<CR>
-  nnoremap <leader>vs :so $MYVIMRC<CR>
+  nnoremap <Leader>ve :e $MYVIMRC<CR>
+  nnoremap <Leader>vs :so $MYVIMRC<CR>
   " toggle syntax highlighting
-  nnoremap <leader>S :call ToggleSyntax()<CR>
+  nnoremap <Leader>S :call ToggleSyntax()<CR>
   " windows
-    nnoremap <leader>w <c-w>
+    nnoremap <Leader>w <c-w>
 "---[ functions ]-----------------------------------------------------
   "Toggle syntax highlighting on and off
   function! ToggleSyntax()
@@ -253,7 +277,7 @@
   let g:airline_symbols.readonly   = ''
   let g:airline_symbols.whitespace = 'Ξ'
   let g:airline_theme              = 'badwolf'
-  nnoremap <leader>A <Esc>:AirlineToggle<CR>
+  nnoremap <Leader>A <Esc>:AirlineToggle<CR>
 "---[ Buffer Explorer ]-----------------------------------------------
   " Show no name buffers
   let g:bufExplorerShowNoName = 1
@@ -262,12 +286,9 @@
   let g:ctrlp_working_path_mode = 0
 "---[ GitGutter ]-----------------------------------------------------
   " Toggle GitGutter
-  nnoremap <leader>G :GitGutterToggle<CR>
-"---[ Nerdtree ]------------------------------------------------------
-  let NERDTreeIgnore     = ['\.pyc$', '\~$']
-  let NERDTreeShowHidden = 1
-  let NERDTreeMinimalUI  = 1
-  nnoremap <leader>N <Esc>:NERDTreeToggle<CR>
+  nnoremap <Leader>G :GitGutterToggle<CR>
+"---[ netrw ]---------------------------------------------------------
+  nnoremap <Leader>E :Explore<CR>
 "---[ pymode ]--------------------------------------------------------
   let g:pymode_rope            = 0
   let g:pymode_lint_on_write   = 0
@@ -275,10 +296,24 @@
   let g:pymode_breakpoint_bind = '<leader>pb'
   let g:pymode_run_bind        = '<leader>pr'
   let g:pymode_doc_bind        = '<leader>pd'
+"---[ ruby ]----------------------------------------------------------
+  " vim-ruby, private/protect on the same level as module/class
+  let g:ruby_indent_access_modifier_style = 'outdent'
+  " vim-ruby-xmpfilter
+  let g:xmpfilter_cmd = "seeing_is_believing"
+  augroup VimRubyXMPFilter
+    autocmd!
+    autocmd FileType ruby nmap <buffer> <Leader>rm <Plug>(seeing_is_believing-mark)
+    autocmd FileType ruby nmap <buffer> <Leader>rc <Plug>(seeing_is_believing-clean)
+    autocmd FileType ruby nmap <buffer> <Leader>rx <Plug>(seeing_is_believing-run_-x)
+    autocmd FileType ruby nmap <buffer> <Leader>rr <Plug>(seeing_is_believing-run)
+  augroup END
+"---[ SuperTab ]------------------------------------------------------
+  let g:SuperTabDefaultCompletionType = '<C-n>'
 "---[ Syntastic ]-----------------------------------------------------
   highlight SyntasticError guibg=#FF0000
   let g:syntastic_python_checkers = ['pylint', 'pep8']
-  nnoremap <leader>sc <Esc>:SyntasticCheck<CR>
+  nnoremap <Leader>sc <Esc>:SyntasticCheck<CR>
 "---[ Tabular ]-------------------------------------------------------
   nmap <Leader>t= :Tabularize /=<CR>
   vmap <Leader>t= :Tabularize /=<CR>
@@ -290,7 +325,11 @@
   if filereadable("/usr/local/Cellar/ctags/5.8/bin/ctags")
     let g:tagbar_ctags_bin = "/usr/local/Cellar/ctags/5.8/bin/ctags"
   endif
-  nnoremap <leader>T <Esc>:TagbarToggle<CR>
+  nnoremap <Leader>T <Esc>:TagbarToggle<CR>
+"---[ UltiSnips ]-----------------------------------------------------
+  let g:UltiSnipsExpandTrigger = "<tab>"
+  let g:UltiSnipsJumpForwardTrigger = "<tab>"
+  let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 "---[ Undotree ]------------------------------------------------------
   if has("persistent_undo")
     if !isdirectory($HOME . "/tmp/vim/undo")
@@ -299,8 +338,13 @@
     set undodir=~/tmp/vim/undo/
     set undofile
   endif
-  nnoremap <leader>U <Esc>:UndotreeToggle<CR>
+  nnoremap <Leader>U <Esc>:UndotreeToggle<CR>
+"---[ YouCompleteMe ]-------------------------------------------------
+  let g:ycm_path_to_python_interpreter = "/usr/bin/python"
+  let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
+  let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
 
+"---[ ]---------------------------------------------------------------
 function! Carousel()
   let themes = split(globpath(&runtimepath, 'colors/*.vim'), '\n')
   let i = 0
