@@ -3,15 +3,12 @@
 require 'fileutils'
 require 'thor'
 
-DEFAULT_DIR = ENV['HOME']
-VIM_BUNDLE_DIR = File.join(ENV['HOME'], '.vim', 'bundle')
-
 module SansCore; module DotFiles
   class CLI < Thor
     class_option(:dir,
                  aliases: 'd',
                  desc: 'Directory to install DotFiles',
-                 default: DEFAULT_DIR)
+                 default: ENV['HOME'])
     class_option(:force,
                  aliases: 'f',
                  desc: 'Force installation',
@@ -57,8 +54,12 @@ module SansCore; module DotFiles
 
     desc "vim", "Symlink vimrc and create bare vim/ directory"
     def vim
-      mkdir_p VIM_BUNDLE_DIR
+      vim_dir = File.join(options[:dir], '.vim')
+      vim_bundle_dir = File.join(vim_dir, 'bundle')
+
+      mkdir_p vim_bundle_dir
       create_ln('vimrc', '.vimrc', options[:dir], options[:force])
+      create_ln('mthesaur.txt', 'mthesaur.txt', vim_dir, options[:force])
     end
 
     desc "vundle", "Git Clone vundle to '.vim/bundle/'"
@@ -69,34 +70,34 @@ module SansCore; module DotFiles
     end
 
     no_commands do
-      def create_ln(old, new, dir, force)
-        old = File.join(Dir.pwd, old)
-        new = File.join(File.expand_path(dir), new)
+      def create_ln(source_filename, target_filename, dir, force)
+        source_filename = File.join(Dir.pwd, source_filename)
+        target_filename = File.join(File.expand_path(dir), target_filename)
 
-        unless(File.exists?(old))
-          print "Skipping: '#{old}' doesn't exist.\n"
+        unless(File.exists?(source_filename))
+          print "Skipping: '#{source_filename}' doesn't exist.\n"
           return
         end
 
         begin
-          link = File.readlink(new)
+          link = File.readlink(target_filename)
         rescue Errno::EINVAL, Errno::ENOENT
-          link = new
+          link = target_filename
         end
 
-        if(!File.exists?(new) || force)
-          puts "Linking '#{old}' to '#{new}'"
-          ln_s old, new, force: force
-        elsif(link == old)
-          print "Skipping: #{new} is already installed\n"
+        if(!File.exists?(target_filename) || force)
+          puts "Linking '#{source_filename}' to '#{target_filename}'"
+          ln_s source_filename, target_filename, force: force
+        elsif(link == source_filename)
+          print "Skipping: #{target_filename} is already installed\n"
         else
-          print ("Skipping: #{new} already exists.\n"\
+          print ("Skipping: #{target_filename} already exists.\n"\
             "\tUse '-f' to overwrite the current file.\n")
         end
       end
 
-      def ln_s(old, new, force: false)
-        FileUtils.ln_s old, new, force: force
+      def ln_s(source_filename, target_filename, force: false)
+        FileUtils.ln_s source_filename, target_filename, force: force
       end
 
       def mkdir_p(dir)
