@@ -99,6 +99,7 @@
   set copyindent      " copy the previous indentation on autoindenting
   set dictionary+=/usr/share/dict/words
   set encoding=utf-8  " use utf-8 for encoding
+  set termencoding=utf-8
   set expandtab       " use spaces in place of tabs
   set fileformat=unix " default to unix file format
   set foldlevelstart=99 " start vim unfolded
@@ -112,7 +113,13 @@
   set ignorecase      " ignore case when searching
   set linebreak       " use linebreak wrapping
   set list            " list special chars, see listchars
-  set listchars=trail:·,tab:»·,extends:>,precedes:<,nbsp:+
+  set listchars=eol:$
+  set listchars+=extends:>
+  set listchars+=nbsp:+
+  set listchars+=precedes:<
+  set listchars+=space:.
+  set listchars+=tab:»·
+  set listchars+=trail:·
   set noequalalways   " prevent vim from resizing windows
   set noerrorbells    " don't beep
   set nowrap          " don't wrap
