@@ -7,10 +7,16 @@
   default = upstream
 [color]
   ui = auto
+[color "decorate"]
+  branch = bold blue
+  remoteBranch = dim red
+  tag = ul dim cyan
+  stash = reverse bold green
+  HEAD = ul green
 [color "branch"]
-  current = yellow reverse
+  current = reverse bold yellow
   local = yellow
-  remote = green
+  remote = dim red
 [color "diff"]
   meta = yellow bold
   frag = magenta bold
@@ -48,11 +54,11 @@
   last = cat-file -p HEAD
   logs = log --name-only
   a = "! git alog -20"
-  alog = log --graph --pretty=format:\"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset\" --abbrev-commit --date=relative --all
+  alog = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cd) %C(bold blue)<%an>\" --abbrev-commit --date=relative --all
   p = "! git plog -20"
-  plog = log --graph --pretty=format:\"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset\" --abbrev-commit --date=relative
+  plog = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cd) %C(bold blue)<%an>\" --abbrev-commit --date=relative
   u = "! git ulog -20"
-  ulog = log --graph --pretty=format:\"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset\" --abbrev-commit --date=relative HEAD @{u}
+  ulog = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cd) %C(bold blue)<%an>\" --abbrev-commit --date=relative HEAD @{u}
   bleach = clean -fdx
   dryclean = clean -ndx
   uncommit = reset HEAD^
