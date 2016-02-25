@@ -9,7 +9,7 @@ if [ -f $HOME/.bashrc.work ]; then
   source $HOME/.bashrc.work
 fi
 
-if [[ -d "${HOME}/bin/" && ":${PATH}:" != *":${HOME}/bin/:"* ]]; then
+if [[ -d "${HOME}/bin/" && ":${PATH}:" != *":${HOME}/bin:"* ]]; then
   export PATH="${HOME}/bin/:${PATH}"
 fi
 
@@ -62,6 +62,9 @@ alias p20="p 8020"
 alias p30="p 8030"
 
 alias wget='wget -c'
+
+alias groot='cd $(git rev-parse --show-toplevel)'
+alias vim-up='vim +PluginClean! +PluginInstall! +qall && vim'
 
 # OS Corrections
 case $OSTYPE in
