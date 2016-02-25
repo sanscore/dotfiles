@@ -1,3 +1,4 @@
+; check if file changed between prev head, decide if to run some command: git diff --name-only ORIG_HEAD -- filename
 [user]
   name = Grant Welch
   email = (none)
@@ -32,6 +33,7 @@
   branch = true
 [diff]
   tool = vimdiff
+	algorithm = patience
 [difftool]
   prompt = false
 [merge]
@@ -39,7 +41,8 @@
 [rerere]
   enabled = true
 [alias]
-  amend = commit -a --amend --no-edit
+  amend = commit -a --amend --no-edit --reset-author
+  reword = commit -a --amend --reset-author
   br = branch
   ci = commit
   co = checkout
@@ -48,7 +51,7 @@
   stl = status --long
   up = pull --rebase
   update = pull --rebase
-  gg = grep -Iin --break --heading
+  gg = grep -EIin --break --heading
   type = cat-file -t
   dump = cat-file -p
   last = cat-file -p HEAD
