@@ -1,16 +1,19 @@
 "---[ vimrc ]---------------------------------------------------------
 " by: grant welch
 "---[ notes ]---------------------------------------------------------
-" q· record to some register, <number>@· to replay macro
-" m· mark a location, `· return to the mark
+" Font: Liberation Mono for Powerline, 13pt
+" Sessions: :mksession[!] Session.vim; vim -s Session.vim
+" Views: :mkview[!] [file]; :lo[adview] [nr]; Single winodw
+" q· record, Q· append, <number>@· to replay macro
+" m· mark a location, `· return to the mark, '· return to row
 " *  search forward for word under cursor, # search backward
-" >> indent current line
 "---[ nocompatible ]--------------------------------------------------
   set nocompatible
 "---[ vundle ]--------------------------------------------------------
   set rtp+=~/.vim/bundle/Vundle.vim
 "---[ plugins ]-------------------------------------------------------
   call vundle#begin()
+  " ShowMarks
   " VIM Improvements
     " let Vundle manage Vundle, required
     Plugin 'VundleVim/Vundle.vim'
@@ -29,10 +32,14 @@
     Plugin 'airblade/vim-gitgutter'
     " native color picker
     Plugin 'KabbAmine/vCoolor.vim'
+    Plugin 'gorodinskiy/vim-coloresque'
+    Plugin 'ilya-bobyr/vim-HiLinkTrace'
     " consistentency between tmux pane and vim window movement
     Plugin 'christoomey/vim-tmux-navigator'
     " Enhancements to netrw
     Plugin 'tpope/vim-vinegar'
+    " Fixes vim/iterm2/tmux interaction
+    Plugin 'sjl/vitality.vim'
   " RUBY
     Plugin 'vim-ruby/vim-ruby'
     Plugin 'tpope/vim-rake'
@@ -44,6 +51,7 @@
     " run ruby in vim; depends on 'gem install seeing_is_believing'
     Plugin 't9md/vim-ruby-xmpfilter'
   " Coding
+    Plugin 'luochen1990/rainbow'
     Plugin 'AndrewRadev/splitjoin.vim'
     Plugin 'nathanaelkane/vim-indent-guides'
     Plugin 'scrooloose/syntastic'
@@ -52,10 +60,14 @@
     Plugin 'tpope/vim-endwise'
     Plugin 'kchmck/vim-coffee-script'
   " Completion
-    Plugin 'ervandew/supertab'
-    Plugin 'Valloric/YouCompleteMe'
-    Plugin 'SirVer/ultisnips'
-    Plugin 'honza/vim-snippets'
+    Plugin 'Shougo/vimproc.vim'
+    Plugin 'Shougo/neocomplete.vim'
+    Plugin 'Shougo/neosnippet.vim'
+    Plugin 'Shougo/neosnippet-snippets'
+    Plugin 'Shougo/context_filetype.vim'
+    Plugin 'Shougo/neoinclude.vim'
+    Plugin 'Shougo/neco-syntax'
+    Plugin 'Shougo/neopairs.vim'
   " In Tim Pope We Trust
     " Vim-Sensible sets some univerally accepted vim defaults
     Plugin 'tpope/vim-sensible'
@@ -71,6 +83,8 @@
   " Here Be Dragons
   "
   Plugin 'file:///Users/u205/work/vim-tmux'
+  Plugin 'file:///Users/u205/work/vim-term-wip'
+  Plugin 'file:///Users/u205/work/shape/vim-dex'
   call vundle#end()
 "---[ directories ]---------------------------------------------------
 "---[ swap ]----------------------------------------------------------
@@ -102,9 +116,12 @@
   set termencoding=utf-8
   set expandtab       " use spaces in place of tabs
   set fileformat=unix " default to unix file format
+  set fillchars+=vert:\│ " Vertical sep w/ no gaps
+  set fillchars+=fold:─  " Horizontal sep w/ no gaps
   set foldlevelstart=99 " start vim unfolded
   set foldmethod=indent " fold based on indent level
   set formatoptions+=j  " remove comment leader when joining lines
+  set formatoptions+=n  " format lists
   set formatoptions+=l  " do not break up lines in insert mode
   set formatoptions+=r  " add comment leader in insert mode
   set hidden          " hide buffers
@@ -112,13 +129,12 @@
   set hlsearch        " highlight search terms
   set ignorecase      " ignore case when searching
   set linebreak       " use linebreak wrapping
-  set list            " list special chars, see listchars
-  set listchars=eol:$
+  set nolist          " list special chars, see listchars
+  set listchars=tab:»·
   set listchars+=extends:>
   set listchars+=nbsp:+
   set listchars+=precedes:<
-  set listchars+=space:.
-  set listchars+=tab:»·
+  set listchars+=space:·
   set listchars+=trail:·
   set noequalalways   " prevent vim from resizing windows
   set noerrorbells    " don't beep
@@ -144,9 +160,8 @@
   set title           " change the terminal's title
   set ttimeoutlen=100 " keycode timeouts at 1/10sec
   set undolevels=1000 " use many muchos levels of undo
-  set virtualedit=onemore " cursor goes past last char
+  set virtualedit=block,onemore " cursor goes past last char
   set visualbell      " don't beep
-  set wildmode=longest:full,full " Tab upto longest unique portion of string, then tab through suggestions
   set winminheight=0  " hide windows completely
   set winminwidth=0   " hide windows completely
   set wrapmargin=0    " prevent hard wrapping
@@ -169,24 +184,6 @@
 
   if &t_Co >= 256 || has("gui_running")
     colorscheme badwolf
-    "highlight 80th column
-    highlight ColorColumn ctermbg=196 guibg=#ff2c4b
-
-    "highlight text that runs over 80 chars
-    highlight OverLength ctermbg=196 guibg=#ff2c4b ctermfg=white
-    match OverLength /\%81v.\+/
-
-    highlight ExtraWhitespace ctermbg=red guibg=red
-    " highlight trailing spaces
-    match ExtraWhitespace /\s\+$/
-    " match in all windows, not just current window
-    autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-    " don't highlight in insert mode
-    autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-    " highlight when leaving insert mode
-    autocmd InsertLeave * match ExtraWhitespace /\s\+$/
-    " clear when buffer is removed from window
-    autocmd BufWinLeave * call clearmatches()
   endif
 "---[ gui ]-----------------------------------------------------------
   if has("gui_running")
@@ -204,6 +201,7 @@
   else
   endif
 "---[ mappings ]------------------------------------------------------
+  cnoremap %% <C-R>=expand('%:h').'/'<CR>
   " 'jj' to Esc and keep cursor at its current location
   inoremap jj <Esc>l
   " let j/k move through wrapped lines
@@ -271,33 +269,20 @@
   iabbrev Ydtl    <C-R>=strftime("%b %d, %Y - %X")<CR>
 "---[ Plugins ]-------------------------------------------------------
 "---[ airline ]-------------------------------------------------------
-  " Disable autoloading plugins
-  let g:airline#extensions#disable_rtp_load = 1
+  nnoremap <Leader>A <Esc>:AirlineToggle<CR>
+  let g:airline_theme           = 'badwolf'
+  let g:airline_powerline_fonts = 1
+
   " Allow one space after tabs for multiline comments /** */
   let g:airline#extensions#whitespace#mixed_indent_algo = 1
-
-  if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-  endif
-
-  " Using Liberation Mono for Powerline, 13pt
-  let g:airline_left_sep           = ''
-  let g:airline_left_alt_sep       = ''
-  let g:airline_right_sep          = ''
-  let g:airline_right_alt_sep      = ''
-  let g:airline_symbols.branch     = ''
-  let g:airline_symbols.crypt      = '🔒'
-  let g:airline_symbols.linenr     = ''
-  let g:airline_symbols.readonly   = ''
-  let g:airline_symbols.whitespace = 'Ξ'
-  let g:airline_theme              = 'badwolf'
-  nnoremap <Leader>A <Esc>:AirlineToggle<CR>
 "---[ Buffer Explorer ]-----------------------------------------------
   " Show no name buffers
   let g:bufExplorerShowNoName = 1
-"---[ CtrlP ]---------------------------------------------------------
-  let g:ctrlp_cmd               = "CtrlPMixed"
-  let g:ctrlp_working_path_mode = 0
+"---[ Commentary ]----------------------------------------------------
+  augroup VimrcCommentary
+    autocmd!
+    autocmd FileType dosini setlocal commentstring=#\ %s
+  augroup END
 "---[ GitGutter ]-----------------------------------------------------
   " Toggle GitGutter
   nnoremap <Leader>G :GitGutterToggle<CR>
@@ -310,8 +295,24 @@
     autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg='121212' ctermbg=233
     autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg='1c1c1c' ctermbg=234
   augroup END
+"---[ neocomplete ]---------------------------------------------------
+  let g:neocomplete#enable_at_startup = 1
+  let g:neocomplete#enable_smart_case = 1
+  let g:neocomplete#use_vimproc = 1
+  inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+  inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+  inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+  if !exists('g:neocomplete#force_omni_input_patterns')
+    let g:neocomplete#force_omni_input_patterns = {}
+  endif
+  let g:neocomplete#force_omni_input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
+"---[ neosnippet ]----------------------------------------------------
+  imap <C-k> <Plug>(neosnippet_expand_or_jump)
+  smap <C-k> <Plug>(neosnippet_expand_or_jump)
+  xmap <C-k> <Plug>(neosnippet_expand_target)
 "---[ NERDTree ]------------------------------------------------------
   nnoremap <Leader>N <Esc>:NERDTreeToggle<CR>
+  let NERDTreeHijackNetrw = 0
 "---[ netrw ]---------------------------------------------------------
   nnoremap <Leader>E :Explore<CR>
 "---[ pymode ]--------------------------------------------------------
@@ -321,6 +322,8 @@
   let g:pymode_breakpoint_bind = '<Leader>pb'
   let g:pymode_run_bind        = '<Leader>pr'
   let g:pymode_doc_bind        = '<Leader>pd'
+"---[ Rainbow Parentheses ]-------------------------------------------
+  let g:rainbow_active = 1
 "---[ ruby ]----------------------------------------------------------
   " vim-ruby, private/protect on the same level as module/class
   let g:ruby_indent_access_modifier_style = 'outdent'
@@ -333,75 +336,22 @@
     autocmd FileType ruby nmap <buffer> <Leader>rx <Plug>(seeing_is_believing-run_-x)
     autocmd FileType ruby nmap <buffer> <Leader>rr <Plug>(seeing_is_believing-run)
   augroup END
-"---[ SuperTab ]------------------------------------------------------
-  let g:SuperTabDefaultCompletionType = '<C-n>'
 "---[ Syntastic ]-----------------------------------------------------
   highlight SyntasticError guibg=#FF0000
   let g:syntastic_python_checkers = ['pylint', 'pep8']
   nnoremap <Leader>sc <Esc>:SyntasticCheck<CR>
 "---[ Tabular ]-------------------------------------------------------
-  " ,t= to align '='; ,T: to align ':' after a word
-  nmap <silent> <Leader>t :call TabularHelper()<CR>
-  vmap <silent> <Leader>t :<C-U>call TabularHelper(visualmode())<CR>
-  nmap <silent> <Leader>T :call TabularHelper('', 'zs')<CR>
-  vmap <silent> <Leader>T :<C-U>call TabularHelper(visualmode(), 'zs')<CR>
-  function! TabularHelper(...)
-    let l:a1 = ''
-    let l:a2 = ''
-    let l:chr = getchar()
-    let l:chr = nr2char(l:chr)
-    if exists('a:1')
-      let l:a1 = a:1
-    endif
-    if exists('a:2')
-      let l:chr = l:chr . '\' . a:2
-      let l:a2 = a:2
-    endif
-    if l:a1 ==# "v" || l:a1 ==# "V" || l:a1 ==# "\<C-V>"
-      silent! exec ":'<,'>Tabularize /" . l:chr
-    else
-      silent! exec ":Tabularize /" . l:chr
-    endif
-  endfunction
+  nmap <silent> <Leader>t= :Tabularize /=<CR>
+  vmap <silent> <Leader>t= :Tabularize /=<CR>
+  nmap <silent> <Leader>t: :Tabularize /:\zs<CR>
+  vmap <silent> <Leader>t: :Tabularize /:\zs<CR>
 "---[ Tagbar ]--------------------------------------------------------
   if filereadable("/usr/local/Cellar/ctags/5.8/bin/ctags")
     let g:tagbar_ctags_bin = "/usr/local/Cellar/ctags/5.8/bin/ctags"
   endif
-  " nnoremap <Leader>T <Esc>:TagbarToggle<CR>
-"---[ UltiSnips ]-----------------------------------------------------
-  let g:UltiSnipsExpandTrigger = "<tab>"
-  let g:UltiSnipsJumpForwardTrigger = "<tab>"
-  let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+  nnoremap <Leader>T <Esc>:TagbarToggle<CR>
 "---[ Undotree ]------------------------------------------------------
   nnoremap <Leader>U <Esc>:UndotreeToggle<CR>
 "---[  vColor ]-------------------------------------------------------
-  let g:vcoolor_map = '<Leader>cc'
-  let g:vcool_ins_rgb_map = '<Leader>cr'
-  let g:vcool_ins_hsl_map = '<Leader>ch'
-  let g:vcool_ins_rgba_map = '<Leader>ca'
-"---[ YouCompleteMe ]-------------------------------------------------
-  let g:ycm_path_to_python_interpreter = "/usr/bin/python"
-  let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
-  let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
-
-"---[ sundry ]--------------------------------------------------------
-function! Carousel()
-  let themes = split(globpath(&runtimepath, 'colors/*.vim'), '\n')
-  let i = 0
-  for theme in themes
-    let themes[i] = fnamemodify(theme, ':t:r')
-    let i = i + 1
-  endfor
-  let curr_index = index(themes, g:colors_name)
-  let next_theme = get(themes, curr_index+1, get(themes, 0))
-  try
-    execute 'colorscheme '.next_theme
-    redraw
-    echo next_theme
-  catch
-    echo "Failed to load colorscheme '.next_theme
-  endtry
-endfunction
-
-nnoremap <silent> <Leader>tc :call Carousel()<cr>
-cnoremap %% <C-R>=expand('%:h').'/'<CR>
+  let g:vcoolor_lowercase = 1
+  let g:vcoolor_disable_mappings = 1
