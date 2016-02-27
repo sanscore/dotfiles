@@ -4,6 +4,9 @@
 " Font: Liberation Mono for Powerline, 13pt
 " Sessions: :mksession[!] Session.vim; vim -s Session.vim
 " Views: :mkview[!] [file]; :lo[adview] [nr]; Single winodw
+" Viminfo: pass info from one vim to another. 
+"   :wviminfo! ~/tmp/viminfo from one instance
+"   :rviminfo! ~/tmp/viminfo from the receiving instance
 " q· record, Q· append, <number>@· to replay macro
 " m· mark a location, `· return to the mark, '· return to row
 " *  search forward for word under cursor, # search backward
@@ -19,7 +22,6 @@
     Plugin 'VundleVim/Vundle.vim'
     Plugin 'scrooloose/nerdtree'
     Plugin 'jlanzarotta/bufexplorer'
-    Plugin 'ctrlpvim/ctrlp.vim'
     Plugin 'majutsushi/tagbar'
     Plugin 'mbbill/undotree'
     Plugin 'vim-airline/vim-airline'
@@ -78,6 +80,8 @@
     Plugin 'tpope/vim-git'
     Plugin 'tpope/vim-fugitive'
     Plugin 'tpope/vim-dispatch'
+  " I need better organization
+    Plugin 'plasticboy/vim-markdown'
 
   "
   " Here Be Dragons
@@ -165,6 +169,13 @@
   set winminheight=0  " hide windows completely
   set winminwidth=0   " hide windows completely
   set wrapmargin=0    " prevent hard wrapping
+  set viminfo+=!      " global vars
+  set viminfo+='1000  " save marks for last N files
+  set viminfo+=/100   " N lines saved from the search history
+  set viminfo+=:100   " N lines saved from the command history
+  set viminfo+=<500   " N lines saved per register
+  set viminfo+=s10    " disable search when starting
+  set viminfo+=h      " disable search when starting
   filetype plugin indent on
 "---[ statusline ]----------------------------------------------------
   set laststatus=2            " always display status line
@@ -187,6 +198,7 @@
   endif
 "---[ gui ]-----------------------------------------------------------
   if has("gui_running")
+    set guifont=Literation\ Mono\ Powerline:h13
     set guioptions+=a " copy Visual selection to c-p buffer
     set guioptions+=e " use GUI tabline
     set guioptions+=m " add menu bar
@@ -292,8 +304,8 @@
   let g:indent_guides_auto_colors = 0
   augroup IndentGuideColors
     autocmd!
-    autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg='121212' ctermbg=233
-    autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg='1c1c1c' ctermbg=234
+    autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg='#121212' ctermbg=233
+    autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg='#1c1c1c' ctermbg=234
   augroup END
 "---[ neocomplete ]---------------------------------------------------
   let g:neocomplete#enable_at_startup = 1
