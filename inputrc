@@ -1,8 +1,28 @@
 # none, visible or audible
 set bell-style visible
 
+# Color tab completion by file type
+set colored-stats on
+
+# ignore case for tab completion, and
+#   treat '-' and '_' interchangeably
+set completion-ignore-case on
+set completion-map-case on
+
 # vi mode
 set editing-mode vi
+
+# display matches after first tab
+set show-all-if-ambiguous on
+
+# show mode in prompt '+' insert, ':' command
+set show-mode-in-prompt on
+
+# tab completion works as expected in mid word
+set skip-completed-text on
+
+# show / for directories and * for executables
+set visible-stats on
 
 # incremental search with up/down
 "\e[A": history-search-backward
@@ -15,12 +35,6 @@ set editing-mode vi
 
 # reload initrc
 "\C-x\C-r": re-read-init-file
-
-# ignore case for tab completion
-set completion-ignore-case on
-
-# show / for directories and * for executables
-set visible-stats on
 
 # magic space to expand history commands
 $if Bash
