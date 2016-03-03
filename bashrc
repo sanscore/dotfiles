@@ -13,6 +13,20 @@ if [[ -d "${HOME}/bin/" && ":${PATH}:" != *":${HOME}/bin:"* ]]; then
   export PATH="${HOME}/bin/:${PATH}"
 fi
 
+# Enable extended globstar '**'
+shopt -s globstar
+
+# update window size
+shopt -s checkwinsize
+
+# multiline cmds saved as one in history
+shopt -s cmdhist
+
+# Append history, and
+#   commit previous command to history
+shopt -s histappend
+PROMPT_COMMAND='history -a'
+
 # Bigger History File
 HISTFILESIZE=400000000
 HISTSIZE=10000
@@ -20,19 +34,14 @@ HISTSIZE=10000
 # Ignore lines prepended with a space
 HISTCONTROL=ignoreboth:erasedups
 
-# Append history
-shopt -s histappend
+# Don't record some commands
+export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history"
 
-# And, commit previous command to history
-PROMPT_COMMAND='history -a'
+# Useful timestamp format
+HISTTIMEFORMAT='%F %T '
 
-# Enable extended globstar '**'
-shopt -s globstar
-
-# Functions
-function p {
-  python -m SimpleHTTPServer ${1:-8010}
-}
+# trim path in prompt
+PROMPT_DIRTRIM=2
 
 function env_darwin {
   alias ls='ls -G'
@@ -56,10 +65,6 @@ alias du='du -ch'
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
-
-alias p10="p 8010"
-alias p20="p 8020"
-alias p30="p 8030"
 
 alias wget='wget -c'
 
