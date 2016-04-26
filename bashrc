@@ -5,9 +5,10 @@ if [[ $- == *i* ]]; then
   stty ixany
 fi
 
-if [ -f $HOME/.bashrc.work ]; then
-  source $HOME/.bashrc.work
-fi
+for rc in $HOME/.bashrc.*
+do
+  source $rc
+done
 
 if [[ -d "${HOME}/bin/" && ":${PATH}:" != *":${HOME}/bin:"* ]]; then
   export PATH="${HOME}/bin/:${PATH}"
@@ -46,6 +47,10 @@ PROMPT_DIRTRIM=2
 function env_darwin {
   alias ls='ls -G'
   alias l.='ls -dG .*'
+
+  if [ -f $(brew --prefix)/etc/bash_completion ]; then
+    . $(brew --prefix)/etc/bash_completion
+  fi
 }
 
 # Aliases
@@ -103,3 +108,6 @@ else
   # PS1: username@hostname:directory[history_number]$
   export PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\\$ \[\e[0m\]"
 fi
+
+# Python
+export PYTHONDONTWRITEBYTECODE=1

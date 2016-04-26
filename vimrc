@@ -16,7 +16,10 @@
   set rtp+=~/.vim/bundle/Vundle.vim
 "---[ plugins ]-------------------------------------------------------
   call vundle#begin()
-  " ShowMarks
+  " Add these?
+  "   ShowMarks
+  "   vim-plug
+  "   vdebug
   " VIM Improvements
     " let Vundle manage Vundle, required
     Plugin 'VundleVim/Vundle.vim'
@@ -52,12 +55,15 @@
     Plugin 'tpope/vim-haml'
     " run ruby in vim; depends on 'gem install seeing_is_believing'
     Plugin 't9md/vim-ruby-xmpfilter'
+  " Python
+    Plugin 'hdima/python-syntax'
+    Plugin 'hynek/vim-python-pep8-indent'
+    Plugin 'tmhedberg/SimpylFold'
   " Coding
     Plugin 'luochen1990/rainbow'
     Plugin 'AndrewRadev/splitjoin.vim'
     Plugin 'nathanaelkane/vim-indent-guides'
     Plugin 'scrooloose/syntastic'
-    Plugin 'klen/python-mode'
     Plugin 'Chiel92/vim-autoformat'
     Plugin 'tpope/vim-endwise'
     Plugin 'kchmck/vim-coffee-script'
@@ -86,7 +92,6 @@
   "
   " Here Be Dragons
   "
-  Plugin 'file:///Users/u205/work/vim-tmux'
   Plugin 'file:///Users/u205/work/vim-term-wip'
   Plugin 'file:///Users/u205/work/shape/vim-dex'
   call vundle#end()
@@ -327,13 +332,6 @@
   let NERDTreeHijackNetrw = 0
 "---[ netrw ]---------------------------------------------------------
   nnoremap <Leader>E :Explore<CR>
-"---[ pymode ]--------------------------------------------------------
-  let g:pymode_rope            = 0
-  let g:pymode_lint_on_write   = 0
-  let g:pymode_lint_cwindow    = 0
-  let g:pymode_breakpoint_bind = '<Leader>pb'
-  let g:pymode_run_bind        = '<Leader>pr'
-  let g:pymode_doc_bind        = '<Leader>pd'
 "---[ Rainbow Parentheses ]-------------------------------------------
   let g:rainbow_active = 1
 "---[ ruby ]----------------------------------------------------------
@@ -351,6 +349,8 @@
 "---[ Syntastic ]-----------------------------------------------------
   highlight SyntasticError guibg=#FF0000
   let g:syntastic_python_checkers = ['pylint', 'pep8']
+  let g:syntastic_python_pep8_quiet_messages = {
+    \ "regex" : ['E22[1-8]', 'E231', 'W391'] }
   nnoremap <Leader>sc <Esc>:SyntasticCheck<CR>
 "---[ Tabular ]-------------------------------------------------------
   nmap <silent> <Leader>t= :Tabularize /=<CR>

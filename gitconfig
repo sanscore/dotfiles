@@ -41,8 +41,8 @@
 [rerere]
   enabled = true
 [alias]
-  amend = commit -a --amend --no-edit --reset-author
-  reword = commit -a --amend --reset-author
+  amend = commit --amend --no-edit --reset-author
+  reword = commit --amend --reset-author
   br = branch
   ci = commit
   co = checkout
@@ -57,24 +57,35 @@
   last = cat-file -p HEAD
   logs = log --name-only
   a = "! git alog -20"
-  alog = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cd) %C(bold blue)<%an>\" --abbrev-commit --date=relative --all
+  alog = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cr) %C(bold blue)<%an>\" --all
   p = "! git plog -20"
-  plog = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cd) %C(bold blue)<%an>\" --abbrev-commit --date=relative
+  plog = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cr) %C(bold blue)<%an>\" 
   u = "! git ulog -20"
-  ulog = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cd) %C(bold blue)<%an>\" --abbrev-commit --date=relative HEAD @{u}
+  ulog = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cr) %C(bold blue)<%an>\" HEAD @{u}
   bleach = clean -fdx
   dryclean = clean -ndx
   uncommit = reset HEAD^
   undo = reset --hard --
+  discard = checkout --
   unstage = reset HEAD --
   b = branch -vv
   r = remote -v
   ll = log --stat --abbrev-commit
-  latest = "! git for-each-ref --sort='-authordate:iso8601' --format=' %(authordate:relative)%09%(refname:short)' refs/remotes/origin"
-  hs = "!git shortlog -s -n --no-merges"
-  wc = "!f(){ git diff --stat -w $(git merge-base ${2:-HEAD} ${1:-master})..${2:-HEAD}; }; f"
-  wcd = "!f(){ git diff $(git merge-base ${2:-HEAD} ${1:-master})..${2:-HEAD}; }; f"
+  latest = for-each-ref --sort='-authordate:iso8601' --format=' %(authordate:relative)%09%(refname:short)' refs/remotes/origin
+  hs = shortlog -s -n --no-merges
+  wc = diff --stat -w
+  wcd = diff
+	flog = log --format=fuller
+  preflog = log -g --pretty=format:\"%C(auto)%h %gd: %gs\"
+  swc = "!f(){ git diff --stat -w $(git merge-base ${2:-HEAD} ${1:-master})..${2:-HEAD}; }; f"
+  swcd = "!f(){ git diff $(git merge-base ${2:-HEAD} ${1:-master})..${2:-HEAD}; }; f"
+	ignore = update-index --assume-unchanged
+	ig = update-index --assume-unchanged
+	unignore = update-index --no-assume-unchanged
+	unig = update-index --no-assume-unchanged
 [pull]
   rebase = true
 [fetch]
 	prune = true
+[rebase]
+	autostash = true
