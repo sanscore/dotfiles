@@ -21,6 +21,7 @@ fi
 # pyenv - Python
 export PYENV_ROOT="${HOME}/.pyenv"
 if [[ -d "${PYENV_ROOT}" ]]; then
+  export PYENV_VIRTUALENV_DISABLE_PROMPT=1
   export PYENV_BIN="${PYENV_ROOT}/bin"
   [[ ":${PATH}:" != *":${PYENV_BIN}:"* ]] && \
     export PATH="${PYENV_BIN}:${PATH}" && \

@@ -61,6 +61,7 @@ alias sl=ls
 alias ls='ls --color=auto'
 alias l.='ls -d .* --color=auto'
 alias ll='ls -lha'
+alias l1='ls -1'
 
 alias mkdir='mkdir -pv'
 

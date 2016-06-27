@@ -42,9 +42,9 @@
   enabled = true
 [alias]
   amend = commit --amend --no-edit --reset-author
-  reword = commit --amend --reset-author
+  reword = commit --amend --reset-author -v
   br = branch
-  ci = commit
+  ci = commit -v
   co = checkout
   st = status
   stat = status -s -uno
@@ -66,7 +66,7 @@
   dryclean = clean -ndx
   uncommit = reset HEAD^
   undo = reset --hard --
-  discard = checkout --
+  discard = checkout -f HEAD --
   unstage = reset HEAD --
   b = branch -vv
   r = remote -v
@@ -75,14 +75,15 @@
   hs = shortlog -s -n --no-merges
   wc = diff --stat -w
   wcd = diff
+  wcu = diff --stat -w @{u}..HEAD
+  wcud = diff @{u}..HEAD
 	flog = log --format=fuller
   preflog = log -g --pretty=format:\"%C(auto)%h %gd: %gs\"
-  swc = "!f(){ git diff --stat -w $(git merge-base ${2:-HEAD} ${1:-master})..${2:-HEAD}; }; f"
-  swcd = "!f(){ git diff $(git merge-base ${2:-HEAD} ${1:-master})..${2:-HEAD}; }; f"
 	ignore = update-index --assume-unchanged
 	ig = update-index --assume-unchanged
 	unignore = update-index --no-assume-unchanged
 	unig = update-index --no-assume-unchanged
+	chk = add -n .
 [pull]
   rebase = true
 [fetch]

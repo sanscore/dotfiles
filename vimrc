@@ -12,14 +12,17 @@
 " *  search forward for word under cursor, # search backward
 "---[ nocompatible ]--------------------------------------------------
   set nocompatible
+
 "---[ vundle ]--------------------------------------------------------
   set rtp+=~/.vim/bundle/Vundle.vim
+
 "---[ plugins ]-------------------------------------------------------
   call vundle#begin()
   " Add these?
   "   ShowMarks
   "   vim-plug
   "   vdebug
+  "   vim-javascript
   " VIM Improvements
     " let Vundle manage Vundle, required
     Plugin 'VundleVim/Vundle.vim'
@@ -67,6 +70,7 @@
     Plugin 'Chiel92/vim-autoformat'
     Plugin 'tpope/vim-endwise'
     Plugin 'kchmck/vim-coffee-script'
+    Plugin 'pangloss/vim-javascript'
   " Completion
     Plugin 'Shougo/vimproc.vim'
     Plugin 'Shougo/neocomplete.vim'
@@ -76,6 +80,7 @@
     Plugin 'Shougo/neoinclude.vim'
     Plugin 'Shougo/neco-syntax'
     Plugin 'Shougo/neopairs.vim'
+    Plugin 'Konfekt/FastFold'
   " In Tim Pope We Trust
     " Vim-Sensible sets some univerally accepted vim defaults
     Plugin 'tpope/vim-sensible'
@@ -86,6 +91,7 @@
     Plugin 'tpope/vim-git'
     Plugin 'tpope/vim-fugitive'
     Plugin 'tpope/vim-dispatch'
+    Plugin 'tpope/vim-scriptease'
   " I need better organization
     Plugin 'plasticboy/vim-markdown'
 
@@ -95,17 +101,20 @@
   Plugin 'file:///Users/u205/work/vim-term-wip'
   Plugin 'file:///Users/u205/work/shape/vim-dex'
   call vundle#end()
+
 "---[ directories ]---------------------------------------------------
 "---[ swap ]----------------------------------------------------------
   if !isdirectory($HOME . "/tmp/vim/swap")
     silent! call mkdir($HOME . "/tmp/vim/swap", "p")
   endif
   set directory=~/tmp/vim/swap//,~/tmp//
+
 "---[ backup ]--------------------------------------------------------
   if !isdirectory($HOME . "/tmp/vim/backup")
     silent! call mkdir($HOME . "/tmp/vim/backup", "p")
   endif
   set backupdir=~/tmp/vim/backup//,~/tmp//
+
 "---[ undo ]----------------------------------------------------------
   if has("persistent_undo")
     if !isdirectory($HOME . "/tmp/vim/undo")
@@ -114,6 +123,7 @@
     set undodir=~/tmp/vim/undo/,~/tmp/
     set undofile
   endif
+
 "---[ options ]-------------------------------------------------------
   set autoindent      " always set autoindenting on
   set autoread        " reread file if unchanged in vim and modified outside of vim
@@ -182,6 +192,7 @@
   set viminfo+=s10    " disable search when starting
   set viminfo+=h      " disable search when starting
   filetype plugin indent on
+
 "---[ statusline ]----------------------------------------------------
   set laststatus=2            " always display status line
   set statusline=%F%m%r%h%w\  " display pathname and flags
@@ -192,15 +203,19 @@
   set statusline+=\|p=%l,%v\| " line and column position in file
   set statusline+=%=%p%%\     " right justify; place in file by percentage
   set statusline+=%{strftime(\"%m/%d/%y\ %H:%M\")}
+
 "---[ highlighting ]--------------------------------------------------
   if &t_Co > 2 || has("gui_running")
     " switch syntax highlighting on, when the terminal has colors
     syntax on
+    " assume bash syntax for ambiguous shell scripts
+    let g:is_bash=1
   endif
 
   if &t_Co >= 256 || has("gui_running")
     colorscheme badwolf
   endif
+
 "---[ gui ]-----------------------------------------------------------
   if has("gui_running")
     set guifont=Literation\ Mono\ Powerline:h13
@@ -217,6 +232,7 @@
     set columns=88  " gvim default to 88 columns
   else
   endif
+
 "---[ mappings ]------------------------------------------------------
   cnoremap %% <C-R>=expand('%:h').'/'<CR>
   " 'jj' to Esc and keep cursor at its current location
@@ -240,8 +256,7 @@
   cabbrev cwd lcd %:p:h
   " Write no a write-protected file with root
   cabbrev w!! %!sudo tee > /dev/null %
-  " Typing h<Space> will open help in a vertical split
-  cabbrev h vert help
+
 "---[ leader mappings ]-----------------------------------------------
   let mapleader=","   " change the mapleader from \ to ,
   " Clipboard mappings
@@ -264,6 +279,7 @@
   nnoremap <Leader>S :call ToggleSyntax()<CR>
   " windows
   nnoremap <Leader>w <c-w>
+
 "---[ functions ]-----------------------------------------------------
   "Toggle syntax highlighting on and off
   function! ToggleSyntax()
@@ -273,10 +289,12 @@
       syntax enable
     endif
   endfunction
+
 "---[ abbreviations ]-------------------------------------------------
   " Horizontal bars; type 'Yr-' 'Y--'
   iabbrev Yr "---[ ]--------------------------------------------------------------
   iabbrev Y- "--------------------------------------------------------------------
+
   " Timestamps
   " date standard, date/time
   iabbrev Yds     <C-R>=strftime("%Y-%m-%d")<CR>
@@ -284,25 +302,36 @@
   " long form date, date/time
   iabbrev Ydl     <C-R>=strftime("%b %d, %Y")<CR>
   iabbrev Ydtl    <C-R>=strftime("%b %d, %Y - %X")<CR>
+
+"---[ autocommands ]--------------------------------------------------
+"---[ vertical help windows ]-----------------------------------------
+augroup helpfiles
+  autocmd!
+  autocmd FileType help wincmd L
+augroup END
+
 "---[ Plugins ]-------------------------------------------------------
 "---[ airline ]-------------------------------------------------------
   nnoremap <Leader>A <Esc>:AirlineToggle<CR>
   let g:airline_theme           = 'badwolf'
   let g:airline_powerline_fonts = 1
-
   " Allow one space after tabs for multiline comments /** */
   let g:airline#extensions#whitespace#mixed_indent_algo = 1
+
 "---[ Buffer Explorer ]-----------------------------------------------
   " Show no name buffers
   let g:bufExplorerShowNoName = 1
+
 "---[ Commentary ]----------------------------------------------------
   augroup VimrcCommentary
     autocmd!
     autocmd FileType dosini setlocal commentstring=#\ %s
   augroup END
+
 "---[ GitGutter ]-----------------------------------------------------
   " Toggle GitGutter
   nnoremap <Leader>G :GitGutterToggle<CR>
+
 "---[ Indent Guide ]--------------------------------------------------
   let g:indent_guides_enable_on_vim_startup = 1
   let g:indent_guides_start_level = 2
@@ -312,6 +341,7 @@
     autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg='#121212' ctermbg=233
     autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg='#1c1c1c' ctermbg=234
   augroup END
+
 "---[ neocomplete ]---------------------------------------------------
   let g:neocomplete#enable_at_startup = 1
   let g:neocomplete#enable_smart_case = 1
@@ -323,17 +353,22 @@
     let g:neocomplete#force_omni_input_patterns = {}
   endif
   let g:neocomplete#force_omni_input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
+
 "---[ neosnippet ]----------------------------------------------------
   imap <C-k> <Plug>(neosnippet_expand_or_jump)
   smap <C-k> <Plug>(neosnippet_expand_or_jump)
   xmap <C-k> <Plug>(neosnippet_expand_target)
+
 "---[ NERDTree ]------------------------------------------------------
   nnoremap <Leader>N <Esc>:NERDTreeToggle<CR>
   let NERDTreeHijackNetrw = 0
+
 "---[ netrw ]---------------------------------------------------------
   nnoremap <Leader>E :Explore<CR>
+
 "---[ Rainbow Parentheses ]-------------------------------------------
   let g:rainbow_active = 1
+
 "---[ ruby ]----------------------------------------------------------
   " vim-ruby, private/protect on the same level as module/class
   let g:ruby_indent_access_modifier_style = 'outdent'
@@ -346,24 +381,31 @@
     autocmd FileType ruby nmap <buffer> <Leader>rx <Plug>(seeing_is_believing-run_-x)
     autocmd FileType ruby nmap <buffer> <Leader>rr <Plug>(seeing_is_believing-run)
   augroup END
+
 "---[ Syntastic ]-----------------------------------------------------
   highlight SyntasticError guibg=#FF0000
-  let g:syntastic_python_checkers = ['pylint', 'pep8']
+  let g:syntastic_python_checkers = ['flake8', 'pylint']
   let g:syntastic_python_pep8_quiet_messages = {
     \ "regex" : ['E22[1-8]', 'E231', 'W391'] }
   nnoremap <Leader>sc <Esc>:SyntasticCheck<CR>
+
+  let g:syntastic_rst_checkers = ['sphinx']
+
 "---[ Tabular ]-------------------------------------------------------
   nmap <silent> <Leader>t= :Tabularize /=<CR>
   vmap <silent> <Leader>t= :Tabularize /=<CR>
   nmap <silent> <Leader>t: :Tabularize /:\zs<CR>
   vmap <silent> <Leader>t: :Tabularize /:\zs<CR>
+
 "---[ Tagbar ]--------------------------------------------------------
   if filereadable("/usr/local/Cellar/ctags/5.8/bin/ctags")
     let g:tagbar_ctags_bin = "/usr/local/Cellar/ctags/5.8/bin/ctags"
   endif
   nnoremap <Leader>T <Esc>:TagbarToggle<CR>
+
 "---[ Undotree ]------------------------------------------------------
   nnoremap <Leader>U <Esc>:UndotreeToggle<CR>
+
 "---[  vColor ]-------------------------------------------------------
   let g:vcoolor_lowercase = 1
   let g:vcoolor_disable_mappings = 1
