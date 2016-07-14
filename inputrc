@@ -24,20 +24,20 @@ set skip-completed-text on
 # show / for directories and * for executables
 set visible-stats on
 
-# incremental search with up/down
-"\e[A": history-search-backward
-"\e[B": history-search-forward
-
-# ctrl-left, -right to move one word
-"\e[1;5D": backward-word
-
-"\e[1;5C": forward-word
 
 # reload initrc
 "\C-x\C-r": re-read-init-file
 
 # magic space to expand history commands
 $if Bash
+  # incremental search with up/down
+  "\e[A": history-search-backward
+  "\e[B": history-search-forward
+
+  # ctrl-left, -right to move one word
+  "\e[1;5D": backward-word
+
+  "\e[1;5C": forward-word
   Space: magic-space
 $endif
 

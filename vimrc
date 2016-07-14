@@ -13,94 +13,89 @@
 "---[ nocompatible ]--------------------------------------------------
   set nocompatible
 
-"---[ vundle ]--------------------------------------------------------
-  set rtp+=~/.vim/bundle/Vundle.vim
-
 "---[ plugins ]-------------------------------------------------------
-  call vundle#begin()
+  call plug#begin('~/.vim/plugged')
   " Add these?
   "   ShowMarks
   "   vim-plug
   "   vdebug
   "   vim-javascript
   " VIM Improvements
-    " let Vundle manage Vundle, required
-    Plugin 'VundleVim/Vundle.vim'
-    Plugin 'scrooloose/nerdtree'
-    Plugin 'jlanzarotta/bufexplorer'
-    Plugin 'majutsushi/tagbar'
-    Plugin 'mbbill/undotree'
-    Plugin 'vim-airline/vim-airline'
-    Plugin 'vim-airline/vim-airline-themes'
-    Plugin 'godlygeek/tabular'
-    Plugin 'tomasr/molokai'
-    Plugin 'sanscore/badwolf'
-    Plugin 'editorconfig/editorconfig-vim'
-    Plugin 'tpope/vim-repeat'
-    Plugin 'airblade/vim-gitgutter'
+    Plug 'scrooloose/nerdtree'
+    Plug 'jlanzarotta/bufexplorer'
+    Plug 'majutsushi/tagbar'
+    Plug 'mbbill/undotree'
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
+    Plug 'godlygeek/tabular'
+    Plug 'tomasr/molokai'
+    Plug 'sanscore/badwolf'
+    Plug 'editorconfig/editorconfig-vim'
+    Plug 'tpope/vim-repeat'
+    Plug 'airblade/vim-gitgutter'
     " native color picker
-    Plugin 'KabbAmine/vCoolor.vim'
-    Plugin 'gorodinskiy/vim-coloresque'
-    Plugin 'ilya-bobyr/vim-HiLinkTrace'
+    Plug 'KabbAmine/vCoolor.vim'
+    Plug 'gorodinskiy/vim-coloresque'
+    Plug 'ilya-bobyr/vim-HiLinkTrace'
     " consistentency between tmux pane and vim window movement
-    Plugin 'christoomey/vim-tmux-navigator'
+    Plug 'christoomey/vim-tmux-navigator'
     " Enhancements to netrw
-    Plugin 'tpope/vim-vinegar'
+    Plug 'tpope/vim-vinegar'
     " Fixes vim/iterm2/tmux interaction
-    Plugin 'sjl/vitality.vim'
+    Plug 'sjl/vitality.vim'
   " RUBY
-    Plugin 'vim-ruby/vim-ruby'
-    Plugin 'tpope/vim-rake'
-    Plugin 'tpope/vim-rails'
-    Plugin 'tpope/vim-rbenv'
-    Plugin 'tpope/vim-bundler'
-    Plugin 'tpope/vim-cucumber'
-    Plugin 'tpope/vim-haml'
+    Plug 'vim-ruby/vim-ruby'
+    Plug 'tpope/vim-rake'
+    Plug 'tpope/vim-rails'
+    Plug 'tpope/vim-rbenv'
+    Plug 'tpope/vim-bundler'
+    Plug 'tpope/vim-cucumber'
+    Plug 'tpope/vim-haml'
     " run ruby in vim; depends on 'gem install seeing_is_believing'
-    Plugin 't9md/vim-ruby-xmpfilter'
+    Plug 't9md/vim-ruby-xmpfilter'
   " Python
-    Plugin 'hdima/python-syntax'
-    Plugin 'hynek/vim-python-pep8-indent'
-    Plugin 'tmhedberg/SimpylFold'
+    Plug 'hdima/python-syntax'
+    Plug 'hynek/vim-python-pep8-indent'
+    Plug 'tmhedberg/SimpylFold'
   " Coding
-    Plugin 'luochen1990/rainbow'
-    Plugin 'AndrewRadev/splitjoin.vim'
-    Plugin 'nathanaelkane/vim-indent-guides'
-    Plugin 'scrooloose/syntastic'
-    Plugin 'Chiel92/vim-autoformat'
-    Plugin 'tpope/vim-endwise'
-    Plugin 'kchmck/vim-coffee-script'
-    Plugin 'pangloss/vim-javascript'
+    Plug 'luochen1990/rainbow'
+    Plug 'AndrewRadev/splitjoin.vim'
+    Plug 'nathanaelkane/vim-indent-guides'
+    Plug 'scrooloose/syntastic'
+    Plug 'Chiel92/vim-autoformat'
+    Plug 'tpope/vim-endwise'
+    Plug 'kchmck/vim-coffee-script'
+    Plug 'pangloss/vim-javascript'
   " Completion
-    Plugin 'Shougo/vimproc.vim'
-    Plugin 'Shougo/neocomplete.vim'
-    Plugin 'Shougo/neosnippet.vim'
-    Plugin 'Shougo/neosnippet-snippets'
-    Plugin 'Shougo/context_filetype.vim'
-    Plugin 'Shougo/neoinclude.vim'
-    Plugin 'Shougo/neco-syntax'
-    Plugin 'Shougo/neopairs.vim'
-    Plugin 'Konfekt/FastFold'
+    Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+    Plug 'Shougo/neocomplete.vim'
+    Plug 'Shougo/neosnippet.vim'
+    Plug 'Shougo/neosnippet-snippets'
+    Plug 'Shougo/context_filetype.vim'
+    Plug 'Shougo/neoinclude.vim'
+    Plug 'Shougo/neco-syntax'
+    Plug 'Shougo/neopairs.vim'
+    Plug 'Konfekt/FastFold'
   " In Tim Pope We Trust
     " Vim-Sensible sets some univerally accepted vim defaults
-    Plugin 'tpope/vim-sensible'
+    Plug 'tpope/vim-sensible'
     " Vim-Unimpaired adds square bracket mappings
-    Plugin 'tpope/vim-unimpaired'
-    Plugin 'tpope/vim-commentary'
-    Plugin 'tpope/vim-surround'
-    Plugin 'tpope/vim-git'
-    Plugin 'tpope/vim-fugitive'
-    Plugin 'tpope/vim-dispatch'
-    Plugin 'tpope/vim-scriptease'
+    Plug 'tpope/vim-unimpaired'
+    Plug 'tpope/vim-commentary'
+    Plug 'tpope/vim-surround'
+    Plug 'tpope/vim-git'
+    Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-dispatch'
+    Plug 'tpope/vim-scriptease'
   " I need better organization
-    Plugin 'plasticboy/vim-markdown'
+    Plug 'plasticboy/vim-markdown'
 
   "
   " Here Be Dragons
   "
-  Plugin 'file:///Users/u205/work/vim-term-wip'
-  Plugin 'file:///Users/u205/work/shape/vim-dex'
-  call vundle#end()
+  Plug 'file:///Users/u205/work/vim-term-wip'
+  Plug 'file:///Users/u205/work/shape/vim-dex'
+  call plug#end()
 
 "---[ directories ]---------------------------------------------------
 "---[ swap ]----------------------------------------------------------
@@ -383,13 +378,25 @@ augroup END
   augroup END
 
 "---[ Syntastic ]-----------------------------------------------------
-  highlight SyntasticError guibg=#FF0000
-  let g:syntastic_python_checkers = ['flake8', 'pylint']
-  let g:syntastic_python_pep8_quiet_messages = {
-    \ "regex" : ['E22[1-8]', 'E231', 'W391'] }
   nnoremap <Leader>sc <Esc>:SyntasticCheck<CR>
+  highlight SyntasticError guibg=#FF0000
 
+  " Python
+  let g:syntastic_python_checkers = ['flake8', 'pylint']
+
+  function! PylintRC(where)
+    let cfg = findfile('pylintrc', escape(a:where, ' ') . ';')
+    return cfg !=# '' ? '--rcfile=' . cfg : ''
+  endfunction
+
+  autocmd FileType python let g:syntastic_python_pylint_post_args =
+    \ PylintRC(expand('<afile>:p:h', 1))
+
+  " reStructured Text
   let g:syntastic_rst_checkers = ['sphinx']
+  
+  " Ruby
+  let g:syntastic_ruby_checkers = ['rubocop', 'mri']
 
 "---[ Tabular ]-------------------------------------------------------
   nmap <silent> <Leader>t= :Tabularize /=<CR>
