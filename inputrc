@@ -30,9 +30,6 @@ set visible-stats on
 
 # magic space to expand history commands
 $if Bash
-  # incremental search with up/down
-  "\e[A": history-search-backward
-  "\e[B": history-search-forward
 
   # ctrl-left, -right to move one word
   "\e[1;5D": backward-word
@@ -40,6 +37,10 @@ $if Bash
   "\e[1;5C": forward-word
   Space: magic-space
 $endif
+
+# incremental search with up/down
+"\e[A": history-search-backward
+"\e[B": history-search-forward
 
 # include system inputrc
 $include /etc/inputrc

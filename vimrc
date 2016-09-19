@@ -66,6 +66,7 @@
     Plug 'tpope/vim-endwise'
     Plug 'kchmck/vim-coffee-script'
     Plug 'pangloss/vim-javascript'
+    Plug 'PProvost/vim-ps1'
   " Completion
     Plug 'Shougo/vimproc.vim', { 'do': 'make' }
     Plug 'Shougo/neocomplete.vim'
@@ -381,8 +382,12 @@ augroup END
   nnoremap <Leader>sc <Esc>:SyntasticCheck<CR>
   highlight SyntasticError guibg=#FF0000
 
+  " Run all checkers
+  let g:syntastic_aggregate_errors = 1
+
   " Python
-  let g:syntastic_python_checkers = ['flake8', 'pylint']
+  let g:syntastic_python_checkers = ['pylint', 'flake8']
+  let g:syntastic_python_pylint_exe = 'python -m pylint'
 
   function! PylintRC(where)
     let cfg = findfile('pylintrc', escape(a:where, ' ') . ';')

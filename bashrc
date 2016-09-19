@@ -75,7 +75,6 @@ alias fgrep='fgrep --color=auto'
 alias wget='wget -c'
 
 alias groot='cd $(git rev-parse --show-toplevel)'
-alias vim-up='vim +PluginClean! +PluginInstall! +qall && vim'
 
 # OS Corrections
 case $OSTYPE in
