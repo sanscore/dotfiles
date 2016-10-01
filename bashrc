@@ -5,10 +5,12 @@ if [[ $- == *i* ]]; then
   stty ixany
 fi
 
+shopt -s nullglob
 for rc in $HOME/.bashrc.*
 do
   source $rc
 done
+shopt -u nullglob
 
 if [[ -d "${HOME}/bin/" && ":${PATH}:" != *":${HOME}/bin:"* ]]; then
   export PATH="${HOME}/bin/:${PATH}"
@@ -54,7 +56,6 @@ function env_darwin {
 }
 
 # Aliases
-
 alias ..='cd ..'
 
 alias sl=ls
@@ -79,8 +80,24 @@ alias groot='cd $(git rev-parse --show-toplevel)'
 # OS Corrections
 case $OSTYPE in
   solaris*) ;;
-  darwin*) env_darwin;;
-  linux*) ;;
+  darwin*)
+    env_darwin
+
+    [[ -f /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh ]] && \
+      source /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh && \
+      source /usr/local/opt/git/etc/bash_completion.d/git-completion.bash
+    ;;
+  linux*)
+    # Fedora
+    [[ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]] && \
+      source /usr/share/git-core/contrib/completion/git-prompt.sh
+    [[ -f /usr/share/bash-completion/bash_completion ]] && \
+      source /usr/share/bash-completion/bash_completion
+
+    # Ubuntu
+    [[ -f /usr/lib/git-core/git-sh-prompt ]] && \
+      source /usr/lib/git-core/git-sh-prompt
+    ;;
   cygwin*) ;;
   bsd*) ;;
   *) echo '***** OSTYPE='$OSTYPE '*****' ;;
@@ -89,24 +106,11 @@ esac
 # Use VIM as editor
 export EDITOR=vim
 
-# source bash completions for __git_ps1
-# OS X
-[[ -f /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh ]] && \
-  source /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh && \
-  source /usr/local/opt/git/etc/bash_completion.d/git-completion.bash
-# Ubuntu
-[[ -f /usr/lib/git-core/git-sh-prompt ]] && \
-  source /usr/lib/git-core/git-sh-prompt
-# Fedora
-[[ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]] && \
-  source /usr/share/git-core/contrib/completion/git-prompt.sh
-
 __tmux_ps1() {
   if [[ -n "${TMUX}" ]]; then
     tmux rename-window "$(basename $PWD)"
   fi
 }
-
 if [[ __git_ps1 ]]; then
   # PS1: username@hostname:directory[history_number](git_branch)$
   export PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\$(__git_ps1 \"(%s)\")\\$ \[\e[0m\]\$(__tmux_ps1)"
