@@ -18,6 +18,7 @@ module SansCore; module DotFiles
     desc "install", "Install all DotFiles"
     def install
       invoke :bash
+      invoke :docker
       invoke :gitconfig
       invoke :inputrc
       invoke :irbrc
@@ -30,6 +31,11 @@ module SansCore; module DotFiles
     def bash
       create_ln('bashrc', '.bashrc', options[:dir], options[:force])
       create_ln('bash_profile', '.bash_profile', options[:dir], options[:force])
+    end
+
+    desc "docker", "Symlink bashrc.docker"
+    def docker
+      create_ln('bashrc.docker', '.bashrc.docker', options[:dir], options[:force])
     end
 
     desc "gitconfig", "Symlink gitconfig"

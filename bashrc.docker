@@ -1,0 +1,12 @@
+if [[ $(command -v docker-machine) ]]; then
+  eval $(docker-machine env default)
+fi
+
+# stop all containers:
+alias docker-killall='for CONTAINER in $(docker ps -q); do docker kill $CONTAINER; done'
+
+# remove all containers
+alias docker-rm-rf='for CONTAINER in $(docker ps -qa); do docker rm -f $CONTAINER 2>/dev/null; done'
+
+# remove all docker images
+alias docker-rmi-rf='for IMG in $(docker images -qa); do docker rmi -f $IMG 2>/dev/null; done'
