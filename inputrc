@@ -17,6 +17,8 @@ set show-all-if-ambiguous on
 
 # show mode in prompt '+' insert, ':' command
 set show-mode-in-prompt on
+set vi-cmd-mode-string :
+set vi-ins-mode-string +
 
 # tab completion works as expected in mid word
 set skip-completed-text on

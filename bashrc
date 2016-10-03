@@ -101,12 +101,18 @@ export EDITOR=vim
 [[ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]] && \
   source /usr/share/git-core/contrib/completion/git-prompt.sh
 
+__tmux_ps1() {
+  if [[ -n "${TMUX}" ]]; then
+    tmux rename-window "$(basename $PWD)"
+  fi
+}
+
 if [[ __git_ps1 ]]; then
   # PS1: username@hostname:directory[history_number](git_branch)$
-  export PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\$(__git_ps1 \"(%s)\")\\$ \[\e[0m\]"
+  export PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\$(__git_ps1 \"(%s)\")\\$ \[\e[0m\]\$(__tmux_ps1)"
 else
   # PS1: username@hostname:directory[history_number]$
-  export PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\\$ \[\e[0m\]"
+  export PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\\$ \[\e[0m\]\$(__tmux_ps1)"
 fi
 
 # Python
