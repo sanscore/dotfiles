@@ -24,7 +24,7 @@ module SansCore; module DotFiles
       invoke :irbrc
       invoke :tmux
       invoke :vim
-      invoke :vundle
+      invoke :vimplug
     end
 
     desc "bash", "Symlink bashrc and bash_profile"
@@ -68,11 +68,12 @@ module SansCore; module DotFiles
       create_ln('mthesaur.txt', 'mthesaur.txt', vim_dir, options[:force])
     end
 
-    desc "vundle", "Git Clone vundle to '.vim/bundle/'"
-    def vundle
-      repo = 'https://github.com/gmarik/Vundle.vim.git'
-      dir = "#{options[:dir]}/.vim/bundle/Vundle.vim"
-      git_clone(repo,dir)
+    desc "vimplug", "Download vim-plug to '.vim/autoload/'"
+    def vimplug
+      # TODO: skip if exists
+      `curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim`
+      # TODO: run vim PlugInstall
     end
 
     no_commands do
@@ -112,15 +113,6 @@ module SansCore; module DotFiles
         else
           puts "Creating '#{dir}'"
           FileUtils.mkdir_p dir
-        end
-      end
-
-      def git_clone(repo,dir)
-        if File.exists?(dir)
-          print "Skipping: #{dir} already exists.\n"
-        else
-          puts "Creating '#{dir}'"
-          `git clone #{repo} #{dir}`
         end
       end
     end
