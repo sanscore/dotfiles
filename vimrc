@@ -221,7 +221,7 @@
 
 "---[ gui ]-----------------------------------------------------------
   if has("gui_running")
-    set guifont=Literation\ Mono\ Powerline:h13
+    set guifont=Liberation\ Mono\ for\ Powerline\ 10
     set guioptions+=a " copy Visual selection to c-p buffer
     set guioptions+=e " use GUI tabline
     set guioptions+=m " add menu bar

@@ -47,12 +47,25 @@ HISTTIMEFORMAT='%F %T '
 PROMPT_DIRTRIM=2
 
 function env_darwin {
+  [[ -f /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh ]] && \
+    source /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh && \
+    source /usr/local/opt/git/etc/bash_completion.d/git-completion.bash
+
   alias ls='ls -G'
   alias l.='ls -dG .*'
 
   if [ -f $(brew --prefix)/etc/bash_completion ]; then
     . $(brew --prefix)/etc/bash_completion
   fi
+}
+
+function env_fedora {
+  [[ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]] && \
+    source /usr/share/git-core/contrib/completion/git-prompt.sh
+  [[ -f /usr/share/bash-completion/bash_completion ]] && \
+    source /usr/share/bash-completion/bash_completion
+
+  alias vim='vimx'
 }
 
 # Aliases
@@ -80,19 +93,10 @@ alias groot='cd $(git rev-parse --show-toplevel)'
 # OS Corrections
 case $OSTYPE in
   solaris*) ;;
-  darwin*)
-    env_darwin
-
-    [[ -f /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh ]] && \
-      source /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh && \
-      source /usr/local/opt/git/etc/bash_completion.d/git-completion.bash
-    ;;
+  darwin*) env_darwin;;
   linux*)
     # Fedora
-    [[ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]] && \
-      source /usr/share/git-core/contrib/completion/git-prompt.sh
-    [[ -f /usr/share/bash-completion/bash_completion ]] && \
-      source /usr/share/bash-completion/bash_completion
+    [[ -f /etc/fedora-release ]] && env_fedora
 
     # Ubuntu
     [[ -f /usr/lib/git-core/git-sh-prompt ]] && \
