@@ -17,9 +17,7 @@
   call plug#begin('~/.vim/plugged')
   " Add these?
   "   ShowMarks
-  "   vim-plug
   "   vdebug
-  "   vim-javascript
   " VIM Improvements
     Plug 'scrooloose/nerdtree'
     Plug 'jlanzarotta/bufexplorer'
@@ -100,16 +98,16 @@
 
 "---[ directories ]---------------------------------------------------
 "---[ swap ]----------------------------------------------------------
-  if !isdirectory($HOME . "/tmp/vim/swap")
-    silent! call mkdir($HOME . "/tmp/vim/swap", "p")
+  if !isdirectory($HOME . "/.vim/swap")
+    silent! call mkdir($HOME . "/.vim/swap", "p")
   endif
-  set directory=~/tmp/vim/swap//,~/tmp//
+  set directory=~/.vim/swap//,~/tmp//
 
 "---[ backup ]--------------------------------------------------------
-  if !isdirectory($HOME . "/tmp/vim/backup")
-    silent! call mkdir($HOME . "/tmp/vim/backup", "p")
+  if !isdirectory($HOME . "/.vim/backup")
+    silent! call mkdir($HOME . "/.vim/backup", "p")
   endif
-  set backupdir=~/tmp/vim/backup//,~/tmp//
+  set backupdir=~/.vim/backup//,~/tmp//
 
 "---[ undo ]----------------------------------------------------------
   if has("persistent_undo")
@@ -392,9 +390,13 @@ augroup END
   " Run all checkers
   let g:syntastic_aggregate_errors = 1
 
+  " Auto-populate location list
+  let g:syntastic_always_populate_loc_list = 1
+
   " Python
   let g:syntastic_python_checkers = ['pylint', 'flake8']
   let g:syntastic_python_pylint_exe = 'python -m pylint'
+  let g:syntastic_python_flake8_exe = 'python -m flake8'
 
   function! PylintRC(where)
     let cfg = findfile('pylintrc', escape(a:where, ' ') . ';')
