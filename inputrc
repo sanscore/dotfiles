@@ -15,6 +15,9 @@ set editing-mode vi
 # display matches after first tab
 set show-all-if-ambiguous on
 
+# add slash to symlinks to dirs
+set mark-symlinked-directories on
+
 # show mode in prompt '+' insert, ':' command
 set show-mode-in-prompt on
 set vi-cmd-mode-string :
@@ -26,6 +29,11 @@ set skip-completed-text on
 # show / for directories and * for executables
 set visible-stats on
 
+# do not expand ~
+set expand-tilde off
+
+# preserve cursor location
+set history-preserve-point on
 
 # reload initrc
 "\C-x\C-r": re-read-init-file
@@ -38,11 +46,11 @@ $if Bash
 
   "\e[1;5C": forward-word
   Space: magic-space
-$endif
 
-# incremental search with up/down
-"\e[A": history-search-backward
-"\e[B": history-search-forward
+  # incremental search with up/down
+  "\e[A": history-search-backward
+  "\e[B": history-search-forward
+$endif
 
 # include system inputrc
 $include /etc/inputrc
