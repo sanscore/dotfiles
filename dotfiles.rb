@@ -56,6 +56,8 @@ module SansCore; module DotFiles
     desc "tmux", "Symlink tmux.conf"
     def tmux
       create_ln('tmux.conf', '.tmux.conf', options[:dir], options[:force])
+      create_ln('tmux.conf.macosx', '.tmux.conf.macosx', options[:dir], options[:force])
+      create_ln('tmux.conf.linux', '.tmux.conf.linux', options[:dir], options[:force])
     end
 
     desc "vim", "Symlink vimrc and create bare vim/ directory"
