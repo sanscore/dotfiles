@@ -5,7 +5,7 @@
 [core]
   editor = /usr/bin/env vim
 [push]
-  default = upstream
+	default = current
 [color]
   ui = auto
 [color "decorate"]
@@ -55,7 +55,7 @@
   type = cat-file -t
   dump = cat-file -p
   last = cat-file -p HEAD
-  logs = log --name-only
+	logs = log --stat --format=fuller
   a = "! git alog -20"
   alog = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cr) %C(bold blue)<%an>\" --all
   p = "! git plog -20"
@@ -77,13 +77,12 @@
   wcd = diff
   wcu = diff --stat -w @{u}..HEAD
   wcud = diff @{u}..HEAD
-	flog = log --format=fuller
-  preflog = log -g --pretty=format:\"%C(auto)%h %gd: %gs\"
 	ignore = update-index --assume-unchanged
 	ig = update-index --assume-unchanged
 	unignore = update-index --no-assume-unchanged
 	unig = update-index --no-assume-unchanged
 	chk = add -n .
+	pu = !sh -c \"git push $(git rev-parse --verify --abbrev-ref @{push} | cut -d/ -f1) $(git rev-parse --verify --abbrev-ref @)$1:$(git rev-parse --verify --abbrev-ref @{push} | cut -d/ -f2)\" --
 [pull]
   rebase = true
 [fetch]
