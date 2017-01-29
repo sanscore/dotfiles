@@ -305,6 +305,15 @@
   iabbrev Ydtl    <C-R>=strftime("%b %d, %Y - %X")<CR>
 
 "---[ autocommands ]--------------------------------------------------
+"---[ personal touches ]----------------------------------------------
+augroup clearbg
+  autocmd!
+  autocmd VimEnter,Colorscheme * :hi Normal ctermbg=none
+  autocmd VimEnter,Colorscheme * :hi NonText ctermbg=none
+  autocmd VimEnter,Colorscheme * :hi ColorColumn ctermbg=52
+  autocmd VimEnter,Colorscheme * :hi OverLength ctermbg=52 ctermfg=white guibg=#592929
+  autocmd VimEnter,Colorscheme * match OverLength /\%80v.\+/
+augroup END
 "---[ vertical help windows ]-----------------------------------------
 augroup helpfiles
   autocmd!
@@ -332,6 +341,9 @@ augroup END
 "---[ GitGutter ]-----------------------------------------------------
   " Toggle GitGutter
   nnoremap <Leader>G :GitGutterToggle<CR>
+
+"---[ HiLinks ]-------------------------------------------------------
+  nnoremap <Leader>H :HLT!<CR>
 
 "---[ Indent Guide ]--------------------------------------------------
   let g:indent_guides_enable_on_vim_startup = 1
