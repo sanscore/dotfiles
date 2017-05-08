@@ -1,7 +1,7 @@
 ; check if file changed between prev head, decide if to run some command: git diff --name-only ORIG_HEAD -- filename
 [user]
   name = Grant Welch
-  email = (none)
+	useConfigOnly = true
 [core]
   editor = /usr/bin/env vim
 [push]
@@ -34,10 +34,11 @@
 [diff]
 	tool = vimdiff
 	algorithm = patience
+	mnemonicPrefix = true
+	wsErrorHighlight = all
 [difftool]
   prompt = false
 [merge]
-  conflictstyle = diff3
 	tool = vimdiff
 [rerere]
   enabled = true
@@ -57,6 +58,7 @@
   dump = cat-file -p
   last = cat-file -p HEAD
 	logs = log --stat --format=fuller
+	l1 = log --stat --format=fuller -1 --patch
   a = "! git alog -20"
   alog = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cr) %C(bold blue)<%an>\" --all
   p = "! git plog -20"
@@ -90,3 +92,5 @@
 	prune = true
 [rebase]
 	autostash = true
+[transfer]
+	fsckObjects = true

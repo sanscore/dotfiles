@@ -56,10 +56,10 @@
     Plug 'hynek/vim-python-pep8-indent'
     Plug 'tmhedberg/SimpylFold'
   " Coding
+    Plug 'w0rp/ale'
     Plug 'luochen1990/rainbow'
     Plug 'AndrewRadev/splitjoin.vim'
     Plug 'nathanaelkane/vim-indent-guides'
-    Plug 'scrooloose/syntastic'
     Plug 'Chiel92/vim-autoformat'
     Plug 'tpope/vim-endwise'
     Plug 'kchmck/vim-coffee-script'
@@ -88,11 +88,9 @@
     Plug 'tpope/vim-scriptease'
   " I need better organization
     Plug 'plasticboy/vim-markdown'
-
   "
   " Here Be Dragons
   "
-  Plug 'file:///Users/u205/work/vim-term-wip'
   Plug 'file:///Users/u205/work/shape/vim-dex'
   call plug#end()
 
@@ -108,6 +106,7 @@
     silent! call mkdir($HOME . "/.vim/backup", "p")
   endif
   set backupdir=~/.vim/backup//,~/tmp//
+  set writebackup
 
 "---[ undo ]----------------------------------------------------------
   if has("persistent_undo")
@@ -124,6 +123,7 @@
   set background=dark " dark background
   set colorcolumn=80  " add visual demarkation at 80 char
   set copyindent      " copy the previous indentation on autoindenting
+  set cursorline
   set dictionary+=/usr/share/dict/words
   set encoding=utf-8  " use utf-8 for encoding
   set termencoding=utf-8
@@ -141,6 +141,8 @@
   set history=1000    " remember more commands and search history
   set hlsearch        " highlight search terms
   set ignorecase      " ignore case when searching
+  set iskeyword-=.    " . is never, _ever_ a keyword char
+  set lazyredraw
   set linebreak       " use linebreak wrapping
   set nolist          " list special chars, see listchars
   set listchars=tab:»·
@@ -306,14 +308,35 @@
 
 "---[ autocommands ]--------------------------------------------------
 "---[ personal touches ]----------------------------------------------
+augroup annoyances
+  autocmd!
+  autocmd Filetype * :set iskeyword-=.
+augroup END
 augroup clearbg
   autocmd!
   autocmd VimEnter,Colorscheme * :hi Normal ctermbg=none
   autocmd VimEnter,Colorscheme * :hi NonText ctermbg=none
   autocmd VimEnter,Colorscheme * :hi ColorColumn ctermbg=52
   autocmd VimEnter,Colorscheme * :hi OverLength ctermbg=52 ctermfg=white guibg=#592929
-  autocmd VimEnter,Colorscheme * match OverLength /\%80v.\+/
+  autocmd VimEnter,Colorscheme * call UpdateOverLength()
 augroup END
+fun! UpdateOverLength()
+  if &ft =~ '^\%(java\|html\|xml\)$'
+    setlocal colorcolumn=120
+    match OverLength /\%120v.*/ 
+  else 
+    setlocal colorcolumn=80
+    match OverLength /\%80v.*/ 
+  endif
+endfun
+
+"---[ file type fixes ]-----------------------------------------------
+augroup md_fixes
+  autocmd!
+  autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+  autocmd FileType markdown setlocal wrap linebreak nolist
+augroup END
+
 "---[ vertical help windows ]-----------------------------------------
 augroup helpfiles
   autocmd!
@@ -395,34 +418,27 @@ augroup END
     autocmd FileType ruby nmap <buffer> <Leader>rr <Plug>(seeing_is_believing-run)
   augroup END
 
-"---[ Syntastic ]-----------------------------------------------------
-  nnoremap <Leader>sc <Esc>:SyntasticCheck<CR>
-  highlight SyntasticError guibg=#FF0000
-
-  " Run all checkers
-  let g:syntastic_aggregate_errors = 1
-
-  " Auto-populate location list
-  let g:syntastic_always_populate_loc_list = 1
+"---[ ALE ]-----------------------------------------------------------
+  nmap <silent> <Leader>pe <Plug>(ale_previous_wrap)
+  nmap <silent> <Leader>ne <Plug>(ale_next_wrap)
+  let g:ale_echo_msg_format = '[%linter%] %severity%: %s'
 
   " Python
-  let g:syntastic_python_checkers = ['pylint', 'flake8']
-  let g:syntastic_python_pylint_exe = 'python -m pylint'
-  let g:syntastic_python_flake8_exe = 'python -m flake8'
+  let g:ale_python_pylint_executable = 'python'
+  let g:ale_python_pylint_options = '-m pylint'
+  let g:ale_python_flake8_executable = 'python'
+  let g:ale_python_flake8_args = '-m flake8'
 
   function! PylintRC(where)
     let cfg = findfile('pylintrc', escape(a:where, ' ') . ';')
-    return cfg !=# '' ? '--rcfile=' . cfg : ''
+    return cfg !=# '' ? '-m pylint --rcfile=' . cfg : '-m pylint'
   endfunction
 
-  autocmd FileType python let g:syntastic_python_pylint_post_args =
+  autocmd FileType python let g:ale_python_pylint_options =
     \ PylintRC(expand('<afile>:p:h', 1))
 
-  " reStructured Text
-  let g:syntastic_rst_checkers = ['sphinx']
-  
-  " Ruby
-  let g:syntastic_ruby_checkers = ['rubocop', 'mri']
+  " HTML
+  let g:ale_html_tidy_options = '--drop-empty-elements no'
 
 "---[ Tabular ]-------------------------------------------------------
   nmap <silent> <Leader>t= :Tabularize /=<CR>

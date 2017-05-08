@@ -12,12 +12,15 @@ do
 done
 shopt -u nullglob
 
-if [[ -d "${HOME}/bin/" && "${PATH}" != *"${HOME}/bin"* ]]; then
-  export PATH="${HOME}/bin/:${PATH}"
+if [[ -d "${HOME}/bin" && ":${PATH}:" != *":${HOME}/bin:"* ]]; then
+  export PATH="${HOME}/bin:${PATH}"
 fi
 
 # Enable extended globstar '**'
 shopt -s globstar
+
+# Restore multiline commands from history
+shopt -s lithist
 
 # update window size
 shopt -s checkwinsize
@@ -57,6 +60,16 @@ function env_darwin {
   if [ -f $(brew --prefix)/etc/bash_completion ]; then
     . $(brew --prefix)/etc/bash_completion
   fi
+  
+  # (brew) /usr/local/bin
+  if [[ -d "/usr/local/bin" && ":${PATH}:" != *":${HOME}/bin:"* ]]; then
+    export PATH="${HOME}/bin:${PATH}"
+  fi
+
+  # (brew) /usr/local/sbin
+  if [[ -d "${HOME}/bin" && ":${PATH}:" != *":${HOME}/bin:"* ]]; then
+    export PATH="${HOME}/bin:${PATH}"
+  fi
 }
 
 function env_fedora {
@@ -88,7 +101,34 @@ alias fgrep='fgrep --color=auto'
 
 alias wget='wget -c'
 
+alias digs='dig +noall +answer +short'
+
 alias groot='cd $(git rev-parse --show-toplevel)'
+
+## SSL Testing
+# Remote - Check Trust Chain
+ssl_scerts() {
+  # split certs into different files, use awk instead of sed.
+  #  gsed -nEe '/-----BEGIN/,/----END/wfoo'
+  openssl s_client -showcerts -connect $* </dev/null 2> /dev/null \
+    | tee /dev/tty \
+    | openssl x509 -noout -text -subject -issuer -email -purpose
+}
+
+ssl_strust() {
+  openssl s_client -connect $1 </dev/null 2> /dev/null \
+    | sed -n '/Acceptable/,/Client/p'
+}
+
+# Client - Check Trust Chain
+ssl_ctrust() {
+  keytool -printcert -v -file $1
+}
+
+# Client - Cert Signature
+ssl_ccert() {
+  openssl x509 -inform PEM -in $1 -noout -text -issuer -email -purpose
+}
 
 # OS Corrections
 case $OSTYPE in

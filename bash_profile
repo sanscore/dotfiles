@@ -16,6 +16,8 @@ if [[ -d "${RBENV_ROOT}" ]]; then
   [[ ":${PATH}:" != *":${RBENV_BIN}:"* ]] && \
     export PATH="${RBENV_BIN}:${PATH}" && \
     eval "$(rbenv init -)"
+else
+  echo 'rbenv is not installed.'
 fi
 
 # pyenv - Python
@@ -27,10 +29,22 @@ if [[ -d "${PYENV_ROOT}" ]]; then
     export PATH="${PYENV_BIN}:${PATH}" && \
     eval "$(pyenv init -)" && \
     eval "$(pyenv virtualenv-init -)"
+else
+  echo 'pyenv is not installed.'
 fi
 
 # nvm - Node
 export NVM_DIR="${HOME}/.nvm"
 if [[ -s "$NVM_DIR/nvm.sh" ]]; then
   . "$NVM_DIR/nvm.sh" && . $NVM_DIR/bash_completion
+else
+  echo 'nvm (Node) is not installed.'
+fi
+
+# dvm - Docker
+export DVM_DIR="${HOME}/.dvm"
+if [[ -s "$DVM_DIR/dvm.sh" ]]; then
+  . "$DVM_DIR/dvm.sh" && . $DVM_DIR/bash_completion
+else
+  echo 'dvm (Docker) is not installed.'
 fi
