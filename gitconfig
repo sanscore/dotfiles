@@ -43,49 +43,36 @@
 [rerere]
   enabled = true
 [alias]
-  amend = commit --amend --no-edit --reset-author
-  reword = commit --amend --reset-author -v
   br = branch
   ci = commit -v
   co = checkout
   st = status
-  stat = status -s -uno
-  stl = status --long
   up = pull --rebase
   update = pull --rebase
+  amend = commit --amend --no-edit --reset-author
+  reword = commit --amend --reset-author -v
   gg = grep -EIin --break --heading
   type = cat-file -t
   dump = cat-file -p
   last = cat-file -p HEAD
 	logs = log --stat --format=fuller
-	l1 = log --stat --format=fuller -1 --patch
-  a = "! git alog -20"
+	ll = log --stat --patch --format=fuller
   alog = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cr) %C(bold blue)<%an>\" --all
-  p = "! git plog -20"
   plog = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cr) %C(bold blue)<%an>\" 
-  u = "! git ulog -20"
   ulog = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cr) %C(bold blue)<%an>\" HEAD @{u}
   bleach = clean -fdx
   dryclean = clean -ndx
   uncommit = reset HEAD^
-  undo = reset --hard --
+  nuke = reset --hard --
   discard = checkout -f HEAD --
   unstage = reset HEAD --
   b = branch -vv
   r = remote -v
-  ll = log --stat --abbrev-commit
   latest = for-each-ref --sort='-authordate:iso8601' --format=' %(authordate:relative)%09%(refname:short)' refs/remotes/origin
   hs = shortlog -s -n --no-merges
-  wc = diff --stat -w
-  wcd = diff
-  wcu = diff --stat -w @{u}..HEAD
-  wcud = diff @{u}..HEAD
 	ignore = update-index --assume-unchanged
-	ig = update-index --assume-unchanged
 	unignore = update-index --no-assume-unchanged
-	unig = update-index --no-assume-unchanged
 	chk = add -n .
-	pu = !sh -c \"git push $(git rev-parse --verify --abbrev-ref @{push} | cut -d/ -f1) $(git rev-parse --verify --abbrev-ref @)$1:$(git rev-parse --verify --abbrev-ref @{push} | cut -d/ -f2)\" --
 [pull]
   rebase = true
 [fetch]
