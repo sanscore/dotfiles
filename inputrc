@@ -38,18 +38,26 @@ set history-preserve-point on
 # reload initrc
 "\C-x\C-r": re-read-init-file
 
-# magic space to expand history commands
 $if Bash
-
   # ctrl-left, -right to move one word
   "\e[1;5D": backward-word
-
   "\e[1;5C": forward-word
+
+  # magic space to expand history commands
   Space: magic-space
 
   # incremental search with up/down
   "\e[A": history-search-backward
   "\e[B": history-search-forward
+$endif
+
+$if mode=vi
+  set keymap vi-command
+  # command mode mappings
+
+  set keymap vi-insert
+  # insert mode mappings
+  Control-l: clear-screen
 $endif
 
 # include system inputrc

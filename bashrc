@@ -31,28 +31,15 @@ shopt -s cmdhist
 # Append history, and
 #   commit previous command to history
 shopt -s histappend
-PROMPT_COMMAND='history -a'
-
-# Bigger History File
-HISTFILESIZE=400000000
-HISTSIZE=10000
-
-# Ignore lines prepended with a space
-HISTCONTROL=ignoreboth:erasedups
-
-# Don't record some commands
-export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history"
-
-# Useful timestamp format
-HISTTIMEFORMAT='%F %T '
+export PROMPT_COMMAND='history -a'
 
 # trim path in prompt
-PROMPT_DIRTRIM=2
+export PROMPT_DIRTRIM=2
 
 function env_darwin {
-  [[ -f /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh ]] && \
-    source /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh && \
-    source /usr/local/opt/git/etc/bash_completion.d/git-completion.bash
+  [[ -f /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh ]] \
+    && source /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh \
+    && source /usr/local/opt/git/etc/bash_completion.d/git-completion.bash
 
   alias ls='ls -G'
   alias l.='ls -dG .*'
@@ -67,16 +54,16 @@ function env_darwin {
   fi
 
   # (brew) /usr/local/sbin
-  if [[ -d "${HOME}/bin" && ":${PATH}:" != *":${HOME}/bin:"* ]]; then
-    export PATH="${HOME}/bin:${PATH}"
+  if [[ -d "/usr/local/sbin" && ":${PATH}:" != *":/usr/local/sbin:"* ]]; then
+    export PATH="/usr/local/sbin:${PATH}"
   fi
 }
 
 function env_fedora {
-  [[ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]] && \
-    source /usr/share/git-core/contrib/completion/git-prompt.sh
-  [[ -f /usr/share/bash-completion/bash_completion ]] && \
-    source /usr/share/bash-completion/bash_completion
+  [[ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]] \
+    && source /usr/share/git-core/contrib/completion/git-prompt.sh
+  [[ -f /usr/share/bash-completion/bash_completion ]] \
+    && source /usr/share/bash-completion/bash_completion
 
   alias vim='vimx'
 }
@@ -139,8 +126,8 @@ case $OSTYPE in
     [[ -f /etc/fedora-release ]] && env_fedora
 
     # Ubuntu
-    [[ -f /usr/lib/git-core/git-sh-prompt ]] && \
-      source /usr/lib/git-core/git-sh-prompt
+    [[ -f /usr/lib/git-core/git-sh-prompt ]] \
+      && source /usr/lib/git-core/git-sh-prompt
     ;;
   cygwin*) ;;
   bsd*) ;;
@@ -150,17 +137,14 @@ esac
 # Use VIM as editor
 export EDITOR=vim
 
-__tmux_ps1() {
-  if [[ -n "${TMUX}" ]]; then
-    tmux rename-window "$(basename $PWD)"
-  fi
-}
+# __timestamp="\[\e[01;32m\][\[\e[00;37m\]"'$(history 1)'"\[\e[01;32m\]]\[\e[0m\]\n"
+# export PS0="$__timestamp"
 if [[ __git_ps1 ]]; then
   # PS1: username@hostname:directory[history_number](git_branch)$
-  export PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\$(__git_ps1 \"(%s)\")\\$ \[\e[0m\]\$(__tmux_ps1)"
+  export PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\$(__git_ps1 \"(%s)\")\\$ \[\e[0m\]"
 else
   # PS1: username@hostname:directory[history_number]$
-  export PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\\$ \[\e[0m\]\$(__tmux_ps1)"
+  export PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\\$ \[\e[0m\]"
 fi
 
 # Python

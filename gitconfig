@@ -1,4 +1,3 @@
-; check if file changed between prev head, decide if to run some command: git diff --name-only ORIG_HEAD -- filename
 [user]
   name = Grant Welch
 	useConfigOnly = true
@@ -6,6 +5,7 @@
   editor = /usr/bin/env vim
 [push]
 	default = current
+	followTags = true
 [color]
   ui = auto
 [color "decorate"]
@@ -40,6 +40,8 @@
   prompt = false
 [merge]
 	tool = vimdiff
+[mergetool]
+  prompt = false
 [rerere]
   enabled = true
 [alias]
@@ -57,9 +59,9 @@
   last = cat-file -p HEAD
 	logs = log --stat --format=fuller
 	ll = log --stat --patch --format=fuller
-  alog = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cr) %C(bold blue)<%an>\" --all
-  plog = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cr) %C(bold blue)<%an>\" 
-  ulog = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cr) %C(bold blue)<%an>\" HEAD @{u}
+  a = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cr) %C(bold blue)%aN <%aE>\" --all
+  p = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cr) %C(bold blue)%aN <%aE>\" 
+  u = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cr) %C(bold blue)%aN <%aE>\" HEAD @{u}
   bleach = clean -fdx
   dryclean = clean -ndx
   uncommit = reset HEAD^
@@ -69,10 +71,11 @@
   b = branch -vv
   r = remote -v
   latest = for-each-ref --sort='-authordate:iso8601' --format=' %(authordate:relative)%09%(refname:short)' refs/remotes/origin
-  hs = shortlog -s -n --no-merges
+  hs = shortlog -nes --no-merges
 	ignore = update-index --assume-unchanged
 	unignore = update-index --no-assume-unchanged
 	chk = add -n .
+	conflicts = diff --name-only --diff-filter=U
 [pull]
   rebase = true
 [fetch]

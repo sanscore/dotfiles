@@ -3,7 +3,7 @@
 "---[ notes ]---------------------------------------------------------
 " Font: Liberation Mono for Powerline, 13pt
 " Sessions: :mksession[!] Session.vim; vim -s Session.vim
-" Views: :mkview[!] [file]; :lo[adview] [nr]; Single winodw
+" Views: :mkview[!] [file]; :lo[adview] [nr]; Single window
 " Viminfo: pass info from one vim to another. 
 "   :wviminfo! ~/tmp/viminfo from one instance
 "   :rviminfo! ~/tmp/viminfo from the receiving instance
@@ -33,7 +33,7 @@
     Plug 'airblade/vim-gitgutter'
     " native color picker
     Plug 'KabbAmine/vCoolor.vim'
-    Plug 'gorodinskiy/vim-coloresque'
+    Plug 'ap/vim-css-color'
     Plug 'ilya-bobyr/vim-HiLinkTrace'
     " consistentency between tmux pane and vim window movement
     Plug 'christoomey/vim-tmux-navigator'
@@ -53,7 +53,7 @@
     Plug 't9md/vim-ruby-xmpfilter'
   " Python
     Plug 'hdima/python-syntax'
-    Plug 'hynek/vim-python-pep8-indent'
+    Plug 'Vimjas/vim-python-pep8-indent'
     Plug 'tmhedberg/SimpylFold'
   " Coding
     Plug 'w0rp/ale'
@@ -308,10 +308,11 @@
 
 "---[ autocommands ]--------------------------------------------------
 "---[ personal touches ]----------------------------------------------
-augroup annoyances
-  autocmd!
-  autocmd Filetype * :set iskeyword-=.
-augroup END
+" augroup annoyances
+"   autocmd!
+"   autocmd Filetype * :set iskeyword-=.
+" augroup END
+
 augroup clearbg
   autocmd!
   autocmd VimEnter,Colorscheme * :hi Normal ctermbg=none
@@ -320,6 +321,7 @@ augroup clearbg
   autocmd VimEnter,Colorscheme * :hi OverLength ctermbg=52 ctermfg=white guibg=#592929
   autocmd VimEnter,Colorscheme * call UpdateOverLength()
 augroup END
+
 fun! UpdateOverLength()
   if &ft =~ '^\%(java\|html\|xml\)$'
     setlocal colorcolumn=120
@@ -329,6 +331,12 @@ fun! UpdateOverLength()
     match OverLength /\%80v.*/ 
   endif
 endfun
+
+augroup python
+  autocmd!
+  autocmd FileType python nnoremap <buffer> <silent> <Leader>ps oimport pdb; pdb.set_trace()<esc>
+  autocmd FileType python nnoremap <buffer> <silent> <Leader>pS Oimport pdb; pdb.set_trace()<esc>
+augroup END
 
 "---[ file type fixes ]-----------------------------------------------
 augroup md_fixes
@@ -360,6 +368,9 @@ augroup END
     autocmd!
     autocmd FileType dosini setlocal commentstring=#\ %s
   augroup END
+
+"---[ Fugitive ]------------------------------------------------------
+  cnoreabbrev <expr> gg getcmdtype() == ':' ? 'Ggrep' : 'gg'
 
 "---[ GitGutter ]-----------------------------------------------------
   " Toggle GitGutter
@@ -398,6 +409,8 @@ augroup END
 "---[ NERDTree ]------------------------------------------------------
   nnoremap <Leader>N <Esc>:NERDTreeToggle<CR>
   let NERDTreeHijackNetrw = 0
+  let NERDTreeShowHidden=1
+  let NERDTreeIgnore=['\.git$', '\~$']
 
 "---[ netrw ]---------------------------------------------------------
   nnoremap <Leader>E :Explore<CR>
