@@ -12,9 +12,6 @@ do
 done
 shopt -u nullglob
 
-if [[ -d "${HOME}/bin" && ":${PATH}:" != *":${HOME}/bin:"* ]]; then
-  export PATH="${HOME}/bin:${PATH}"
-fi
 
 # Enable extended globstar '**'
 shopt -s globstar
@@ -46,16 +43,6 @@ function env_darwin {
 
   if [ -f $(brew --prefix)/etc/bash_completion ]; then
     . $(brew --prefix)/etc/bash_completion
-  fi
-  
-  # (brew) /usr/local/bin
-  if [[ -d "/usr/local/bin" && ":${PATH}:" != *":${HOME}/bin:"* ]]; then
-    export PATH="${HOME}/bin:${PATH}"
-  fi
-
-  # (brew) /usr/local/sbin
-  if [[ -d "/usr/local/sbin" && ":${PATH}:" != *":/usr/local/sbin:"* ]]; then
-    export PATH="/usr/local/sbin:${PATH}"
   fi
 }
 
