@@ -197,6 +197,7 @@
   set statusline+=\|t=%Y      " filetype (for syntax hilighting)
   set statusline+=\|%L        " number of lines in file
   set statusline+=\|p=%l,%v\| " line and column position in file
+  set statusline+=%b\ %B
   set statusline+=%=%p%%\     " right justify; place in file by percentage
   set statusline+=%{strftime(\"%m/%d/%y\ %H:%M\")}
 
@@ -460,9 +461,6 @@ augroup END
   vmap <silent> <Leader>t: :Tabularize /:\zs<CR>
 
 "---[ Tagbar ]--------------------------------------------------------
-  if filereadable("/usr/local/Cellar/ctags/5.8/bin/ctags")
-    let g:tagbar_ctags_bin = "/usr/local/Cellar/ctags/5.8/bin/ctags"
-  endif
   nnoremap <Leader>T <Esc>:TagbarToggle<CR>
 
 "---[ Undotree ]------------------------------------------------------

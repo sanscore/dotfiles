@@ -31,7 +31,7 @@ fi
 if __check_path "/usr/local/sbin"; then
   export PATH="/usr/local/sbin:${PATH}"
 fi
-  
+
 ##############################
 # VIRTUAL MANAGERS
 ##############################
@@ -80,8 +80,10 @@ fi
 if [[ -s "${HOME}/.nvm/nvm.sh" ]]; then
   export NVM_DIR="${HOME}/.nvm"
   . "$NVM_DIR/nvm.sh" && . $NVM_DIR/bash_completion
-else
-  echo 'nvm (Node) is not installed.'
+
+  nvm-up () {
+    git -C "${HOME}/.nvm" pull
+  }
 fi
 
 # dvm - Docker
@@ -91,7 +93,7 @@ if [[ -s "${HOME}/.dvm/dvm.sh" ]]; then
     && . $DVM_DIR/bash_completion
 fi
 
-if [ -f "${HOME}/.google-cloud-sdk/path.bash.inc" ]; then 
+if [ -f "${HOME}/.google-cloud-sdk/path.bash.inc" ]; then
   export GCLOUD_DIR="${HOME}/.google-cloud-sdk"
   source "$GCLOUD_DIR/path.bash.inc"
 
@@ -106,31 +108,30 @@ if __check_path "${HOME}/bin"; then
 fi
 
 ##############################
-# SSH-AGENT 
+# SSH-AGENT
 ##############################
 
-SSH_ENV="$HOME/.ssh/environment"
-
 function start_agent {
-     echo "Initialising new SSH agent..."
-     /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
-     echo succeeded
-     chmod 600 "${SSH_ENV}"
-     . "${SSH_ENV}" > /dev/null
-     /usr/bin/ssh-add;
+  local ssh_env="$HOME/.ssh/env"
+
+  # Check if $ssh_env exists, and if $SSH_AGENT_PID is running
+  if [ -f "${ssh_env}" ]; then
+      . "${ssh_env}" > /dev/null
+      if ps -ef | grep ${SSH_AGENT_PID}'.*[s]sh-agent' > /dev/null; then
+        return
+      fi
+  fi
+
+  # If not, start a new ssh-agent
+  echo "Initialising new SSH agent..."
+  ssh-agent -t 3600 | sed '/^echo/d' > "${ssh_env}"
+  echo succeeded
+  chmod 600 "${ssh_env}"
+  . "${ssh_env}" > /dev/null
+  ssh-add;
 }
+start_agent
 
-# Source SSH settings, if applicable
-
-if [ -f "${SSH_ENV}" ]; then
-     . "${SSH_ENV}" > /dev/null
-     #ps ${SSH_AGENT_PID} doesn't work under cywgin
-     ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
-         start_agent;
-     }
-else
-     start_agent;
-fi
 
 ##############################
 # SOURCE .bashrc
