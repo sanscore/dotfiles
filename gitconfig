@@ -76,6 +76,7 @@
 	unignore = update-index --no-assume-unchanged
 	chk = add -n .
 	conflicts = diff --name-only --diff-filter=U
+	root = rev-parse --show-toplevel
 [pull]
   rebase = true
 [fetch]

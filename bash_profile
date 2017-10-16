@@ -40,7 +40,7 @@ fi
 if __check_path "${HOME}/.rbenv/bin"; then
   export RBENV_ROOT="${HOME}/.rbenv"
   export PATH="${RBENV_ROOT}/bin:${PATH}"
-  eval "$(rbenv init -)"
+  eval "$(rbenv init - --no-rehash)"
   rbenv-up () {
     for repo in "$RBENV_ROOT" "$RBENV_ROOT"/plugins/*; do
       echo $( basename $repo )
@@ -55,7 +55,7 @@ if __check_path "${HOME}/.pyenv/bin"; then
   export PATH="${PYENV_ROOT}/bin:${PATH}"
   export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
-  eval "$(pyenv init -)"
+  eval "$(pyenv init - --no-rehash)"
   eval "$(pyenv virtualenv-init -)"
 
   pyenv-up () {
@@ -79,7 +79,7 @@ fi
 # nvm - Node
 if [[ -s "${HOME}/.nvm/nvm.sh" ]]; then
   export NVM_DIR="${HOME}/.nvm"
-  . "$NVM_DIR/nvm.sh" && . $NVM_DIR/bash_completion
+  . "$NVM_DIR/nvm.sh" --no-use && . $NVM_DIR/bash_completion
 
   nvm-up () {
     git -C "${HOME}/.nvm" pull

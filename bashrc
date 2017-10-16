@@ -33,7 +33,7 @@ export PROMPT_COMMAND='history -a'
 # trim path in prompt
 export PROMPT_DIRTRIM=2
 
-function env_darwin {
+env_darwin() {
   [[ -f /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh ]] \
     && source /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh \
     && source /usr/local/opt/git/etc/bash_completion.d/git-completion.bash
@@ -41,12 +41,13 @@ function env_darwin {
   alias ls='ls -G'
   alias l.='ls -dG .*'
 
-  if [ -f $(brew --prefix)/etc/bash_completion ]; then
-    . $(brew --prefix)/etc/bash_completion
+  # brew install bash-completion@2
+  if [ -f /usr/local/share/bash-completion/bash_completion ]; then
+    . /usr/local/share/bash-completion/bash_completion
   fi
 }
 
-function env_fedora {
+env_fedora() {
   [[ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]] \
     && source /usr/share/git-core/contrib/completion/git-prompt.sh
   [[ -f /usr/share/bash-completion/bash_completion ]] \
@@ -96,12 +97,16 @@ ssl_strust() {
 
 # Client - Check Trust Chain
 ssl_ctrust() {
-  keytool -printcert -v -file $1
+  for cert in "$@"; do
+    keytool -printcert -v -file "$cert"
+  done
 }
 
 # Client - Cert Signature
 ssl_ccert() {
-  openssl x509 -inform PEM -in $1 -noout -text -issuer -email -purpose
+  for cert in "$@"; do
+    openssl x509 -inform PEM -in "$cert" -noout -text -issuer -email -purpose
+  done
 }
 
 # OS Corrections

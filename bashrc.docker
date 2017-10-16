@@ -1,4 +1,4 @@
-if [[ $(command -v docker-machine) && -z "$DOCKER_HOST" ]]; then
+if [[ -z "$DOCKER_HOST" && $(command -v docker-machine) ]]; then
   eval $(docker-machine env default)
 fi
 

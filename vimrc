@@ -246,11 +246,16 @@
   nnoremap k gk
   " make Y consistent with D and C; yank rest of line, not the whole line
   nnoremap Y y$
-  " no more help
+  " disable help mapping
   nnoremap <F1> <nop>
-  " no Ex mode
+  " disable Ex mode mappings
   nnoremap Q <nop>
-  " no more manpages
+  nnoremap gQ <nop>
+  " disable cedit mappings
+  nnoremap q: <nop>
+  nnoremap q/ <nop>
+  nnoremap q? <nop>
+  " disable manpages mapping
   nnoremap K <nop>
   " ZJ quits all windows
   nnoremap ZJ :qa<CR>
@@ -324,10 +329,7 @@ augroup clearbg
 augroup END
 
 fun! UpdateOverLength()
-  if &ft =~ '^\%(java\|html\|xml\)$'
-    setlocal colorcolumn=120
-    match OverLength /\%120v.*/ 
-  else 
+  if &ft =~ '^\%(python\)$'
     setlocal colorcolumn=80
     match OverLength /\%80v.*/ 
   endif
