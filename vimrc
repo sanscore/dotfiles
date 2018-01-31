@@ -31,14 +31,13 @@
     Plug 'editorconfig/editorconfig-vim'
     Plug 'tpope/vim-repeat'
     Plug 'airblade/vim-gitgutter'
+    Plug 'NLKNguyen/papercolor-theme'
     " native color picker
     Plug 'KabbAmine/vCoolor.vim'
     Plug 'ap/vim-css-color'
     Plug 'ilya-bobyr/vim-HiLinkTrace'
     " consistentency between tmux pane and vim window movement
     Plug 'christoomey/vim-tmux-navigator'
-    " Enhancements to netrw
-    Plug 'tpope/vim-vinegar'
     " Fixes vim/iterm2/tmux interaction
     Plug 'sjl/vitality.vim'
   " RUBY
@@ -92,6 +91,7 @@
   " Here Be Dragons
   "
   Plug 'file:///Users/u205/work/shape/vim-dex'
+  Plug 'file:///Users/u205/work/vim-term-wip'
   call plug#end()
 
 "---[ directories ]---------------------------------------------------
@@ -151,6 +151,7 @@
   set listchars+=precedes:<
   set listchars+=space:·
   set listchars+=trail:·
+  set listchars+=eol:$
   set noequalalways   " prevent vim from resizing windows
   set noerrorbells    " don't beep
   set nowrap          " don't wrap
@@ -210,7 +211,8 @@
   endif
 
   if &t_Co >= 256 || has("gui_running")
-    colorscheme badwolf
+    " colorscheme badwolf
+    colorscheme PaperColor
   endif
 
   if &term =~ '256color'
@@ -355,6 +357,8 @@ augroup helpfiles
 augroup END
 
 "---[ Plugins ]-------------------------------------------------------
+"---[ vim-plug ]------------------------------------------------------
+  command! PU PlugUpdate | PlugUpgrade
 "---[ airline ]-------------------------------------------------------
   nnoremap <Leader>A <Esc>:AirlineToggle<CR>
   let g:airline_theme           = 'badwolf'
@@ -471,3 +475,57 @@ augroup END
 "---[  vColor ]-------------------------------------------------------
   let g:vcoolor_lowercase = 1
   let g:vcoolor_disable_mappings = 1
+
+"---[ Experiments ]--------------------------------------------------
+"---[ Highlight Manipulator ]----------------------------------------
+function! NextCFGColor()
+  let l:curr_hi = synID(line("."), col("."), 1)
+  if empty(l:curr_hi)
+    let l:curr_hi = hlID("Normal")
+  endif
+  let l:curr_hi_name = synIDattr(l:curr_hi, "name")
+
+  let l:next_cfg = synIDattr(l:curr_hi, "fg", "cterm") + 1
+  if l:next_cfg > &t_Co
+    let l:next_cfg = l:next_cfg - &t_Co
+  endif
+  let l:hi_cmd = "hi " . l:curr_hi_name . " ctermfg=" . next_cfg
+  execute l:hi_cmd
+  " echo ":" . l:hi_cmd
+endfunction
+
+function! PrevCFGColor()
+  let l:curr_hi = synID(line("."), col("."), 1)
+  if empty(l:curr_hi)
+    let l:curr_hi = hlID("Normal")
+  endif
+  let l:curr_hi_name = synIDattr(l:curr_hi, "name")
+
+  let l:next_cfg = synIDattr(l:curr_hi, "fg", "cterm") - 1
+  if l:next_cfg < 0
+    let l:next_cfg = l:next_cfg + &t_Co
+  endif
+  let l:hi_cmd = "hi " . l:curr_hi_name . " ctermfg=" . next_cfg
+  execute l:hi_cmd
+  " echo ":" . l:hi_cmd
+endfunction
+
+command! NextCFG call NextCFGColor()
+command! PrevCFG call PrevCFGColor()
+nnoremap <silent> + <Esc>:NextCFG<CR>
+nnoremap <silent> - <Esc>:PrevCFG<CR>
+
+function! GetFiletypes()
+  let filetypes = []
+
+  for rtp in split(&runtimepath, ",")
+    let syntax_dir = rtp . "/syntax"
+    if (isdirectory(syntax_dir))
+      for syntax_file in split(glob(syntax_dir . "/*.vim"), "\n")
+        call add(filetypes, fnamemodify(syntax_file, ":t:r"))
+      endfor
+    endif
+  endfor
+
+  return uniq(sort(filetypes))
+endfunction

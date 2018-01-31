@@ -46,7 +46,7 @@
   enabled = true
 [alias]
   br = branch
-  ci = commit -v
+  ci = commit
   co = checkout
   st = status
   up = pull --rebase
@@ -70,7 +70,7 @@
   unstage = reset HEAD --
   b = branch -vv
   r = remote -v
-  latest = for-each-ref --sort='-authordate:iso8601' --format=' %(authordate:relative)%09%(refname:short)' refs/remotes/origin
+  latest = for-each-ref --sort='-authordate:iso8601' --format=' %(authordate:relative)%09%(refname:short)' refs/remotes
   hs = shortlog -nes --no-merges
 	ignore = update-index --assume-unchanged
 	unignore = update-index --no-assume-unchanged
@@ -81,7 +81,11 @@
   rebase = true
 [fetch]
 	prune = true
+  output = compact
 [rebase]
 	autostash = true
+	autosquash = true
 [transfer]
 	fsckObjects = true
+[commit]
+  verbose = true
