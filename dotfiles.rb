@@ -29,13 +29,30 @@ module SansCore; module DotFiles
 
     desc "bash", "Symlink bashrc and bash_profile"
     def bash
-      create_ln('bashrc', '.bashrc', options[:dir], options[:force])
+      bash_profile
+      bashrc
+      bashrc_docker
+      bashrc_github
+    end
+
+    desc "bash_profile", "Symlink bashrc and bash_profile"
+    def bash_profile
       create_ln('bash_profile', '.bash_profile', options[:dir], options[:force])
     end
 
-    desc "docker", "Symlink bashrc.docker"
-    def docker
+    desc "bashrc", "Symlink bashrc"
+    def bashrc
+      create_ln('bashrc', '.bashrc', options[:dir], options[:force])
+    end
+
+    desc "bashrc_docker", "Symlink bashrc.docker"
+    def bashrc_docker
       create_ln('bashrc.docker', '.bashrc.docker', options[:dir], options[:force])
+    end
+
+    desc "bashrc_github", "Symlink bashrc.github"
+    def bashrc_github
+      create_ln('bashrc.github', '.bashrc.github', options[:dir], options[:force])
     end
 
     desc "gitconfig", "Symlink gitconfig"

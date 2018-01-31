@@ -1,0 +1,49 @@
+gh(){
+  local github="${GITHUB_URL:-https://api.github.com}"
+
+  if [[ -n "${GITHUB_AUTH_TOKEN}" ]]; then
+    local auth=("-H" "Authorization: token ${GITHUB_AUTH_TOKEN}")
+  fi
+
+  local cmd="${1}"
+  shift
+
+  case ${cmd} in
+    orgs/*)
+      accept='application/vnd.github.korra-preview' ;;
+    */blocks*)
+      accept='application/vnd.github.giant-sentry-fist-preview+json' ;;
+    */gpg_keys*)
+      accept='application/vnd.github.cryptographer-preview' ;;
+    */deployments*)
+      accept='application/vnd.github.ant-man-preview' ;;
+    */branches*)
+      accept='application/vnd.github.loki-preview' ;;
+    */timeline*)
+      accept='application/vnd.github.mockingbird-preview' ;;
+    */invitations*)
+      accept='application/vnd.github.swamp-thing-preview+json' ;;
+    */pages*)
+      accept='application/vnd.github.mister-fantastic-preview+json' ;;
+    */projects*)
+      accept='application/vnd.github.inertia-preview+json' ;;
+    */reviews*)
+      accept='application/vnd.github.black-cat-preview+json' ;;
+    search/commits*)
+      accept='application/vnd.github.cloak-preview+json' ;;
+    */community*)
+      accept='application/vnd.github.black-panther-preview+json' ;;
+    */reactions*)
+      accept='application/vnd.github.squirrel-girl-preview+json' ;;
+    codes_of_conduct*)
+      accept='application/vnd.github.scarlet-witch-preview+json' ;;
+    licenses*)
+      accept='application/vnd.github.drax-preview+json' ;;
+    *repos*)
+      accept='application/vnd.github.mercy-preview+json' ;;
+    *)
+      accept='application/vnd.github.v3.all+json'
+  esac
+
+  curl -sSL -k "${auth[@]}" -H "Accept: ${accept}" "$@" "${github}/${cmd}"
+}
