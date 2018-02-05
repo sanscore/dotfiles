@@ -12,25 +12,24 @@ export HISTTIMEFORMAT='%F %T '
 # SETUP PATH
 ##############################
 
-# Setup PATH
-if [[ "${OSTYPE}" = "darwin"* ]]; then
-  PATH=""
-  . /etc/profile
-fi
-
 __check_path() {
   [[ -d "$1" && ":$PATH:" != *":$1:"* ]] || return 1
 }
 
-# /usr/local/bin
-if __check_path "/usr/local/bin"; then
-  export PATH="/usr/local/bin:${PATH}"
+# Setup PATH
+if [[ "${OSTYPE}" = "darwin"* ]]; then
+  export PATH=""
+  . /etc/profile
 fi
 
-# /usr/local/sbin
-if __check_path "/usr/local/sbin"; then
-  export PATH="/usr/local/sbin:${PATH}"
-fi
+USR_LOCAL_BIN="/usr/local/bin"
+__check_path "${USR_LOCAL_BIN}" && export PATH="${USR_LOCAL_BIN}:${PATH}"
+
+USR_LOCAL_SBIN="/usr/local/sbin"
+__check_path "${USR_LOCAL_SBIN}" && export PATH="${USR_LOCAL_SBIN}:${PATH}"
+
+GETTEXT_BIN="/usr/local/opt/gettext/bin"
+__check_path "${GETTEXT_BIN}" && export PATH="${GETTEXT_BIN}:${PATH}"
 
 ##############################
 # VIRTUAL MANAGERS
