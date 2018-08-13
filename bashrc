@@ -83,11 +83,17 @@ alias groot='cd $(git rev-parse --show-toplevel)'
 ## SSL Testing
 # Remote - Check Trust Chain
 ssl_scerts() {
-  # split certs into different files, use awk instead of sed.
-  #  gsed -nEe '/-----BEGIN/,/----END/wfoo'
-  openssl s_client -showcerts -connect $* </dev/null 2> /dev/null \
-    | tee /dev/tty \
-    | openssl x509 -noout -text -subject -issuer -email -purpose
+  local tmp=$(mktemp -d -t ssl_scerts)
+
+  openssl s_client -showcerts -connect $* </dev/null 2>/dev/null \
+    | awk -v tmp="$tmp/" '/-----BEGIN CERTIFICATE-----/{f=1; x=++i; buf=""} f{buf = buf $0 RS} /-----END CERTIFICATE-----/{print buf > tmp x ".cert"; f=0}'
+
+  for cert in $tmp/*.cert; do
+    echo
+    openssl x509 -in $cert -out - -text
+  done
+
+  rm -rf "$tmp"
 }
 
 ssl_strust() {
@@ -141,3 +147,19 @@ fi
 
 # Python
 export PYTHONDONTWRITEBYTECODE=1
+
+hide-ps1() {
+  _PS1="$PS1"
+  PS1="\$ "
+}
+restore-ps1() {
+  PS1="$_PS1"
+  unset _PS1
+}
+
+
+# Vim - update plugins
+vim-up() {
+ find ~/.vim/pack/ -mindepth 1 -maxdepth 4 -type d -exec test -e "{}/.git" \; -print -exec git -C '{}' pull --ff-only \;
+ git -C ~/.vim/pack status
+}

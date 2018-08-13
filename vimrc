@@ -2,97 +2,64 @@
 " by: grant welch
 "---[ notes ]---------------------------------------------------------
 " Font: Liberation Mono for Powerline, 13pt
-" Sessions: :mksession[!] Session.vim; vim -s Session.vim
-" Views: :mkview[!] [file]; :lo[adview] [nr]; Single window
-" Viminfo: pass info from one vim to another. 
-"   :wviminfo! ~/tmp/viminfo from one instance
-"   :rviminfo! ~/tmp/viminfo from the receiving instance
-" q· record, Q· append, <number>@· to replay macro
-" m· mark a location, `· return to the mark, '· return to row
-" *  search forward for word under cursor, # search backward
+" Movement:
+"   hjkl              " Move 1 char left,down,up,right
+"   Ctrl-O            " Move to older cursor postion; :jumps
+"   Ctrl-I            " Move to newer cursor postion; :jumps
+"   Ctrl-T            " Move to older tag entry; :tags
+" Viminfo:
+"   " pass info from one vim instance to another.
+"   :wviminfo! ~/tmp/viminfo  " write viminfo
+"   :rviminfo! ~/tmp/viminfo  " read viminfo
+" Sessions:
+"   vim -s [file]     " Start vim from a saved session
+"   :mks [file]       " Save session
+" Buffers:
+"   :set buftype=·    " Alter current buffer; nofile,nowrite,<empty>
+" Views:
+"   :mkview           " Save the current view
+"   :loadview         " Load a saved view to the current window
+" Macros/Registers:
+"   q·                " record Macro to register
+"   Q·                " append Macro
+"   @@                " replay previous Macro
+"   <number>@·        " replay macro N times
+"   "·p               " paste content of register
+"   "·D               " delete line and save content to register
+"   :redir @·         " Record ex cmd output
+"   :redir END        " Stop recording
+" Marks:
+"   m·                " mark a location
+"   `·                " return to the exact position of a Mark
+"   '·                " return to row of a Mark
+" Searching:
+"   /pattern/         " searh
+"   //                " redo previous search
+"   *                 " search forward for word under cursor
+"   #                 " search backward
+"   :%s/pattern//gn   " count matches
+" Help:
+"   :h[elp]           " open help
+"   :h :<cmd>         " help with a specific command
+"   :h topic|map      " help with a topic or a normal mapping
+"   :h v_|i_|c_<map>  " help with a visual|insert|ex mapping
+"   :h 'option'       " help with an option; e.g. :set option
+"   C-]               " In help, follow a link.
+" Misc:
+"   ga                " Character info
 "---[ nocompatible ]--------------------------------------------------
   set nocompatible
 
 "---[ plugins ]-------------------------------------------------------
-  call plug#begin('~/.vim/plugged')
-  " Add these?
-  "   ShowMarks
-  "   vdebug
-  " VIM Improvements
-    Plug 'scrooloose/nerdtree'
-    Plug 'jlanzarotta/bufexplorer'
-    Plug 'majutsushi/tagbar'
-    Plug 'mbbill/undotree'
-    Plug 'vim-airline/vim-airline'
-    Plug 'vim-airline/vim-airline-themes'
-    Plug 'godlygeek/tabular'
-    Plug 'tomasr/molokai'
-    Plug 'sanscore/badwolf'
-    Plug 'editorconfig/editorconfig-vim'
-    Plug 'tpope/vim-repeat'
-    Plug 'airblade/vim-gitgutter'
-    Plug 'NLKNguyen/papercolor-theme'
-    " native color picker
-    Plug 'KabbAmine/vCoolor.vim'
-    Plug 'ap/vim-css-color'
-    Plug 'ilya-bobyr/vim-HiLinkTrace'
-    " consistentency between tmux pane and vim window movement
-    Plug 'christoomey/vim-tmux-navigator'
-    " Fixes vim/iterm2/tmux interaction
-    Plug 'sjl/vitality.vim'
-  " RUBY
-    Plug 'vim-ruby/vim-ruby'
-    Plug 'tpope/vim-rake'
-    Plug 'tpope/vim-rails'
-    Plug 'tpope/vim-rbenv'
-    Plug 'tpope/vim-bundler'
-    Plug 'tpope/vim-cucumber'
-    Plug 'tpope/vim-haml'
-    " run ruby in vim; depends on 'gem install seeing_is_believing'
-    Plug 't9md/vim-ruby-xmpfilter'
-  " Python
-    Plug 'hdima/python-syntax'
-    Plug 'Vimjas/vim-python-pep8-indent'
-    Plug 'tmhedberg/SimpylFold'
-  " Coding
-    Plug 'w0rp/ale'
-    Plug 'luochen1990/rainbow'
-    Plug 'AndrewRadev/splitjoin.vim'
-    Plug 'nathanaelkane/vim-indent-guides'
-    Plug 'Chiel92/vim-autoformat'
-    Plug 'tpope/vim-endwise'
-    Plug 'kchmck/vim-coffee-script'
-    Plug 'pangloss/vim-javascript'
-    Plug 'PProvost/vim-ps1'
-  " Completion
-    Plug 'Shougo/vimproc.vim', { 'do': 'make' }
-    Plug 'Shougo/neocomplete.vim'
-    Plug 'Shougo/neosnippet.vim'
-    Plug 'Shougo/neosnippet-snippets'
-    Plug 'Shougo/context_filetype.vim'
-    Plug 'Shougo/neoinclude.vim'
-    Plug 'Shougo/neco-syntax'
-    Plug 'Shougo/neopairs.vim'
-    Plug 'Konfekt/FastFold'
-  " In Tim Pope We Trust
-    " Vim-Sensible sets some univerally accepted vim defaults
-    Plug 'tpope/vim-sensible'
-    " Vim-Unimpaired adds square bracket mappings
-    Plug 'tpope/vim-unimpaired'
-    Plug 'tpope/vim-commentary'
-    Plug 'tpope/vim-surround'
-    Plug 'tpope/vim-git'
-    Plug 'tpope/vim-fugitive'
-    Plug 'tpope/vim-dispatch'
-    Plug 'tpope/vim-scriptease'
-  " I need better organization
-    Plug 'plasticboy/vim-markdown'
-  "
-  " Here Be Dragons
-  "
-  Plug 'file:///Users/u205/work/shape/vim-dex'
-  Plug 'file:///Users/u205/work/vim-term-wip'
-  call plug#end()
+" Vim8 packages located at .vim/pack/
+" Update:
+"   git submodule update --remotde
+helptags ALL
+"
+" TODO: add .vim/pack/ to dotfiles
+" TODO: checkout these plugins:
+"   ShowMarks
+"   vdebug
 
 "---[ directories ]---------------------------------------------------
 "---[ swap ]----------------------------------------------------------
@@ -131,8 +98,9 @@
   set fileformat=unix " default to unix file format
   set fillchars+=vert:\│ " Vertical sep w/ no gaps
   set fillchars+=fold:─  " Horizontal sep w/ no gaps
+  set foldlevel=99 " start vim unfolded
   set foldlevelstart=99 " start vim unfolded
-  set foldmethod=indent " fold based on indent level
+  set foldmethod=manual
   set formatoptions+=j  " remove comment leader when joining lines
   set formatoptions+=n  " format lists
   set formatoptions+=l  " do not break up lines in insert mode
@@ -145,7 +113,7 @@
   set lazyredraw
   set linebreak       " use linebreak wrapping
   set nolist          " list special chars, see listchars
-  set listchars=tab:»·
+  set listchars=tab:»-
   set listchars+=extends:>
   set listchars+=nbsp:+
   set listchars+=precedes:<
@@ -159,6 +127,10 @@
   set ruler           " show cursor position
   set shiftround      " use multiple of shiftwidth when indenting with '<' and '>'
   set shiftwidth=2    " number of spaces to use for autoindenting
+  set shortmess=a     " use all message abbreviatons to prevent hit-enter.
+  set shortmess+=t    " Truncate messages
+  set shortmess+=o    " overwrite message for writing a file
+  set shortmess+=O    " overwrite message for reading a file
   set shortmess+=I    " removes intro message
   set showbreak=↪     " change the wrap character
   set showcmd         " show command is it's typed
@@ -172,11 +144,11 @@
   set tabstop=2       " a tab is two spaces
   set textwidth=0     " prevent hard wrapping
   set thesaurus+=~/.vim/mthesaur.txt
-  set timeoutlen=3000 " mapping timeouts at 3secs
+  set timeout         " mapping timeout
+  set timeoutlen=1000 " mapping timeouts at 3secs
   set title           " change the terminal's title
-  set ttimeoutlen=100 " keycode timeouts at 1/10sec
   set undolevels=1000 " use many muchos levels of undo
-  set virtualedit=block,onemore " cursor goes past last char
+  set virtualedit=block " cursor goes past last char
   set visualbell      " don't beep
   set winminheight=0  " hide windows completely
   set winminwidth=0   " hide windows completely
@@ -203,6 +175,8 @@
   set statusline+=%{strftime(\"%m/%d/%y\ %H:%M\")}
 
 "---[ highlighting ]--------------------------------------------------
+  set termguicolors
+
   if &t_Co > 2 || has("gui_running")
     " switch syntax highlighting on, when the terminal has colors
     syntax on
@@ -224,25 +198,21 @@
 
 "---[ gui ]-----------------------------------------------------------
   if has("gui_running")
-    set guifont=Liberation\ Mono\ for\ Powerline\ 10
-    set guioptions+=a " copy Visual selection to c-p buffer
-    set guioptions+=e " use GUI tabline
+    set guifont=Liberation\ Mono\ for\ Powerline:h13
+    set guioptions=a " copy Visual selection to c-p buffer
+    set guioptions+=c " use console dialogs
     set guioptions+=m " add menu bar
     set guioptions+=g " grey inactive menu items
     set guioptions+=t " include tearoff menu items
     set guioptions+=T " include Toolbar
-    set guioptions+=r " show vertical scrollbar
-    set guioptions+=b " show bottom scrollbar
 
-    set lines=40    " gvim default to 40 lines
-    set columns=88  " gvim default to 88 columns
+    set lines=50
+    set columns=120
   else
   endif
 
 "---[ mappings ]------------------------------------------------------
   cnoremap %% <C-R>=expand('%:h').'/'<CR>
-  " 'jj' to Esc and keep cursor at its current location
-  inoremap jj <Esc>l
   " let j/k move through wrapped lines
   nnoremap j gj
   nnoremap k gk
@@ -254,15 +224,9 @@
   nnoremap Q <nop>
   nnoremap gQ <nop>
   " disable cedit mappings
-  nnoremap q: <nop>
-  nnoremap q/ <nop>
-  nnoremap q? <nop>
-  " disable manpages mapping
-  nnoremap K <nop>
-  " ZJ quits all windows
-  nnoremap ZJ :qa<CR>
-  " space open/closes folds
-  nnoremap <space> za
+  " noremap q: <nop>
+  " noremap q/ <nop>
+  " noremap q? <nop>
   " Change working directory to that of current file
   cabbrev cwd lcd %:p:h
   " Write no a write-protected file with root
@@ -321,6 +285,11 @@
 "   autocmd Filetype * :set iskeyword-=.
 " augroup END
 
+" augroup myviews
+"   autocmd BufWinLeave *.* mkview
+"   autocmd BufWinEnter *.* silent loadview
+" augroup END
+
 augroup clearbg
   autocmd!
   autocmd VimEnter,Colorscheme * :hi Normal ctermbg=none
@@ -333,7 +302,10 @@ augroup END
 fun! UpdateOverLength()
   if &ft =~ '^\%(python\)$'
     setlocal colorcolumn=80
-    match OverLength /\%80v.*/ 
+    match OverLength /\%80v.*/
+  else
+    setlocal colorcolumn=120
+    match OverLength /\%120v.*/
   endif
 endfun
 
@@ -365,10 +337,18 @@ augroup END
   let g:airline_powerline_fonts = 1
   " Allow one space after tabs for multiline comments /** */
   let g:airline#extensions#whitespace#mixed_indent_algo = 1
+  let g:airline#extensions#ale#enabled = 1
 
 "---[ Buffer Explorer ]-----------------------------------------------
   " Show no name buffers
   let g:bufExplorerShowNoName = 1
+
+"---[ vim-dispatch ]--------------------------------------------------
+  autocmd FileType dex let b:dispatch = 'bash -lc "ppolicy %"'
+  nnoremap <Leader>dd :Dispatch!<CR>
+  nnoremap <Leader>ds :Start<CR>
+  nnoremap <Leader>dm :Make!<CR>
+  nnoremap <Leader>dn :Spawn<CR>
 
 "---[ Commentary ]----------------------------------------------------
   augroup VimrcCommentary
@@ -389,17 +369,10 @@ augroup END
 "---[ Indent Guide ]--------------------------------------------------
   let g:indent_guides_enable_on_vim_startup = 1
   let g:indent_guides_start_level = 2
-  let g:indent_guides_auto_colors = 0
-  augroup IndentGuideColors
-    autocmd!
-    autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg='#121212' ctermbg=233
-    autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg='#1c1c1c' ctermbg=234
-  augroup END
 
 "---[ neocomplete ]---------------------------------------------------
   let g:neocomplete#enable_at_startup = 1
   let g:neocomplete#enable_smart_case = 1
-  let g:neocomplete#use_vimproc = 1
   inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
   inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
   inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
@@ -439,9 +412,13 @@ augroup END
   augroup END
 
 "---[ ALE ]-----------------------------------------------------------
-  nmap <silent> <Leader>pe <Plug>(ale_previous_wrap)
-  nmap <silent> <Leader>ne <Plug>(ale_next_wrap)
-  let g:ale_echo_msg_format = '[%linter%] %severity%: %s'
+  nmap <silent> <Leader>ll <Plug>(ale_lint)
+  nmap <silent> <Leader>lp <Plug>(ale_previous_wrap)
+  nmap <silent> <Leader>ln <Plug>(ale_next_wrap)
+  let g:ale_echo_msg_info_str = 'I'
+  let g:ale_echo_msg_error_str = 'E'
+  let g:ale_echo_msg_warning_str = 'W'
+  let g:ale_echo_msg_format = '[%linter%:%severity%] %code%: %s'
 
   " Python
   let g:ale_python_pylint_executable = 'python'
@@ -463,11 +440,16 @@ augroup END
 "---[ Tabular ]-------------------------------------------------------
   nmap <silent> <Leader>t= :Tabularize /=<CR>
   vmap <silent> <Leader>t= :Tabularize /=<CR>
-  nmap <silent> <Leader>t: :Tabularize /:\zs<CR>
-  vmap <silent> <Leader>t: :Tabularize /:\zs<CR>
+  nmap <silent> <Leader>t: :Tabularize /^[^:]*:\zs<CR>
+  vmap <silent> <Leader>t: :Tabularize /^[^:]*:\zs<CR>
 
 "---[ Tagbar ]--------------------------------------------------------
   nnoremap <Leader>T <Esc>:TagbarToggle<CR>
+
+"---[ tmux-navigator ]------------------------------------------------
+
+  " Disable tmux navigator when zooming the Vim pane
+  let g:tmux_navigator_disable_when_zoomed = 1
 
 "---[ Undotree ]------------------------------------------------------
   nnoremap <Leader>U <Esc>:UndotreeToggle<CR>
@@ -477,43 +459,6 @@ augroup END
   let g:vcoolor_disable_mappings = 1
 
 "---[ Experiments ]--------------------------------------------------
-"---[ Highlight Manipulator ]----------------------------------------
-function! NextCFGColor()
-  let l:curr_hi = synID(line("."), col("."), 1)
-  if empty(l:curr_hi)
-    let l:curr_hi = hlID("Normal")
-  endif
-  let l:curr_hi_name = synIDattr(l:curr_hi, "name")
-
-  let l:next_cfg = synIDattr(l:curr_hi, "fg", "cterm") + 1
-  if l:next_cfg > &t_Co
-    let l:next_cfg = l:next_cfg - &t_Co
-  endif
-  let l:hi_cmd = "hi " . l:curr_hi_name . " ctermfg=" . next_cfg
-  execute l:hi_cmd
-  " echo ":" . l:hi_cmd
-endfunction
-
-function! PrevCFGColor()
-  let l:curr_hi = synID(line("."), col("."), 1)
-  if empty(l:curr_hi)
-    let l:curr_hi = hlID("Normal")
-  endif
-  let l:curr_hi_name = synIDattr(l:curr_hi, "name")
-
-  let l:next_cfg = synIDattr(l:curr_hi, "fg", "cterm") - 1
-  if l:next_cfg < 0
-    let l:next_cfg = l:next_cfg + &t_Co
-  endif
-  let l:hi_cmd = "hi " . l:curr_hi_name . " ctermfg=" . next_cfg
-  execute l:hi_cmd
-  " echo ":" . l:hi_cmd
-endfunction
-
-command! NextCFG call NextCFGColor()
-command! PrevCFG call PrevCFGColor()
-nnoremap <silent> + <Esc>:NextCFG<CR>
-nnoremap <silent> - <Esc>:PrevCFG<CR>
 
 function! GetFiletypes()
   let filetypes = []

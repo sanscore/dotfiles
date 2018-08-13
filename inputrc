@@ -2,7 +2,7 @@
 set bell-style visible
 
 # Treat paste as a single event, not as a series of keyboard input.
-set enable-bracketed-paste on
+# set enable-bracketed-paste on
 
 # show matching parenthesises
 set blink-matching-paren on
@@ -27,7 +27,8 @@ set editing-mode vi
 # display matches after first tab
 set show-all-if-ambiguous on
 
-# add slash to symlinks to dirs
+# add slash to dirs and symlinks to dirs
+set mark-directories on
 set mark-symlinked-directories on
 
 # show mode in prompt '+' insert, ':' command

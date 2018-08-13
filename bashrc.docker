@@ -1,6 +1,6 @@
-if [[ -z "$DOCKER_HOST" && $(command -v docker-machine) ]]; then
-  eval $(docker-machine env default)
-fi
+# if [[ $(command -v docker-machine) && -z "$DOCKER_MACHINE_NAME" ]]; then
+#   eval $(docker-machine env default)
+# fi
 
 # stop all containers:
 alias docker-killall='for CONTAINER in $(docker ps -q); do docker kill $CONTAINER; done'
@@ -10,6 +10,12 @@ alias docker-rm-rf='for CONTAINER in $(docker ps -qa); do docker rm -f $CONTAINE
 
 # remove all docker images
 alias docker-rmi-rf='for IMG in $(docker images -qa); do docker rmi -f $IMG 2>/dev/null; done'
+
+# remove all docker networks
+alias docker-net-rm='for NET in $(docker network ls -q --filter "type=custom"); do docker network rm $NET 2>/dev/null; done'
+
+# nuke from orbit
+alias docker-nuke='docker-killall; docker-net-rm; docker-rm-rf; docker-rmi-rf'
 
 docker-api(){
   local api_version=`docker version -f "v{{.Server.APIVersion}}"`

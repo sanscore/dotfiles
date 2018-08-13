@@ -24,7 +24,6 @@ module SansCore; module DotFiles
       invoke :irbrc
       invoke :tmux
       invoke :vim
-      invoke :vimplug
     end
 
     desc "bash", "Symlink bashrc and bash_profile"
@@ -85,14 +84,7 @@ module SansCore; module DotFiles
       mkdir_p vim_bundle_dir
       create_ln('vimrc', '.vimrc', options[:dir], options[:force])
       create_ln('mthesaur.txt', 'mthesaur.txt', vim_dir, options[:force])
-    end
-
-    desc "vimplug", "Download vim-plug to '.vim/autoload/'"
-    def vimplug
-      # TODO: skip if exists
-      `curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim`
-      # TODO: run vim PlugInstall
+      # TODO: vim packages??
     end
 
     no_commands do

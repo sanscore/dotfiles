@@ -1,11 +1,15 @@
+[include]
+  path = ~/.gitconfig.local
+[includeIf "gitdir:~/work/shape/"]
+  path = ~/.gitconfig.shape
 [user]
   name = Grant Welch
-	useConfigOnly = true
+  useConfigOnly = true
 [core]
   editor = /usr/bin/env vim
 [push]
-	default = current
-	followTags = true
+  default = current
+  followTags = true
 [color]
   ui = auto
 [color "decorate"]
@@ -28,18 +32,19 @@
   filename = yellow bold
   linenumber = blue
 [status]
-  showUntrackedFiles = no
+  ; showUntrackedFiles = no
   short = true
   branch = true
 [diff]
-	tool = vimdiff
-	algorithm = patience
-	mnemonicPrefix = true
-	wsErrorHighlight = all
+  tool = vimdiff
+  algorithm = patience
+  mnemonicPrefix = true
+  wsErrorHighlight = all
+  colorMoved = default
 [difftool]
   prompt = false
 [merge]
-	tool = vimdiff
+  tool = vimdiff
 [mergetool]
   prompt = false
 [rerere]
@@ -57,8 +62,8 @@
   type = cat-file -t
   dump = cat-file -p
   last = cat-file -p HEAD
-	logs = log --stat --format=fuller
-	ll = log --stat --patch --format=fuller
+  logs = log --stat --format=fuller
+  ll = log --stat --patch --format=fuller
   a = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cr) %C(bold blue)%aN <%aE>\" --all
   p = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cr) %C(bold blue)%aN <%aE>\" 
   u = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cr) %C(bold blue)%aN <%aE>\" HEAD @{u}
@@ -72,20 +77,27 @@
   r = remote -v
   latest = for-each-ref --sort='-authordate:iso8601' --format=' %(authordate:relative)%09%(refname:short)' refs/remotes
   hs = shortlog -nes --no-merges
-	ignore = update-index --assume-unchanged
-	unignore = update-index --no-assume-unchanged
-	chk = add -n .
-	conflicts = diff --name-only --diff-filter=U
-	root = rev-parse --show-toplevel
-[pull]
-  rebase = true
+  ignore = update-index --assume-unchanged
+  unignore = update-index --no-assume-unchanged
+  chk = add -n .
+  conflicts = diff --name-only --diff-filter=U
+  root = rev-parse --show-toplevel
+  fixup = commit --fixup
 [fetch]
-	prune = true
+  prune = true
   output = compact
 [rebase]
-	autostash = true
-	autosquash = true
+  autostash = true
+  autosquash = true
 [transfer]
-	fsckObjects = true
+  fsckObjects = true
 [commit]
   verbose = true
+[url "ssh://git@github.com"]
+  insteadOf = "https://github.com"
+[sendemail]
+	smtpserver = smtp.gmail.com
+	smtpserverport = 587
+	smtpencryption = tls
+	smtpuser = gwelch925@gmail.com
+	from = Grant Welch <gwelch925@gmail.com>

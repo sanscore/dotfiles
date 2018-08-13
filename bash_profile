@@ -85,13 +85,6 @@ if [[ -s "${HOME}/.nvm/nvm.sh" ]]; then
   }
 fi
 
-# dvm - Docker
-if [[ -s "${HOME}/.dvm/dvm.sh" ]]; then
-  export DVM_DIR="${HOME}/.dvm"
-  . "$DVM_DIR/dvm.sh" \
-    && . $DVM_DIR/bash_completion
-fi
-
 if [ -f "${HOME}/.google-cloud-sdk/path.bash.inc" ]; then
   export GCLOUD_DIR="${HOME}/.google-cloud-sdk"
   source "$GCLOUD_DIR/path.bash.inc"
@@ -106,6 +99,11 @@ if __check_path "${HOME}/bin"; then
   export PATH="${HOME}/bin:${PATH}"
 fi
 
+
+if __check_path /usr/local/opt/openssl/bin; then
+  export PATH="/usr/local/opt/openssl/bin:$PATH"
+fi
+
 ##############################
 # SSH-AGENT
 ##############################
@@ -116,8 +114,10 @@ function start_agent {
   # Check if $ssh_env exists, and if $SSH_AGENT_PID is running
   if [ -f "${ssh_env}" ]; then
       . "${ssh_env}" > /dev/null
-      if ps -ef | grep ${SSH_AGENT_PID}'.*[s]sh-agent' > /dev/null; then
-        return
+      if [[ -n "${SSH_AGENT_PID}" ]]; then
+        if ps -ef | grep ${SSH_AGENT_PID}'.*[s]sh-agent' > /dev/null; then
+          return
+        fi
       fi
   fi
 
@@ -139,3 +139,4 @@ start_agent
 if [ -f "${HOME}"/.bashrc ]; then
   . "${HOME}"/.bashrc
 fi
+eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib=$HOME/perl5)"
