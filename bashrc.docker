@@ -14,13 +14,19 @@ alias docker-rmi-rf='for IMG in $(docker images -qa); do docker rmi -f $IMG 2>/d
 # remove all docker networks
 alias docker-net-rm='for NET in $(docker network ls -q --filter "type=custom"); do docker network rm $NET 2>/dev/null; done'
 
-# nuke from orbit
-alias docker-nuke='docker-killall; docker-net-rm; docker-rm-rf; docker-rmi-rf'
+# remove all docker volumes
+alias docker-vol-rm='for VOL in $(docker volume ls -q); do docker volume rm $VOL 2>/dev/null; done'
 
-docker-api(){
-  local api_version=`docker version -f "v{{.Server.APIVersion}}"`
-  local cmd=${1-info}
-  local host=${DOCKER_HOST/tcp/https}
-  shift
-  curl -sSL --cacert $DOCKER_CERT_PATH/ca.pem --cert $DOCKER_CERT_PATH/cert.pem --key  $DOCKER_CERT_PATH/key.pem  -H "Content-Type: application/json" "$@" ${host}/${api_version}/${cmd}
+# nuke from orbit
+alias docker-nuke='docker-killall; docker-rm-rf; docker-rmi-rf; docker-vol-rm; docker-net-rm'
+
+alias docker-prune='docker system prune -f'
+
+da(){
+  # local api_version=`docker version -f "v{{.Server.APIVersion}}"`
+  # local cmd=${1-info}
+  # local host=${DOCKER_HOST/tcp/https}
+  # shift
+  # curl -sSL --cacert $DOCKER_CERT_PATH/ca.pem --cert $DOCKER_CERT_PATH/cert.pem --key  $DOCKER_CERT_PATH/key.pem  -H "Content-Type: application/json" "$@" ${host}/${api_version}/${cmd}
+  curl -sSL --cacert $DOCKER_CERT_PATH/ca.crt --cert $DOCKER_CERT_PATH/client.cert --key  $DOCKER_CERT_PATH/client.key  -H "Content-Type: application/json" "$@"
 }

@@ -4,6 +4,7 @@
 " Font: Liberation Mono for Powerline, 13pt
 " Movement:
 "   hjkl              " Move 1 char left,down,up,right
+"   zz                " Center screen at cursor
 "   Ctrl-O            " Move to older cursor postion; :jumps
 "   Ctrl-I            " Move to newer cursor postion; :jumps
 "   Ctrl-T            " Move to older tag entry; :tags
@@ -45,6 +46,7 @@
 "   :h v_|i_|c_<map>  " help with a visual|insert|ex mapping
 "   :h 'option'       " help with an option; e.g. :set option
 "   C-]               " In help, follow a link.
+"   :h netrw-quickmap " maps for netrw
 " Misc:
 "   ga                " Character info
 "---[ nocompatible ]--------------------------------------------------
@@ -85,6 +87,7 @@ helptags ALL
   endif
 
 "---[ options ]-------------------------------------------------------
+  set clipboard=unnamedplus,unnamed,autoselect
   set autoindent      " always set autoindenting on
   set autoread        " reread file if unchanged in vim and modified outside of vim
   set background=dark " dark background
@@ -311,6 +314,8 @@ endfun
 
 augroup python
   autocmd!
+  autocmd FileType python nnoremap <buffer> <silent> <Leader>pp ofrom pprint import pprint<esc>
+  autocmd FileType python nnoremap <buffer> <silent> <Leader>pP Ofrom pprint import pprint<esc>
   autocmd FileType python nnoremap <buffer> <silent> <Leader>ps oimport pdb; pdb.set_trace()<esc>
   autocmd FileType python nnoremap <buffer> <silent> <Leader>pS Oimport pdb; pdb.set_trace()<esc>
 augroup END
@@ -386,12 +391,6 @@ augroup END
   smap <C-k> <Plug>(neosnippet_expand_or_jump)
   xmap <C-k> <Plug>(neosnippet_expand_target)
 
-"---[ NERDTree ]------------------------------------------------------
-  nnoremap <Leader>N <Esc>:NERDTreeToggle<CR>
-  let NERDTreeHijackNetrw = 0
-  let NERDTreeShowHidden=1
-  let NERDTreeIgnore=['\.git$', '\~$']
-
 "---[ netrw ]---------------------------------------------------------
   nnoremap <Leader>E :Explore<CR>
 
@@ -412,6 +411,7 @@ augroup END
   augroup END
 
 "---[ ALE ]-----------------------------------------------------------
+  nmap <silent> <Leader>lf <Plug>(ale_fix)
   nmap <silent> <Leader>ll <Plug>(ale_lint)
   nmap <silent> <Leader>lp <Plug>(ale_previous_wrap)
   nmap <silent> <Leader>ln <Plug>(ale_next_wrap)
@@ -420,15 +420,18 @@ augroup END
   let g:ale_echo_msg_warning_str = 'W'
   let g:ale_echo_msg_format = '[%linter%:%severity%] %code%: %s'
 
+  let g:ale_fixers =
+        \{
+        \ 'python': ['remove_trailing_lines', 'trim_whitespace', 'isort']
+        \}
   " Python
-  let g:ale_python_pylint_executable = 'python'
-  let g:ale_python_pylint_options = '-m pylint'
-  let g:ale_python_flake8_executable = 'python'
-  let g:ale_python_flake8_args = '-m flake8'
+  let g:ale_python_auto_pipenv = 0
+  let g:ale_python_pylint_change_directory = 0
+
 
   function! PylintRC(where)
     let cfg = findfile('pylintrc', escape(a:where, ' ') . ';')
-    return cfg !=# '' ? '-m pylint --rcfile=' . cfg : '-m pylint'
+    return cfg !=# '' ? '--rcfile=' . cfg : '-m pylint'
   endfunction
 
   autocmd FileType python let g:ale_python_pylint_options =
@@ -474,3 +477,6 @@ function! GetFiletypes()
 
   return uniq(sort(filetypes))
 endfunction
+
+" remove underline highlighting
+highlight VisualNOS term=reverse ctermbg=242 guifg=#000000 guibg=#8787af

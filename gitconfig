@@ -32,7 +32,6 @@
   filename = yellow bold
   linenumber = blue
 [status]
-  ; showUntrackedFiles = no
   short = true
   branch = true
 [diff]
@@ -67,7 +66,7 @@
   a = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cr) %C(bold blue)%aN <%aE>\" --all
   p = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cr) %C(bold blue)%aN <%aE>\" 
   u = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cr) %C(bold blue)%aN <%aE>\" HEAD @{u}
-  bleach = clean -fdx
+  bleach = clean -ffdx
   dryclean = clean -ndx
   uncommit = reset HEAD^
   nuke = reset --hard --
@@ -83,14 +82,16 @@
   conflicts = diff --name-only --diff-filter=U
   root = rev-parse --show-toplevel
   fixup = commit --fixup
+	cm = cherry origin/HEAD
+  pr = "!f() { git fetch origin refs/pull/$1/head:pr/$1; } ; f"
 [fetch]
-  prune = true
   output = compact
+	pruneTags = true
 [rebase]
   autostash = true
   autosquash = true
 [transfer]
-  fsckObjects = true
+	fsckObjects = true
 [commit]
   verbose = true
 [url "ssh://git@github.com"]
@@ -101,3 +102,8 @@
 	smtpencryption = tls
 	smtpuser = gwelch925@gmail.com
 	from = Grant Welch <gwelch925@gmail.com>
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process

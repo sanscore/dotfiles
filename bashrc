@@ -34,17 +34,15 @@ export PROMPT_COMMAND='history -a'
 export PROMPT_DIRTRIM=2
 
 env_darwin() {
-  [[ -f /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh ]] \
-    && source /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh \
-    && source /usr/local/opt/git/etc/bash_completion.d/git-completion.bash
-
   alias ls='ls -G'
   alias l.='ls -dG .*'
 
-  # brew install bash-completion@2
-  if [ -f /usr/local/share/bash-completion/bash_completion ]; then
-    . /usr/local/share/bash-completion/bash_completion
-  fi
+  [[ -f /opt/local/share/git/contrib/completion/git-prompt.sh ]] \
+    && source /opt/local/share/git/contrib/completion/git-prompt.sh \
+    && source /opt/local/share/git/contrib/completion/git-completion.bash
+
+  [[ -f /opt/local/etc/bash_completion ]] \
+    && source /opt/local/etc/bash_completion
 }
 
 env_fedora() {
@@ -64,6 +62,7 @@ alias ls='ls --color=auto'
 alias l.='ls -d .* --color=auto'
 alias ll='ls -halF'
 alias l1='ls -1'
+alias lu='ls -ltu'
 
 alias mkdir='mkdir -pv'
 
@@ -111,6 +110,7 @@ ssl_ctrust() {
 # Client - Cert Signature
 ssl_ccert() {
   for cert in "$@"; do
+    echo "$cert"
     openssl x509 -inform PEM -in "$cert" -noout -text -issuer -email -purpose
   done
 }
@@ -137,29 +137,39 @@ export EDITOR=vim
 
 # __timestamp="\[\e[01;32m\][\[\e[00;37m\]"'$(history 1)'"\[\e[01;32m\]]\[\e[0m\]\n"
 # export PS0="$__timestamp"
-if [[ __git_ps1 ]]; then
+if declare -f __git_ps1 > /dev/null; then
   # PS1: username@hostname:directory[history_number](git_branch)$
-  export PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\$(__git_ps1 \"(%s)\")\\$ \[\e[0m\]"
+  PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\$(__git_ps1 \"(%s)\")\\$ \[\e[0m\]"
 else
   # PS1: username@hostname:directory[history_number]$
-  export PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\\$ \[\e[0m\]"
+  PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\\$ \[\e[0m\]"
 fi
 
 # Python
 export PYTHONDONTWRITEBYTECODE=1
 
-hide-ps1() {
-  _PS1="$PS1"
-  PS1="\$ "
+ps1_hide() {
+  if [ -z "$_PS1" ]; then
+    _PS1="$PS1"
+    PS1="\$ "
+    bind 'set show-mode-in-prompt off'
+  fi
 }
-restore-ps1() {
-  PS1="$_PS1"
-  unset _PS1
+ps1_show() {
+  if [ -n "$_PS1" ]; then
+    PS1="$_PS1"
+    unset _PS1
+    bind 'set show-mode-in-prompt on'
+  fi
 }
-
 
 # Vim - update plugins
 vim-up() {
- find ~/.vim/pack/ -mindepth 1 -maxdepth 4 -type d -exec test -e "{}/.git" \; -print -exec git -C '{}' pull --ff-only \;
- git -C ~/.vim/pack status
+  find ~/.vim/pack/ -mindepth 1 -maxdepth 4 -type d -exec test -e "{}/.git" \; -print -exec git -C '{}' pull --ff-only \;
+  [ -n "$(git -C ~/.vim/pack status --porcelain)" ] \
+    && git -C ~/.vim/pack commit -eam "$(date +%F) Update Plugins"
 }
+
+# curl - log SSL keyfile for inspecting https traffic
+export ENABLE_SSLKEYLOGFILE=1
+export SSLKEYLOGFILE="${HOME}/.ssh/tlskey"

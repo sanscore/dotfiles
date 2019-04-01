@@ -20,6 +20,9 @@ __check_path() {
 if [[ "${OSTYPE}" = "darwin"* ]]; then
   export PATH=""
   . /etc/profile
+
+  export PATH="/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH"
+  export MANPATH="/opt/local/share/man:$MANPATH"
 fi
 
 USR_LOCAL_BIN="/usr/local/bin"
@@ -85,6 +88,20 @@ if [[ -s "${HOME}/.nvm/nvm.sh" ]]; then
   }
 fi
 
+up-up() {
+  for version_manager in rbenv pyenv nvm
+  do
+    echo ${version_manager}
+    if type ${version_manager}-up &>/dev/null
+    then 
+      ${version_manager}-up
+    else
+      echo ${version_manager}-up not found
+    fi
+    echo
+  done
+}
+
 if [ -f "${HOME}/.google-cloud-sdk/path.bash.inc" ]; then
   export GCLOUD_DIR="${HOME}/.google-cloud-sdk"
   source "$GCLOUD_DIR/path.bash.inc"
@@ -109,6 +126,10 @@ fi
 ##############################
 
 function start_agent {
+  if [ -z "$HOME" ]; then
+    return
+  fi
+
   local ssh_env="$HOME/.ssh/env"
 
   # Check if $ssh_env exists, and if $SSH_AGENT_PID is running
@@ -139,4 +160,3 @@ start_agent
 if [ -f "${HOME}"/.bashrc ]; then
   . "${HOME}"/.bashrc
 fi
-eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib=$HOME/perl5)"
