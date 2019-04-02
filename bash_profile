@@ -21,8 +21,6 @@ if [[ "${OSTYPE}" = "darwin"* ]]; then
   export PATH=""
   . /etc/profile
 
-  [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
-
   # Already added by /etc/profile
   # USR_LOCAL_BIN="/usr/local/bin"
   # __check_path "${USR_LOCAL_BIN}" && export PATH="${USR_LOCAL_BIN}:${PATH}"

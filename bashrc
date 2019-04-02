@@ -38,9 +38,8 @@ env_darwin() {
   alias l.='ls -dG .*'
 
   # brew install bash-completion@2
-  if [ -f /usr/local/share/bash-completion/bash_completion ]; then
-    . /usr/local/share/bash-completion/bash_completion
-  fi
+  [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] \
+    && . "/usr/local/etc/profile.d/bash_completion.sh"
 
   [[ -f /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh ]] \
     && source /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh \
