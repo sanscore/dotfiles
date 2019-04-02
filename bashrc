@@ -37,12 +37,14 @@ env_darwin() {
   alias ls='ls -G'
   alias l.='ls -dG .*'
 
-  [[ -f /opt/local/share/git/contrib/completion/git-prompt.sh ]] \
-    && source /opt/local/share/git/contrib/completion/git-prompt.sh \
-    && source /opt/local/share/git/contrib/completion/git-completion.bash
+  # brew install bash-completion@2
+  if [ -f /usr/local/share/bash-completion/bash_completion ]; then
+    . /usr/local/share/bash-completion/bash_completion
+  fi
 
-  [[ -f /opt/local/etc/bash_completion ]] \
-    && source /opt/local/etc/bash_completion
+  [[ -f /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh ]] \
+    && source /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh \
+    && source /usr/local/opt/git/etc/bash_completion.d/git-completion.bash
 }
 
 env_fedora() {
