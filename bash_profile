@@ -31,6 +31,15 @@ if [[ "${OSTYPE}" = "darwin"* ]]; then
   COREUTILS_GNUBIN="/usr/local/opt/coreutils/libexec/gnubin/"
   __check_path "${COREUTILS_GNUBIN}" && export PATH="${COREUTILS_GNUBIN}:${PATH}"
 
+  FINDUTILS_GNUBIN="/usr/local/opt/findutils/libexec/gnubin"
+  __check_path "${FINDUTILS_GNUBIN}" && export PATH="${FINDUTILS_GNUBIN}:${PATH}"
+
+  TAR_GNUBIN="/usr/local/opt/gnu-tar/libexec/gnubin"
+  __check_path "${TAR_GNUBIN}" && export PATH="${TAR_GNUBIN}:${PATH}"
+
+  GREP_GNUBIN="/usr/local/opt/grep/libexec/gnubin"
+  __check_path "${GREP_GNUBIN}" && export PATH="${GREP_GNUBIN}:${PATH}"
+
   SED_GNUBIN="/usr/local/opt/gnu-sed/libexec/gnubin"
   __check_path "${SED_GNUBIN}" && export PATH="${SED_GNUBIN}:${PATH}"
 
@@ -42,6 +51,9 @@ if [[ "${OSTYPE}" = "darwin"* ]]; then
 
   GETTEXT_BIN="/usr/local/opt/gettext/bin"
   __check_path "${GETTEXT_BIN}" && export PATH="${GETTEXT_BIN}:${PATH}"
+
+  CCACHE_BIN="/usr/local/opt/ccache/libexec"
+  __check_path "${CCACHE_BIN}" && export PATH="${CCACHE_BIN}:${PATH}"
 fi
 
 ##############################
