@@ -1,0 +1,144 @@
+[submodule "vim/pack/tpope/start/vim-projectionist"]
+	path = vim/pack/tpope/start/vim-projectionist
+	url = git@github.com:tpope/vim-projectionist.git
+[submodule "vim/pack/vim/start/ctrlp"]
+	path = vim/pack/vim/start/ctrlp
+	url = git@github.com:ctrlpvim/ctrlp.vim.git
+[submodule "vim/pack/vim-polyglot"]
+	path = vim/pack/vim-polyglot
+	url = git@github.com:sheerun/vim-polyglot.git
+[submodule "vim/pack/airline/start/vim-airline"]
+	path = vim/pack/airline/start/vim-airline
+	url = git@github.com:vim-airline/vim-airline.git
+[submodule "vim/pack/airline/start/vim-airline-themes"]
+	path = vim/pack/airline/start/vim-airline-themes
+	url = git@github.com:vim-airline/vim-airline-themes.git
+[submodule "vim/pack/code/start/ale"]
+	path = vim/pack/code/start/ale
+	url = git@github.com:w0rp/ale.git
+[submodule "vim/pack/code/start/editorconfig-vim"]
+	path = vim/pack/code/start/editorconfig-vim
+	url = git@github.com:editorconfig/editorconfig-vim.git
+[submodule "vim/pack/code/start/splitjoin.vim"]
+	path = vim/pack/code/start/splitjoin.vim
+	url = git@github.com:AndrewRadev/splitjoin.vim.git
+[submodule "vim/pack/code/start/vim-autoformat"]
+	path = vim/pack/code/start/vim-autoformat
+	url = git@github.com:Chiel92/vim-autoformat.git
+[submodule "vim/pack/code/start/vim-indent-guides"]
+	path = vim/pack/code/start/vim-indent-guides
+	url = git@github.com:nathanaelkane/vim-indent-guides.git
+[submodule "vim/pack/colors/start/badwolf"]
+	path = vim/pack/colors/start/badwolf
+	url = git@github.com:sanscore/badwolf.git
+[submodule "vim/pack/colors/start/molokai"]
+	path = vim/pack/colors/start/molokai
+	url = git@github.com:tomasr/molokai.git
+[submodule "vim/pack/colors/start/papercolor-theme"]
+	path = vim/pack/colors/start/papercolor-theme
+	url = git@github.com:NLKNguyen/papercolor-theme.git
+[submodule "vim/pack/colors/start/rainbow"]
+	path = vim/pack/colors/start/rainbow
+	url = git@github.com:luochen1990/rainbow.git
+[submodule "vim/pack/colors/start/vCoolor.vim"]
+	path = vim/pack/colors/start/vCoolor.vim
+	url = git@github.com:KabbAmine/vCoolor.vim.git
+[submodule "vim/pack/colors/start/vim-HiLinkTrace"]
+	path = vim/pack/colors/start/vim-HiLinkTrace
+	url = git@github.com:ilya-bobyr/vim-HiLinkTrace.git
+[submodule "vim/pack/colors/start/vim-css-color"]
+	path = vim/pack/colors/start/vim-css-color
+	url = git@github.com:ap/vim-css-color.git
+[submodule "vim/pack/tpope/start/vim-fugitive"]
+	path = vim/pack/tpope/start/vim-fugitive
+	url = git@github.com:tpope/vim-fugitive.git
+[submodule "vim/pack/git/start/vim-gitgutter"]
+	path = vim/pack/git/start/vim-gitgutter
+	url = git@github.com:airblade/vim-gitgutter.git
+[submodule "vim/pack/neo/start/context_filetype.vim"]
+	path = vim/pack/neo/start/context_filetype.vim
+	url = git@github.com:Shougo/context_filetype.vim.git
+[submodule "vim/pack/neo/start/neco-syntax"]
+	path = vim/pack/neo/start/neco-syntax
+	url = git@github.com:Shougo/neco-syntax.git
+[submodule "vim/pack/neo/start/neocomplete.vim"]
+	path = vim/pack/neo/start/neocomplete.vim
+	url = git@github.com:Shougo/neocomplete.vim.git
+[submodule "vim/pack/neo/start/neoinclude.vim"]
+	path = vim/pack/neo/start/neoinclude.vim
+	url = git@github.com:Shougo/neoinclude.vim.git
+[submodule "vim/pack/neo/start/neopairs.vim"]
+	path = vim/pack/neo/start/neopairs.vim
+	url = git@github.com:Shougo/neopairs.vim.git
+[submodule "vim/pack/neo/start/neosnippet-snippets"]
+	path = vim/pack/neo/start/neosnippet-snippets
+	url = git@github.com:Shougo/neosnippet-snippets.git
+[submodule "vim/pack/neo/start/neosnippet.vim"]
+	path = vim/pack/neo/start/neosnippet.vim
+	url = git@github.com:Shougo/neosnippet.vim.git
+[submodule "vim/pack/neo/start/vimproc.vim"]
+	path = vim/pack/neo/start/vimproc.vim
+	url = git@github.com:Shougo/vimproc.vim.git
+[submodule "vim/pack/python/start/vim-python-pep8-indent"]
+	path = vim/pack/python/start/vim-python-pep8-indent
+	url = git@github.com:Vimjas/vim-python-pep8-indent.git
+[submodule "vim/pack/tpope/start/vim-bundler"]
+	path = vim/pack/tpope/start/vim-bundler
+	url = git@github.com:tpope/vim-bundler.git
+[submodule "vim/pack/tpope/start/vim-rails"]
+	path = vim/pack/tpope/start/vim-rails
+	url = git@github.com:tpope/vim-rails.git
+[submodule "vim/pack/tpope/start/vim-rake"]
+	path = vim/pack/tpope/start/vim-rake
+	url = git@github.com:tpope/vim-rake.git
+[submodule "vim/pack/tpope/start/vim-rbenv"]
+	path = vim/pack/tpope/start/vim-rbenv
+	url = git@github.com:tpope/vim-rbenv.git
+[submodule "vim/pack/ruby/start/vim-ruby-xmpfilter"]
+	path = vim/pack/ruby/start/vim-ruby-xmpfilter
+	url = git@github.com:t9md/vim-ruby-xmpfilter.git
+[submodule "vim/pack/tmux/start/vim-tmux-navigator"]
+	path = vim/pack/tmux/start/vim-tmux-navigator
+	url = git@github.com:christoomey/vim-tmux-navigator.git
+[submodule "vim/pack/tmux/start/vitality.vim"]
+	path = vim/pack/tmux/start/vitality.vim
+	url = git@github.com:sjl/vitality.vim.git
+[submodule "vim/pack/tpope/start/vim-commentary"]
+	path = vim/pack/tpope/start/vim-commentary
+	url = git@github.com:tpope/vim-commentary.git
+[submodule "vim/pack/tpope/start/vim-dispatch"]
+	path = vim/pack/tpope/start/vim-dispatch
+	url = git@github.com:tpope/vim-dispatch.git
+[submodule "vim/pack/tpope/start/vim-endwise"]
+	path = vim/pack/tpope/start/vim-endwise
+	url = git@github.com:tpope/vim-endwise.git
+[submodule "vim/pack/tpope/start/vim-repeat"]
+	path = vim/pack/tpope/start/vim-repeat
+	url = git@github.com:tpope/vim-repeat.git
+[submodule "vim/pack/tpope/start/vim-scriptease"]
+	path = vim/pack/tpope/start/vim-scriptease
+	url = git@github.com:tpope/vim-scriptease.git
+[submodule "vim/pack/tpope/start/vim-sensible"]
+	path = vim/pack/tpope/start/vim-sensible
+	url = git@github.com:tpope/vim-sensible.git
+[submodule "vim/pack/tpope/start/vim-surround"]
+	path = vim/pack/tpope/start/vim-surround
+	url = git@github.com:tpope/vim-surround.git
+[submodule "vim/pack/tpope/start/vim-unimpaired"]
+	path = vim/pack/tpope/start/vim-unimpaired
+	url = git@github.com:tpope/vim-unimpaired.git
+[submodule "vim/pack/tpope/start/vim-vinegar"]
+	path = vim/pack/tpope/start/vim-vinegar
+	url = git@github.com:tpope/vim-vinegar.git
+[submodule "vim/pack/vim/start/bufexplorer"]
+	path = vim/pack/vim/start/bufexplorer
+	url = git@github.com:jlanzarotta/bufexplorer.git
+[submodule "vim/pack/vim/start/tabular"]
+	path = vim/pack/vim/start/tabular
+	url = git@github.com:godlygeek/tabular.git
+[submodule "vim/pack/vim/start/tagbar"]
+	path = vim/pack/vim/start/tagbar
+	url = git@github.com:majutsushi/tagbar.git
+[submodule "vim/pack/vim/start/undotree"]
+	path = vim/pack/vim/start/undotree
+	url = git@github.com:mbbill/undotree.git
