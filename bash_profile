@@ -13,7 +13,7 @@ export HISTTIMEFORMAT='%F %T '
 ##############################
 
 __check_path() {
-  [[ -d "$1" && ":$PATH:" != *":$1:"* ]] || return 1
+  [[ -d "$1" && ":$PATH:" != *":$1:"* ]] || (echo "WARN: $1 is missing."; echo "PATH=$PATH"; return 1)
 }
 
 # Setup PATH
@@ -23,11 +23,18 @@ if [[ "${OSTYPE}" = "darwin"* ]]; then
 
   [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
 
-  USR_LOCAL_BIN="/usr/local/bin"
-  __check_path "${USR_LOCAL_BIN}" && export PATH="${USR_LOCAL_BIN}:${PATH}"
+  # Already added by /etc/profile
+  # USR_LOCAL_BIN="/usr/local/bin"
+  # __check_path "${USR_LOCAL_BIN}" && export PATH="${USR_LOCAL_BIN}:${PATH}"
 
   USR_LOCAL_SBIN="/usr/local/sbin"
   __check_path "${USR_LOCAL_SBIN}" && export PATH="${USR_LOCAL_SBIN}:${PATH}"
+
+  COREUTILS_GNUBIN="/usr/local/opt/coreutils/libexec/gnubin/"
+  __check_path "${COREUTILS_GNUBIN}" && export PATH="${COREUTILS_GNUBIN}:${PATH}"
+
+  SED_GNUBIN="/usr/local/opt/gnu-sed/libexec/gnubin"
+  __check_path "${SED_GNUBIN}" && export PATH="${SED_GNUBIN}:${PATH}"
 
   OPENSSL_BIN="/usr/local/opt/openssl/bin"
   __check_path "${OPENSSL_BIN}" && export PATH="${OPENSSL_BIN}:$PATH"

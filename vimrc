@@ -55,7 +55,7 @@
 "---[ plugins ]-------------------------------------------------------
 " Vim8 packages located at .vim/pack/
 " Update:
-"   git submodule update --remotde
+"   git submodule update --remote
 helptags ALL
 "
 " TODO: add .vim/pack/ to dotfiles

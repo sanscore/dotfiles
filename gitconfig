@@ -84,6 +84,8 @@
   fixup = commit --fixup
 	cm = cherry origin/HEAD
   pr = "!f() { git fetch origin refs/pull/$1/head:pr/$1; } ; f"
+	aa = add -AN
+	ap = add -p
 [fetch]
   output = compact
 	pruneTags = true
