@@ -55,10 +55,8 @@ fi
 if __check_path "${HOME}/.pyenv/bin"; then
   export PYENV_ROOT="${HOME}/.pyenv"
   export PATH="${PYENV_ROOT}/bin:${PATH}"
-  export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
   eval "$(pyenv init - --no-rehash)"
-  eval "$(pyenv virtualenv-init -)"
 
   pyenv-up () {
     for repo in "$PYENV_ROOT" "$PYENV_ROOT"/plugins/*; do

@@ -18,7 +18,6 @@ module SansCore; module DotFiles
     desc "install", "Install all DotFiles"
     def install
       invoke :bash
-      invoke :docker
       invoke :gitconfig
       invoke :inputrc
       invoke :irbrc
@@ -79,9 +78,7 @@ module SansCore; module DotFiles
     desc "vim", "Symlink vimrc and create bare vim/ directory"
     def vim
       vim_dir = File.join(options[:dir], '.vim')
-      vim_bundle_dir = File.join(vim_dir, 'bundle')
 
-      mkdir_p vim_bundle_dir
       create_ln('vimrc', '.vimrc', options[:dir], options[:force])
       create_ln('mthesaur.txt', 'mthesaur.txt', vim_dir, options[:force])
       # TODO: vim packages??
