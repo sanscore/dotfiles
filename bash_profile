@@ -21,18 +21,23 @@ if [[ "${OSTYPE}" = "darwin"* ]]; then
   export PATH=""
   . /etc/profile
 
-  export PATH="/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH"
-  export MANPATH="/opt/local/share/man:$MANPATH"
+  [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
+
+  USR_LOCAL_BIN="/usr/local/bin"
+  __check_path "${USR_LOCAL_BIN}" && export PATH="${USR_LOCAL_BIN}:${PATH}"
+
+  USR_LOCAL_SBIN="/usr/local/sbin"
+  __check_path "${USR_LOCAL_SBIN}" && export PATH="${USR_LOCAL_SBIN}:${PATH}"
+
+  OPENSSL_BIN="/usr/local/opt/openssl/bin"
+  __check_path "${OPENSSL_BIN}" && export PATH="${OPENSSL_BIN}:$PATH"
+
+  CURL_OPENSSL_BIN="/usr/local/opt/curl-openssl/bin"
+  __check_path "${CURL_OPENSSL_BIN}" && export PATH="${CURL_OPENSSL_BIN}:${PATH}"
+
+  GETTEXT_BIN="/usr/local/opt/gettext/bin"
+  __check_path "${GETTEXT_BIN}" && export PATH="${GETTEXT_BIN}:${PATH}"
 fi
-
-USR_LOCAL_BIN="/usr/local/bin"
-__check_path "${USR_LOCAL_BIN}" && export PATH="${USR_LOCAL_BIN}:${PATH}"
-
-USR_LOCAL_SBIN="/usr/local/sbin"
-__check_path "${USR_LOCAL_SBIN}" && export PATH="${USR_LOCAL_SBIN}:${PATH}"
-
-GETTEXT_BIN="/usr/local/opt/gettext/bin"
-__check_path "${GETTEXT_BIN}" && export PATH="${GETTEXT_BIN}:${PATH}"
 
 ##############################
 # VIRTUAL MANAGERS
@@ -114,10 +119,6 @@ if __check_path "${HOME}/bin"; then
   export PATH="${HOME}/bin:${PATH}"
 fi
 
-
-if __check_path /usr/local/opt/openssl/bin; then
-  export PATH="/usr/local/opt/openssl/bin:$PATH"
-fi
 
 ##############################
 # SSH-AGENT

@@ -79,6 +79,7 @@ module SansCore; module DotFiles
     def vim
       vim_dir = File.join(options[:dir], '.vim')
 
+      create_ln('vim', '.vim', options[:dir], options[:force])
       create_ln('vimrc', '.vimrc', options[:dir], options[:force])
       create_ln('mthesaur.txt', 'mthesaur.txt', vim_dir, options[:force])
       # TODO: vim packages??

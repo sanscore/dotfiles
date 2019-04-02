@@ -94,8 +94,8 @@
 	fsckObjects = true
 [commit]
   verbose = true
-[url "ssh://git@github.com"]
-  insteadOf = "https://github.com"
+[url "git@github.com:"]
+  insteadOf = "https://github.com/"
 [sendemail]
 	smtpserver = smtp.gmail.com
 	smtpserverport = 587
