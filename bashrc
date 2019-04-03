@@ -166,7 +166,7 @@ ps1_show() {
 
 # Vim - update plugins
 vim-up() {
-  find ~/.vim/pack/ -mindepth 1 -maxdepth 4 -type d -exec test -e "{}/.git" \; -print -exec git -C '{}' pull --ff-only \;
+  git -C ~/.vim/pack/ submodule update --remote
   [ -n "$(git -C ~/.vim/pack status --porcelain)" ] \
     && git -C ~/.vim/pack commit -eam "$(date +%F) Update Plugins"
 }
