@@ -51,9 +51,6 @@ if [[ "${OSTYPE}" = "darwin"* ]]; then
 
   GETTEXT_BIN="/usr/local/opt/gettext/bin"
   __check_path "${GETTEXT_BIN}" && export PATH="${GETTEXT_BIN}:${PATH}"
-
-  CCACHE_BIN="/usr/local/opt/ccache/libexec"
-  __check_path "${CCACHE_BIN}" && export PATH="${CCACHE_BIN}:${PATH}"
 fi
 
 ##############################
