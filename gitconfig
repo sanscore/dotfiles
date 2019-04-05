@@ -93,7 +93,7 @@
   autostash = true
   autosquash = true
 [transfer]
-	fsckObjects = true
+	fsckObjects = no
 [commit]
   verbose = true
 [url "git@github.com:"]

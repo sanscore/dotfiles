@@ -142,3 +142,6 @@
 [submodule "vim/pack/vim/start/undotree"]
 	path = vim/pack/vim/start/undotree
 	url = git@github.com:mbbill/undotree.git
+[submodule "vim/pack/colors/start/CSSMinister"]
+	path = vim/pack/colors/start/CSSMinister
+	url = git@github.com:vim-scripts/CSSMinister.git
