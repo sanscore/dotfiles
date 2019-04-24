@@ -40,6 +40,7 @@
   mnemonicPrefix = true
   wsErrorHighlight = all
   colorMoved = default
+  ignoreSubmodules = dirty
 [difftool]
   prompt = false
 [merge]
@@ -82,30 +83,30 @@
   conflicts = diff --name-only --diff-filter=U
   root = rev-parse --show-toplevel
   fixup = commit --fixup
-	cm = cherry origin/HEAD
+  cm = cherry origin/HEAD
   pr = "!f() { git fetch origin refs/pull/$1/head:pr/$1; } ; f"
-	aa = add -AN
-	ap = add -p
+  aa = add -AN
+  ap = add -p
 [fetch]
   output = compact
-	pruneTags = true
+  pruneTags = true
 [rebase]
   autostash = true
   autosquash = true
 [transfer]
-	fsckObjects = no
+  fsckObjects = no
 [commit]
   verbose = true
 [url "git@github.com:"]
   insteadOf = "https://github.com/"
 [sendemail]
-	smtpserver = smtp.gmail.com
-	smtpserverport = 587
-	smtpencryption = tls
-	smtpuser = gwelch925@gmail.com
-	from = Grant Welch <gwelch925@gmail.com>
+  smtpserver = smtp.gmail.com
+  smtpserverport = 587
+  smtpencryption = tls
+  smtpuser = gwelch925@gmail.com
+  from = Grant Welch <gwelch925@gmail.com>
 [filter "lfs"]
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
+  required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
