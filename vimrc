@@ -49,6 +49,7 @@
 "   :h netrw-quickmap " maps for netrw
 " Misc:
 "   ga                " Character info
+"   :s/\v(.{80})/\1\r/g  " split long strings at 80th char
 "---[ nocompatible ]--------------------------------------------------
   set nocompatible
 
