@@ -49,7 +49,7 @@
 "   :h netrw-quickmap " maps for netrw
 " Misc:
 "   ga                " Character info
-"   :s/\v(.{80})/\1\r/g  " split long strings at 80th char
+"   :s/\v(.{120})/\1\r/g  " split long strings at 120th char
 "---[ nocompatible ]--------------------------------------------------
   set nocompatible
 
@@ -92,7 +92,7 @@ helptags ALL
   set autoindent      " always set autoindenting on
   set autoread        " reread file if unchanged in vim and modified outside of vim
   set background=dark " dark background
-  set colorcolumn=80  " add visual demarkation at 80 char
+  set colorcolumn=120 " add visual demarkation at 120 char
   set copyindent      " copy the previous indentation on autoindenting
   set cursorline
   set dictionary+=/usr/share/dict/words
@@ -304,13 +304,8 @@ augroup clearbg
 augroup END
 
 fun! UpdateOverLength()
-  if &ft =~ '^\%(python\)$'
-    setlocal colorcolumn=80
-    match OverLength /\%80v.*/
-  else
-    setlocal colorcolumn=120
-    match OverLength /\%120v.*/
-  endif
+  setlocal colorcolumn=120
+  match OverLength /\%120v.*/
 endfun
 
 augroup python
