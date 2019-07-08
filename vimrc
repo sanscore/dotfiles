@@ -114,7 +114,7 @@ helptags ALL
   set hlsearch        " highlight search terms
   set ignorecase      " ignore case when searching
   set iskeyword-=.    " . is never, _ever_ a keyword char
-  set lazyredraw
+  " set lazyredraw
   set linebreak       " use linebreak wrapping
   set nolist          " list special chars, see listchars
   set listchars=tab:»-

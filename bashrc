@@ -34,8 +34,9 @@ export PROMPT_COMMAND='history -a'
 export PROMPT_DIRTRIM=2
 
 env_darwin() {
-  alias ls='ls -G'
-  alias l.='ls -dG .*'
+  # alias ls='ls -G'
+  # alias l.='ls -dG .*'
+  alias l@='/bin/ls -halF -@e'
 
   # brew install bash-completion@2
   export BASH_COMPLETION_COMPAT_DIR=/usr/local/etc/bash_completion.d
