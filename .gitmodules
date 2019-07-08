@@ -4,9 +4,6 @@
 [submodule "vim/pack/vim/start/ctrlp"]
 	path = vim/pack/vim/start/ctrlp
 	url = git@github.com:ctrlpvim/ctrlp.vim.git
-[submodule "vim/pack/vim-polyglot"]
-	path = vim/pack/vim-polyglot
-	url = git@github.com:sheerun/vim-polyglot.git
 [submodule "vim/pack/airline/start/vim-airline"]
 	path = vim/pack/airline/start/vim-airline
 	url = git@github.com:vim-airline/vim-airline.git
@@ -145,3 +142,9 @@
 [submodule "vim/pack/colors/start/CSSMinister"]
 	path = vim/pack/colors/start/CSSMinister
 	url = git@github.com:vim-scripts/CSSMinister.git
+[submodule "vim/pack/vim/start/vim-localvimrc"]
+	path = vim/pack/vim/start/vim-localvimrc
+	url = git@github.com:embear/vim-localvimrc.git
+[submodule "vim/pack/code/start/vim-polyglot"]
+	path = vim/pack/code/start/vim-polyglot
+	url = git@github.com:sheerun/vim-polyglot.git

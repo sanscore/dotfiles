@@ -59,7 +59,6 @@
 "   git submodule update --remote
 helptags ALL
 "
-" TODO: add .vim/pack/ to dotfiles
 " TODO: checkout these plugins:
 "   ShowMarks
 "   vdebug
@@ -293,6 +292,11 @@ helptags ALL
 "   autocmd BufWinLeave *.* mkview
 "   autocmd BufWinEnter *.* silent loadview
 " augroup END
+
+augroup myvimrc
+  autocmd!
+  autocmd BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+augroup END
 
 augroup clearbg
   autocmd!
