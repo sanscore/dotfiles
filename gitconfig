@@ -7,6 +7,7 @@
   useConfigOnly = true
 [core]
   editor = /usr/bin/env vim
+  excludesfile = /Users/gwelch/.gitignore
 [push]
   default = current
   followTags = true
@@ -55,8 +56,8 @@
   br = branch
   ci = commit
   co = checkout
-	cp = cherry-pick
-	dc = "!git diff --stat ${1:-HEAD} #"
+  cp = cherry-pick
+  dc = "!git diff --stat ${1:-HEAD} #"
   st = status
   up = pull --rebase
   update = pull --rebase
@@ -89,7 +90,7 @@
   fixup = commit --fixup
   cm = cherry origin/HEAD
   pr = "!f() { git fetch origin refs/pull/$1/head:pr/$1; } ; f"
-	udiff = "!git diff @:$1 @{u}:${2:-$1} #"
+  udiff = "!git diff @:$1 @{u}:${2:-$1} #"
 [fetch]
   output = compact
   pruneTags = true
@@ -97,7 +98,7 @@
   autostash = true
   autosquash = true
 [transfer]
-	fsckObjects = no
+  fsckObjects = no
 [commit]
   verbose = true
 [url "git@github.com:"]
