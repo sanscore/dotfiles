@@ -422,10 +422,11 @@ augroup END
 
   let g:ale_fixers =
         \{
-        \ 'python': ['remove_trailing_lines', 'trim_whitespace', 'isort']
+        \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+        \ 'python': ['black']
         \}
   " Python
-  let g:ale_python_auto_pipenv = 0
+  let g:ale_python_auto_pipenv = 1
   let g:ale_python_pylint_change_directory = 0
 
 
