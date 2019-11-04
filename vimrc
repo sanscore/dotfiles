@@ -87,7 +87,7 @@ helptags ALL
   endif
 
 "---[ options ]-------------------------------------------------------
-  set clipboard=unnamedplus,unnamed,autoselect
+  set clipboard=
   set autoindent      " always set autoindenting on
   set autoread        " reread file if unchanged in vim and modified outside of vim
   set background=dark " dark background
@@ -202,8 +202,7 @@ helptags ALL
 "---[ gui ]-----------------------------------------------------------
   if has("gui_running")
     set guifont=Liberation\ Mono\ for\ Powerline:h13
-    set guioptions=a " copy Visual selection to c-p buffer
-    set guioptions+=c " use console dialogs
+    set guioptions=c " use console dialogs
     set guioptions+=m " add menu bar
     set guioptions+=g " grey inactive menu items
     set guioptions+=t " include tearoff menu items
@@ -216,20 +215,29 @@ helptags ALL
 
 "---[ mappings ]------------------------------------------------------
   cnoremap %% <C-R>=expand('%:h').'/'<CR>
+
   " let j/k move through wrapped lines
   nnoremap j gj
   nnoremap k gk
+
   " make Y consistent with D and C; yank rest of line, not the whole line
   nnoremap Y y$
+
   " disable help mapping
   nnoremap <F1> <nop>
+
   " disable Ex mode mappings
   nnoremap Q <nop>
   nnoremap gQ <nop>
+
   " disable cedit mappings
   " noremap q: <nop>
   " noremap q/ <nop>
   " noremap q? <nop>
+
+  " search for visually selected text
+  vnoremap // y/<C-R>"<CR>
+
   " Change working directory to that of current file
   cabbrev cwd lcd %:p:h
   " Write no a write-protected file with root
@@ -238,23 +246,27 @@ helptags ALL
 "---[ leader mappings ]-----------------------------------------------
   let mapleader=","   " change the mapleader from \ to ,
   " Clipboard mappings
-    " yank entire buffer to clipboard
-    nnoremap <Leader>ga :%y+<Enter>
-    " put everything from clipboard
-    nnoremap <Leader>gp "*p
-    nnoremap <Leader>gP "*P
-    " Visual Mode Del/Yank/Put
-    vnoremap <Leader>gx "*d
-    vnoremap <Leader>gy "*y
-    vnoremap <Leader>gp "-d"*P
+  " yank entire buffer to clipboard
+  nnoremap <Leader>ga :%y+<Enter>
+  " put everything from clipboard
+  nnoremap <Leader>gp "*p
+  nnoremap <Leader>gP "*P
+  " Visual Mode Del/Yank/Put
+  vnoremap <Leader>gx "*d
+  vnoremap <Leader>gy "*y
+  vnoremap <Leader>gp "-d"*P
+
   " Inc/Dec numbers, recover C-a which is trumped by tmux
   nnoremap <Leader>a <C-a>
   nnoremap <Leader>x <C-x>
+
   " Quickly edit/source the vimrc file
   nnoremap <Leader>ve :e $MYVIMRC<CR>
   nnoremap <Leader>vs :so $MYVIMRC<CR>
+
   " toggle syntax highlighting
   nnoremap <Leader>S :call ToggleSyntax()<CR>
+
   " windows
   nnoremap <Leader>w <c-w>
 
