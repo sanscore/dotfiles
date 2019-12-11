@@ -98,7 +98,7 @@ fi
 # nvm - Node
 if [[ -s "${HOME}/.nvm/nvm.sh" ]]; then
   export NVM_DIR="${HOME}/.nvm"
-  . "$NVM_DIR/nvm.sh" --no-use && . $NVM_DIR/bash_completion
+  . "$NVM_DIR/nvm.sh" && . $NVM_DIR/bash_completion
 
   nvm-up () {
     git -C "${HOME}/.nvm" pull
@@ -173,3 +173,9 @@ start_agent
 if [ -f "${HOME}"/.bashrc ]; then
   . "${HOME}"/.bashrc
 fi
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f "$HOME/.gcloud/path.bash.inc" ]; then . "$HOME/.gcloud/path.bash.inc"; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f "$HOME/.gcloud/completion.bash.inc" ]; then . "$HOME/.gcloud/completion.bash.inc"; fi

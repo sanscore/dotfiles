@@ -91,6 +91,8 @@
   cm = cherry origin/HEAD
   pr = "!f() { git fetch origin refs/pull/$1/head:pr/$1; } ; f"
   udiff = "!git diff @:$1 @{u}:${2:-$1} #"
+  newtree = "!f() { local newbranch=$1; local toplevel=$(git rev-parse --show-toplevel); local upstream=$(git rev-parse --abbrev-ref=strict @{u}); local prefix=${upstream#*/}; echo git worktree add -b ${prefix}-${newbranch} --checkout ${toplevel}-${prefix}-${newbranch} ${upstream}; }; f"
+  rmtree = "!f() { echo git worktree remove TBD }; f"
 [fetch]
   output = compact
   pruneTags = true
