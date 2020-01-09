@@ -69,9 +69,10 @@
   last = cat-file -p HEAD
   logs = log --stat --format=fuller
   ll = log --stat --patch --format=fuller
-  a = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cr) %C(bold blue)%aN <%aE>\" --all
-  p = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cr) %C(bold blue)%aN <%aE>\" 
-  u = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cr) %C(bold blue)%aN <%aE>\" HEAD @{u}
+  a = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cd) %C(bold blue)%aN <%aE>\" --all
+  p = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cd) %C(bold blue)%aN <%aE>\" 
+  bip = bisect view --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cd) %C(bold blue)%aN <%aE>\"
+  u = log --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cd) %C(bold blue)%aN <%aE>\" HEAD @{u}
   bleach = clean -ffdx
   dryclean = clean -ndx
   uncommit = reset HEAD^
