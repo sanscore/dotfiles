@@ -1,7 +1,7 @@
 [include]
   path = ~/.gitconfig.local
-[includeIf "gitdir:~/work/shape/"]
-  path = ~/.gitconfig.shape
+[includeIf "gitdir:~/work/"]
+  path = ~/.gitconfig.work
 [user]
   name = Grant Welch
   useConfigOnly = true
