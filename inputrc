@@ -26,6 +26,7 @@ set editing-mode vi
 
 # display matches after first tab
 set show-all-if-ambiguous on
+set show-all-if-unmodified on
 
 # add slash to dirs and symlinks to dirs
 set mark-directories on

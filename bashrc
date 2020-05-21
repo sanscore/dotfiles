@@ -53,8 +53,6 @@ env_fedora() {
     && source /usr/share/git-core/contrib/completion/git-prompt.sh
   [[ -f /usr/share/bash-completion/bash_completion ]] \
     && source /usr/share/bash-completion/bash_completion
-
-  alias vim='vimx'
 }
 
 # Aliases

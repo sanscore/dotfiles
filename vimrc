@@ -57,7 +57,7 @@
 " Vim8 packages located at .vim/pack/
 " Update:
 "   git submodule update --remote
-helptags ALL
+silent! helptags ALL
 "
 " TODO: checkout these plugins:
 "   ShowMarks
@@ -249,12 +249,12 @@ helptags ALL
   " yank entire buffer to clipboard
   nnoremap <Leader>ga :%y+<Enter>
   " put everything from clipboard
-  nnoremap <Leader>gp "*p
-  nnoremap <Leader>gP "*P
+  nnoremap <Leader>gp "+p
+  nnoremap <Leader>gP "+P
   " Visual Mode Del/Yank/Put
-  vnoremap <Leader>gx "*d
-  vnoremap <Leader>gy "*y
-  vnoremap <Leader>gp "-d"*P
+  vnoremap <Leader>gx "+d
+  vnoremap <Leader>gy "+y
+  vnoremap <Leader>gp "-d"+P
 
   " Inc/Dec numbers, recover C-a which is trumped by tmux
   nnoremap <Leader>a <C-a>

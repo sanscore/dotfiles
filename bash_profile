@@ -12,8 +12,11 @@ export HISTTIMEFORMAT='%F %T '
 # SETUP PATH
 ##############################
 
-__check_path() {
-  [[ -d "$1" && ":$PATH:" != *":$1:"* ]] || (echo "WARN: $1 is missing."; echo "PATH=$PATH"; return 1)
+__add_path() {
+  [[ -d "$1" ]] || (echo "ERR: $1 directory does not exist."; return 1)
+  if [[ ":$PATH:" != *":$1:"* ]]; then
+    export PATH="$1:$PATH"
+  fi
 }
 
 # Setup PATH
@@ -23,34 +26,34 @@ if [[ "${OSTYPE}" = "darwin"* ]]; then
 
   # Already added by /etc/profile
   # USR_LOCAL_BIN="/usr/local/bin"
-  # __check_path "${USR_LOCAL_BIN}" && export PATH="${USR_LOCAL_BIN}:${PATH}"
+  # __add_path "${USR_LOCAL_BIN}"
 
   USR_LOCAL_SBIN="/usr/local/sbin"
-  __check_path "${USR_LOCAL_SBIN}" && export PATH="${USR_LOCAL_SBIN}:${PATH}"
+  __add_path "${USR_LOCAL_SBIN}"
 
   COREUTILS_GNUBIN="/usr/local/opt/coreutils/libexec/gnubin/"
-  __check_path "${COREUTILS_GNUBIN}" && export PATH="${COREUTILS_GNUBIN}:${PATH}"
+  __add_path "${COREUTILS_GNUBIN}"
 
   FINDUTILS_GNUBIN="/usr/local/opt/findutils/libexec/gnubin"
-  __check_path "${FINDUTILS_GNUBIN}" && export PATH="${FINDUTILS_GNUBIN}:${PATH}"
+  __add_path "${FINDUTILS_GNUBIN}"
 
   TAR_GNUBIN="/usr/local/opt/gnu-tar/libexec/gnubin"
-  __check_path "${TAR_GNUBIN}" && export PATH="${TAR_GNUBIN}:${PATH}"
+  __add_path "${TAR_GNUBIN}"
 
   GREP_GNUBIN="/usr/local/opt/grep/libexec/gnubin"
-  __check_path "${GREP_GNUBIN}" && export PATH="${GREP_GNUBIN}:${PATH}"
+  __add_path "${GREP_GNUBIN}"
 
   SED_GNUBIN="/usr/local/opt/gnu-sed/libexec/gnubin"
-  __check_path "${SED_GNUBIN}" && export PATH="${SED_GNUBIN}:${PATH}"
+  __add_path "${SED_GNUBIN}"
 
   OPENSSL_BIN="/usr/local/opt/openssl/bin"
-  __check_path "${OPENSSL_BIN}" && export PATH="${OPENSSL_BIN}:$PATH"
+  __add_path "${OPENSSL_BIN}"
 
   CURL_OPENSSL_BIN="/usr/local/opt/curl-openssl/bin"
-  __check_path "${CURL_OPENSSL_BIN}" && export PATH="${CURL_OPENSSL_BIN}:${PATH}"
+  __add_path "${CURL_OPENSSL_BIN}"
 
   GETTEXT_BIN="/usr/local/opt/gettext/bin"
-  __check_path "${GETTEXT_BIN}" && export PATH="${GETTEXT_BIN}:${PATH}"
+  __add_path "${GETTEXT_BIN}"
 fi
 
 ##############################
@@ -58,11 +61,10 @@ fi
 ##############################
 
 # rbenv - Ruby
-if __check_path "${HOME}/.rbenv/bin"; then
-  export RBENV_ROOT="${HOME}/.rbenv"
-  export PATH="${RBENV_ROOT}/bin:${PATH}"
+export RBENV_ROOT="${HOME}/.rbenv"
+if __add_path "${HOME}/.rbenv/bin"; then
   eval "$(rbenv init - --no-rehash)"
-  rbenv-up () {
+  up-rbenv () {
     for repo in "$RBENV_ROOT" "$RBENV_ROOT"/plugins/*; do
       echo $( basename $repo )
       ( git -C $repo pull )
@@ -71,13 +73,11 @@ if __check_path "${HOME}/.rbenv/bin"; then
 fi
 
 # pyenv - Python
-if __check_path "${HOME}/.pyenv/bin"; then
-  export PYENV_ROOT="${HOME}/.pyenv"
-  export PATH="${PYENV_ROOT}/bin:${PATH}"
-
+export PYENV_ROOT="${HOME}/.pyenv"
+if __add_path "${HOME}/.pyenv/bin"; then
   eval "$(pyenv init - --no-rehash)"
 
-  pyenv-up () {
+  up-pyenv () {
     for repo in "$PYENV_ROOT" "$PYENV_ROOT"/plugins/*; do
       echo $( basename $repo )
       ( git -C $repo pull )
@@ -100,7 +100,7 @@ if [[ -s "${HOME}/.nvm/nvm.sh" ]]; then
   export NVM_DIR="${HOME}/.nvm"
   . "$NVM_DIR/nvm.sh" && . $NVM_DIR/bash_completion
 
-  nvm-up () {
+  up-nvm () {
     git -C "${HOME}/.nvm" pull
   }
 fi
@@ -109,11 +109,11 @@ up-up() {
   for version_manager in rbenv pyenv nvm
   do
     echo ${version_manager}
-    if type ${version_manager}-up &>/dev/null
-    then 
-      ${version_manager}-up
+    if type up-${version_manager} &>/dev/null
+    then
+      up-${version_manager}
     else
-      echo ${version_manager}-up not found
+      echo up-${version_manager} not found
     fi
     echo
   done
@@ -129,9 +129,7 @@ if [ -f "${HOME}/.google-cloud-sdk/path.bash.inc" ]; then
 fi
 
 # ~/bin
-if __check_path "${HOME}/bin"; then
-  export PATH="${HOME}/bin:${PATH}"
-fi
+__add_path "${HOME}/bin"
 
 
 ##############################
