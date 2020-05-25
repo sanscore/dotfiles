@@ -55,8 +55,10 @@
 
 "---[ plugins ]-------------------------------------------------------
 " Vim8 packages located at .vim/pack/
+" Install:
+"   git submodule update --init --recursive --jobs 8
 " Update:
-"   git submodule update --remote
+"   git submodule update --remote --jobs 8
 silent! helptags ALL
 "
 " TODO: checkout these plugins:
