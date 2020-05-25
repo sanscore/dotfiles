@@ -93,7 +93,6 @@ module SansCore; module DotFiles
 
       ln_s('vim', '.vim', options[:dir], options[:force])
       ln_s('vimrc', '.vimrc', options[:dir], options[:force])
-      ln_s('mthesaur.txt', 'mthesaur.txt', vim_dir, options[:force])
       # TODO: vim packages??
     end
 
