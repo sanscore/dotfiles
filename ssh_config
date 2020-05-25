@@ -1,0 +1,24 @@
+# Include ~/.ssh/config.examples
+Include ~/.ssh/config.private
+Include ~/.ssh/config.work
+
+Host *
+  Protocol 2
+  User root
+
+  ControlMaster auto
+  ControlPath ~/.ssh/mux/%C
+  ControlPersist 10m
+
+  ConnectTimeout 10
+  ServerAliveInterval 15
+  ServerAliveCountMax 3
+
+  AddKeysToAgent yes
+  IdentitiesOnly yes
+  PasswordAuthentication no
+  VisualHostKey yes
+
+  ForwardAgent no
+  ForwardX11 no
+  ForwardX11Trusted no

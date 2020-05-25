@@ -1,0 +1,82 @@
+# vim: set ft=sshconfig:
+
+# Copy pubkey to a host:
+#   $ ssh-copy-id -i .ssh/id_dsa.pub host.test
+# ", but portable:
+#   $ cat .ssh/id_dsa.pub | ssh host.test 'cat >> ~/.ssh/authorized_keys'
+
+Host trusted.test
+  # For Trusted servies, select the appropriate IdentityFile and User name.
+  IdentityFile ~/.ssh/trusted_example_id_rsa
+  User jdoe
+
+  # Forward SSH Agent keys to the remote host so that you can hop to another
+  # SSH server using only your local Agent.
+  ForwardAgent yes
+
+  # ForwardX11 if you're into that sort of thing.
+  ForwardX11 yes
+  ForwardX11Trusted yes
+
+Host batch.test
+  # Useful settings for scripting.
+  # Disable all prompts; Password, Passphrase, etc.
+  BatchMode yes
+  # Disable escape sequence to prevent issues with binary data.
+  EscapeChar none
+
+Host local.forward.test
+  # Use Local Forwarding to open a port on your local client to connect to the
+  # destination service via an SSH connection to the remote server.
+  # 
+  # local-remote-dest
+  #
+  # Before: ssh -L 127.0.0.1:80:dest.test:80 remote.test
+  # After: ssh local.forward.test
+  Hostname remote.test
+  LocalForward 127.0.0.1:80 dest.test:80
+  # LocalForward [bind_address:][local_port] [remote_address][remote_port] [host]
+  RemoteCommand none
+  RequestTTY no
+
+Host remote.forward.test
+  # Use Remote Forwarding to open a port on the remote server so that the
+  # remote server can connect to the destination service via the localhost.
+  #
+  # dest-local-remote
+  #
+  # Before: ssh -R 80:dest.test:80 remote.test
+  # After: ssh remote.forward.test
+  Hostname remote.test
+  RemoteForward 80 dest.test:80
+  # RemoteForward [bind_address:]local_port remote_address:remote_port
+  RemoteCommand none
+  RequestTTY no
+
+Host dynamic.forward.test
+  # Use Dynamic Forwarding to have the remote server act as a SOCKS service.
+  # 
+  # Before: ssh -C -D 1080 remote.test
+  # After: ssh dynamic.forward.test
+  Hostname remote.test
+  DynamicForward 1080
+  # DynamicForward [bind_address:]port
+  Compression yes
+
+Host proxy.jump.test
+  # Use Proxy Jumping to connect an SSH service via an intermediate SSH service.
+  #
+  # local-jump-dest
+  #
+  # Before: ssh -J jump.test dest.test
+  # After: ssh proxy.jump.test
+  Hostname dest.test
+  ProxyJump jump.test
+
+Host *.ephemeral.test
+  # Don't bother checking the known_hosts files for ephemeral machines.
+  GlobalKnownHostsFile /dev/null
+  UserKnownHostsFile /dev/null
+
+  CheckHostIP no
+  VisualHostKey no
