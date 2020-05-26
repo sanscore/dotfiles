@@ -74,6 +74,7 @@ module SansCore; module DotFiles
       ssh_dir = File.join(options[:dir], '.ssh')
 
       mkdir_p(ssh_dir, mode: 0700)
+      mkdir_p(File.join(ssh_dir, 'mux'), mode: 0700)
       cp('ssh_config', 'config', ssh_dir, options[:force])
       cp('ssh_config.examples', 'config.examples', ssh_dir, options[:force])
       cp('ssh_config.temp', 'config.private', ssh_dir, options[:force])
