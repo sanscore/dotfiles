@@ -141,25 +141,26 @@ __add_path "${HOME}/bin"
 ##############################
 
 function start_agent {
-  # Ignore GNOME Keyring - SSH
+  : Ignore GNOME Keyring - SSH
   if [[ "${SSH_AUTH_SOCK}" = "/run/user/$UID/keyring/ssh" ]]; then
     unset SSH_AUTH_SOCK
   fi
 
-  # Return if SSH_AUTH_SOCK is set
+  : Return if SSH_AUTH_SOCK is set
   if [[ -n "${SSH_AUTH_SOCK}" ]]; then
     return
   fi
 
-  # Return if HOME is unset
+  : Return if HOME is unset
   if [ -z "$HOME" ]; then
     return
   fi
   local ssh_env="$HOME/.ssh/env"
 
-  # Check if $ssh_env exists, and if $SSH_AGENT_PID is running
+  : Check if $ssh_env exists
   if [ -f "${ssh_env}" ]; then
       . "${ssh_env}" > /dev/null
+      : verify that $SSH_AGENT_PID is running
       if [[ -n "${SSH_AGENT_PID}" ]]; then
         if ps -ef | grep ${SSH_AGENT_PID}'.*[s]sh-agent' > /dev/null; then
           return
@@ -167,7 +168,7 @@ function start_agent {
       fi
   fi
 
-  # If not, start a new ssh-agent
+  : If not, start a new ssh-agent
   echo "Initialising new SSH agent..."
   ssh-agent -t 3600 | sed '/^echo/d' > "${ssh_env}"
   echo succeeded
