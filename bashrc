@@ -49,6 +49,7 @@ env_darwin() {
 }
 
 env_fedora() {
+  alias vim='vimx'
   [[ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]] \
     && source /usr/share/git-core/contrib/completion/git-prompt.sh
   [[ -f /usr/share/bash-completion/bash_completion ]] \
