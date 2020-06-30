@@ -50,6 +50,7 @@ env_darwin() {
 
 env_fedora() {
   alias vim='vimx'
+  export EDITOR=vimx
   [[ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]] \
     && source /usr/share/git-core/contrib/completion/git-prompt.sh
   [[ -f /usr/share/bash-completion/bash_completion ]] \
@@ -135,6 +136,7 @@ case $OSTYPE in
 esac
 
 # Use VIM as editor
+
 export EDITOR=vim
 
 # __timestamp="\[\e[01;32m\][\[\e[00;37m\]"'$(history 1)'"\[\e[01;32m\]]\[\e[0m\]\n"
