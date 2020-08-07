@@ -203,15 +203,18 @@ silent! helptags ALL
 
 "---[ gui ]-----------------------------------------------------------
   if has("gui_running")
-    set guifont=Liberation\ Mono\ for\ Powerline:h13
+    " set guifont=Liberation\ Mono\ for\ Powerline:h13
+    set guifont=DejaVu\ Sans\ Mono\ Regular
     set guioptions=c " use console dialogs
     set guioptions+=m " add menu bar
     set guioptions+=g " grey inactive menu items
     set guioptions+=t " include tearoff menu items
     set guioptions+=T " include Toolbar
 
-    set lines=50
-    set columns=120
+    if &lines < 50
+      set lines=50
+      set columns=120
+    endif
   else
   endif
 
