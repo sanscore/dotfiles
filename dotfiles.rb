@@ -86,6 +86,8 @@ module SansCore; module DotFiles
       ln_s('tmux.conf', '.tmux.conf', options[:dir], options[:force])
       ln_s('tmux.conf.macosx', '.tmux.conf.macosx', options[:dir], options[:force])
       ln_s('tmux.conf.linux', '.tmux.conf.linux', options[:dir], options[:force])
+      puts "Tmux Plugin-Manager:"
+      puts "   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm"
     end
 
     desc "vim", "Symlink vimrc and create bare vim/ directory"
