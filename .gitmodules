@@ -58,9 +58,6 @@
 [submodule "vim/pack/neo/start/neco-syntax"]
 	path = vim/pack/neo/start/neco-syntax
 	url = git@github.com:Shougo/neco-syntax.git
-[submodule "vim/pack/neo/start/neocomplete.vim"]
-	path = vim/pack/neo/start/neocomplete.vim
-	url = git@github.com:Shougo/neocomplete.vim.git
 [submodule "vim/pack/neo/start/neoinclude.vim"]
 	path = vim/pack/neo/start/neoinclude.vim
 	url = git@github.com:Shougo/neoinclude.vim.git
