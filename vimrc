@@ -203,8 +203,9 @@ silent! helptags ALL
 
 "---[ gui ]-----------------------------------------------------------
   if has("gui_running")
-    " set guifont=Liberation\ Mono\ for\ Powerline:h13
-    set guifont=DejaVu\ Sans\ Mono\ Regular
+    set guifont=Droid\ Sans\ Mono\ Slashed\ for\ Powerline\ Bold\ 10
+    " set guifont=Inconsolata-dz\ for\ Powerline\ Medium\ 10
+    " set guifont=DejaVu\ Sans\ Mono\ Regular
     set guioptions=c " use console dialogs
     set guioptions+=m " add menu bar
     set guioptions+=g " grey inactive menu items
@@ -335,6 +336,7 @@ augroup python
   autocmd FileType python nnoremap <buffer> <silent> <Leader>pP Ofrom pprint import pprint<esc>
   autocmd FileType python nnoremap <buffer> <silent> <Leader>ps oimport pdb; pdb.set_trace()<esc>
   autocmd FileType python nnoremap <buffer> <silent> <Leader>pS Oimport pdb; pdb.set_trace()<esc>
+  autocmd FileType python set colorcolumn=99
 augroup END
 
 "---[ file type fixes ]-----------------------------------------------
