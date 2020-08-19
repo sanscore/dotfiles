@@ -170,7 +170,7 @@ function start_agent {
 
   : If not, start a new ssh-agent
   echo "Initialising new SSH agent..."
-  ssh-agent -t 3600 | sed '/^echo/d' > "${ssh_env}"
+  ssh-agent -t 1d | sed '/^echo/d' > "${ssh_env}"
   echo succeeded
   chmod 600 "${ssh_env}"
   . "${ssh_env}" > /dev/null

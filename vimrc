@@ -50,20 +50,107 @@
 " Misc:
 "   ga                " Character info
 "   :s/\v(.{120})/\1\r/g  " split long strings at 120th char
+
 "---[ nocompatible ]--------------------------------------------------
   set nocompatible
 
 "---[ plugins ]-------------------------------------------------------
-" Vim8 packages located at .vim/pack/
-" Install:
-"   git submodule update --init --recursive --jobs 8
-" Update:
-"   git submodule update --remote --jobs 8
-silent! helptags ALL
+" Install vim-plug:
+"   curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+"     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"
+" Instructions:
+"   :PlugInstall      - Install Plugs
+"   :PlugUpdate       - Update Plugs
+"   :PlugClean[!]     - Cleanup Plugs
+"   :PlugUpgrade      - Upgrade vim-plug
+"   :PU               - (Custom) PlugUpgrade & PlugUpdate
 "
 " TODO: checkout these plugins:
 "   ShowMarks
 "   vdebug
+
+if !filereadable(expand('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+end
+
+call plug#begin('~/.vim/plugged')
+  " airline
+  Plug 'vim-airline/vim-airline'
+  Plug 'vim-airline/vim-airline-themes'
+
+  " colors
+  Plug 'vim-scripts/CSSMinister'
+  Plug 'luochen1990/rainbow'
+  Plug 'KabbAmine/vCoolor.vim'
+  Plug 'ap/vim-css-color'
+  Plug 'ilya-bobyr/vim-HiLinkTrace'
+
+  " colorschemse
+  Plug 'sanscore/badwolf'
+  Plug 'tomasr/molokai'
+  Plug 'NLKNguyen/papercolor-theme'
+
+  " " coding
+  Plug 'tpope/vim-projectionist'
+  Plug 'tpope/vim-commentary'
+  Plug 'tpope/vim-dispatch'
+  Plug 'tpope/vim-endwise'
+  Plug 'tpope/vim-surround'
+  Plug 'editorconfig/editorconfig-vim'
+  Plug 'AndrewRadev/splitjoin.vim'
+  Plug 'sheerun/vim-polyglot'
+  Plug 'Chiel92/vim-autoformat'
+
+  " " git
+  Plug 'tpope/vim-fugitive'
+  Plug 'airblade/vim-gitgutter'
+
+  " " python
+  " Plug 'Vimjas/vim-python-pep8-indent'
+
+  " " ruby
+  Plug 't9md/vim-ruby-xmpfilter'
+  Plug 'tpope/vim-rails'
+  Plug 'tpope/vim-rake'
+  Plug 'tpope/vim-rbenv'
+  Plug 'tpope/vim-bundler'
+
+  " " tmux
+  Plug 'christoomey/vim-tmux-navigator'
+  Plug 'sjl/vitality.vim'
+
+  " " vim
+  Plug 'jlanzarotta/bufexplorer'
+  Plug 'godlygeek/tabular'
+  Plug 'majutsushi/tagbar'
+  Plug 'mbbill/undotree'
+  Plug 'embear/vim-localvimrc'
+  Plug 'tpope/vim-repeat'
+  Plug 'tpope/vim-scriptease'
+  Plug 'tpope/vim-sensible'
+  Plug 'tpope/vim-unimpaired'
+  Plug 'tpope/vim-vinegar'
+  Plug 'nathanaelkane/vim-indent-guides'
+
+  " lsp/completions/snippets
+  Plug 'prabirshrestha/vim-lsp'
+  Plug 'mattn/vim-lsp-settings'
+  Plug 'prabirshrestha/asyncomplete.vim'
+  Plug 'prabirshrestha/asyncomplete-lsp.vim'
+  Plug 'Shougo/neosnippet.vim'
+  Plug 'Shougo/neosnippet-snippets'
+  Plug 'prabirshrestha/asyncomplete-neosnippet.vim'
+  if executable('ctags')
+    Plug 'prabirshrestha/asyncomplete-tags.vim'
+    Plug 'ludovicchabant/vim-gutentags'
+  else
+    echohl ErrorMsg
+    echom '`ctags` is not installed:'
+    echohl NONE
+  endif
+
+call plug#end()
 
 "---[ directories ]---------------------------------------------------
 "---[ swap ]----------------------------------------------------------
@@ -77,7 +164,8 @@ silent! helptags ALL
     silent! call mkdir($HOME . "/.vim/backup", "p")
   endif
   set backupdir=~/.vim/backup//,~/tmp//
-  set writebackup
+  set nobackup
+  set nowritebackup
 
 "---[ undo ]----------------------------------------------------------
   if has("persistent_undo")
@@ -93,7 +181,14 @@ silent! helptags ALL
   set autoindent      " always set autoindenting on
   set autoread        " reread file if unchanged in vim and modified outside of vim
   set background=dark " dark background
+  set belloff+=ctrlg  " Prevent beeping during autocomplete
   set colorcolumn=120 " add visual demarkation at 120 char
+  set complete-=i     " don't scan the current & included files
+  set complete-=k     " don't scan dict/words
+  " set completeopt-=preview    " don't open preview window
+  set completeopt+=menuone    " Popup when there's only one option
+  set completeopt+=longest    " Only insert longest common match
+  set completeopt+=noselect   " Don't select a menu item
   set copyindent      " copy the previous indentation on autoindenting
   set cursorline
   set dictionary+=/usr/share/dict/words
@@ -137,6 +232,7 @@ silent! helptags ALL
   set shortmess+=o    " overwrite message for writing a file
   set shortmess+=O    " overwrite message for reading a file
   set shortmess+=I    " removes intro message
+  set shortmess+=c    " removes ins-completion-menu messages
   set showbreak=↪     " change the wrap character
   set showcmd         " show command is it's typed
   set showmatch       " set show matching parenthesis
@@ -167,6 +263,10 @@ silent! helptags ALL
   set viminfo+=h      " disable search when starting
   filetype plugin indent on
 
+  set cmdheight=2         " Additional area for commands
+  set updatetime=300      " shorter delay for better experience
+  set signcolumn=number   " merge signcolumn and number column
+
 "---[ statusline ]----------------------------------------------------
   set laststatus=2            " always display status line
   set statusline=%F%m%r%h%w\  " display pathname and flags
@@ -178,6 +278,7 @@ silent! helptags ALL
   set statusline+=%b\ %B
   set statusline+=%=%p%%\     " right justify; place in file by percentage
   set statusline+=%{strftime(\"%m/%d/%y\ %H:%M\")}
+
 
 "---[ highlighting ]--------------------------------------------------
   set termguicolors
@@ -313,7 +414,7 @@ silent! helptags ALL
 
 augroup myvimrc
   autocmd!
-  autocmd BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+  autocmd BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif | :AirlineRefresh
 augroup END
 
 augroup clearbg
@@ -354,14 +455,14 @@ augroup END
 
 "---[ Plugins ]-------------------------------------------------------
 "---[ vim-plug ]------------------------------------------------------
-  command! PU PlugUpdate | PlugUpgrade
+  command! PU PlugUpgrade | PlugClean! | PlugUpdate
+
 "---[ airline ]-------------------------------------------------------
   nnoremap <Leader>A <Esc>:AirlineToggle<CR>
-  let g:airline_theme           = 'badwolf'
+  let g:airline_theme           = 'papercolor'
   let g:airline_powerline_fonts = 1
   " Allow one space after tabs for multiline comments /** */
   let g:airline#extensions#whitespace#mixed_indent_algo = 1
-  let g:airline#extensions#ale#enabled = 1
 
 "---[ Buffer Explorer ]-----------------------------------------------
   " Show no name buffers
@@ -394,21 +495,54 @@ augroup END
   let g:indent_guides_enable_on_vim_startup = 1
   let g:indent_guides_start_level = 2
 
-"---[ neocomplete ]---------------------------------------------------
-  let g:neocomplete#enable_at_startup = 1
-  let g:neocomplete#enable_smart_case = 1
-  inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-  inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-  inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-  if !exists('g:neocomplete#force_omni_input_patterns')
-    let g:neocomplete#force_omni_input_patterns = {}
-  endif
-  let g:neocomplete#force_omni_input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
+"---[ asyncomplete ]--------------------------------------------------
+  " imap <c-space> <Plug>(asyncomplete_force_refresh)
 
-"---[ neosnippet ]----------------------------------------------------
-  imap <C-k> <Plug>(neosnippet_expand_or_jump)
-  smap <C-k> <Plug>(neosnippet_expand_or_jump)
-  xmap <C-k> <Plug>(neosnippet_expand_target)
+  imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+  smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+  xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+  call asyncomplete#register_source(asyncomplete#sources#neosnippet#get_source_options({
+    \ 'name': 'neosnippet',
+    \ 'whitelist': ['*'],
+    \ 'completor': function('asyncomplete#sources#neosnippet#completor'),
+    \ }))
+
+"---[ lsp (language server protocol) ]--------------------------------
+	let g:lsp_diagnostics_enabled = 1
+	let g:lsp_diagnostics_echo_cursor = 1
+
+  function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
+    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+    nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> gi <plug>(lsp-implementation)
+    nmap <buffer> gt <plug>(lsp-type-definition)
+    nmap <buffer> <leader>rn <plug>(lsp-rename)
+    nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
+    nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
+    nmap <buffer> K <plug>(lsp-hover)
+
+    " refer to doc to add more commands
+  endfunction
+
+  augroup lsp_install
+    au!
+    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+  augroup END
+
+  let g:lsp_settings = {
+  \ 'pyls': {
+  \   'workspace_config': {
+  \     'pyls': {
+  \       'configurationSources': ['flake8']
+  \     }
+  \   }
+  \ },
+  \}
 
 "---[ netrw ]---------------------------------------------------------
   nnoremap <Leader>E :Explore<CR>
@@ -428,37 +562,6 @@ augroup END
     autocmd FileType ruby nmap <buffer> <Leader>rx <Plug>(seeing_is_believing-run_-x)
     autocmd FileType ruby nmap <buffer> <Leader>rr <Plug>(seeing_is_believing-run)
   augroup END
-
-"---[ ALE ]-----------------------------------------------------------
-  nmap <silent> <Leader>lf <Plug>(ale_fix)
-  nmap <silent> <Leader>ll <Plug>(ale_lint)
-  nmap <silent> <Leader>lp <Plug>(ale_previous_wrap)
-  nmap <silent> <Leader>ln <Plug>(ale_next_wrap)
-  let g:ale_echo_msg_info_str = 'I'
-  let g:ale_echo_msg_error_str = 'E'
-  let g:ale_echo_msg_warning_str = 'W'
-  let g:ale_echo_msg_format = '[%linter%:%severity%] %code%: %s'
-
-  let g:ale_fixers =
-        \{
-        \ '*': ['remove_trailing_lines', 'trim_whitespace'],
-        \ 'python': ['black']
-        \}
-  " Python
-  let g:ale_python_auto_pipenv = 1
-  let g:ale_python_pylint_change_directory = 0
-
-
-  function! PylintRC(where)
-    let cfg = findfile('pylintrc', escape(a:where, ' ') . ';')
-    return cfg !=# '' ? '--rcfile=' . cfg : '-m pylint'
-  endfunction
-
-  autocmd FileType python let g:ale_python_pylint_options =
-    \ PylintRC(expand('<afile>:p:h', 1))
-
-  " HTML
-  let g:ale_html_tidy_options = '--drop-empty-elements no'
 
 "---[ Tabular ]-------------------------------------------------------
   nmap <silent> <Leader>t= :Tabularize /=<CR>
@@ -499,4 +602,4 @@ function! GetFiletypes()
 endfunction
 
 " remove underline highlighting
-highlight VisualNOS term=reverse ctermbg=242 guifg=#000000 guibg=#8787af
+" highlight VisualNOS term=reverse ctermbg=242 guifg=#000000 guibg=#8787af
