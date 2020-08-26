@@ -134,6 +134,8 @@ fi
 
 # ~/bin
 __add_path "${HOME}/bin"
+# ~/local/bin
+__add_path "${HOME}/local/bin"
 
 
 ##############################
