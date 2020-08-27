@@ -7,7 +7,7 @@
   useConfigOnly = true
 [core]
   editor = /usr/bin/env vim
-  excludesfile = /Users/gwelch/.gitignore
+  excludesfile = ~/.gitignore
 [push]
   default = current
   followTags = true
