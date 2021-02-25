@@ -133,9 +133,9 @@ if [ -f "${HOME}/.google-cloud-sdk/path.bash.inc" ]; then
 fi
 
 # ~/bin
-__add_path "${HOME}/bin"
+[[ -d "${HOME}/bin" ]] && __add_path "${HOME}/bin"
 # ~/local/bin
-__add_path "${HOME}/local/bin"
+[[ -d "${HOME}/local/bin" ]] && __add_path "${HOME}/local/bin"
 
 
 ##############################

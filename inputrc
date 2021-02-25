@@ -2,7 +2,7 @@
 set bell-style visible
 
 # Treat paste as a single event, not as a series of keyboard input.
-# set enable-bracketed-paste on
+set enable-bracketed-paste on
 
 # show matching parenthesises
 set blink-matching-paren on

@@ -40,12 +40,20 @@
 "   #                 " search backward
 "   :%s/pattern//gn   " count matches
 " Help:
-"   :h[elp]           " open help
+"   $ vimtutor        " Open Vim's interactive instruction manual
+"
+"   :h[elp]           " main help file
+"   :h user-manual    " user manual toc
+"   :h reference_toc  " reference manual toc
+"
+"   Jumping Around:
+"     C-]             " In help, follow a link.
+"     C-O             "   ..., jump back to original position.
+"
 "   :h :<cmd>         " help with a specific command
 "   :h topic|map      " help with a topic or a normal mapping
 "   :h v_|i_|c_<map>  " help with a visual|insert|ex mapping
 "   :h 'option'       " help with an option; e.g. :set option
-"   C-]               " In help, follow a link.
 "   :h netrw-quickmap " maps for netrw
 " Misc:
 "   ga                " Character info
@@ -126,6 +134,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'majutsushi/tagbar'
   Plug 'mbbill/undotree'
   Plug 'embear/vim-localvimrc'
+  Plug 'tpope/vim-eunuch'
   Plug 'tpope/vim-repeat'
   Plug 'tpope/vim-scriptease'
   Plug 'tpope/vim-sensible'
@@ -209,8 +218,9 @@ call plug#end()
   set history=1000    " remember more commands and search history
   set hlsearch        " highlight search terms
   set ignorecase      " ignore case when searching
+  set noincsearch     " don't search while typing
   set iskeyword-=.    " . is never, _ever_ a keyword char
-  " set lazyredraw
+  set lazyredraw      " prevent redrawing while running macros, registers, and commands
   set linebreak       " use linebreak wrapping
   set nolist          " list special chars, see listchars
   set listchars=tab:»-
@@ -317,6 +327,12 @@ call plug#end()
       set lines=50
       set columns=120
     endif
+
+    " Copy/Paste as normal /shrug
+    vmap <C-c> "+yi
+    vmap <C-x> "+c
+    vmap <C-v> c<ESC>"+p
+    imap <C-v> <C-r><C-o>+
   else
   endif
 
@@ -330,6 +346,16 @@ call plug#end()
   " make Y consistent with D and C; yank rest of line, not the whole line
   nnoremap Y y$
 
+  " move highlight row to top of screen
+  nnoremap n nzt
+  nnoremap N Nzt
+  nnoremap * *zt
+  nnoremap # #zt
+  xnoremap n nzt
+  xnoremap N Nzt
+  xnoremap * *zt
+  xnoremap # #zt
+
   " disable help mapping
   nnoremap <F1> <nop>
 
@@ -338,9 +364,9 @@ call plug#end()
   nnoremap gQ <nop>
 
   " disable cedit mappings
-  " noremap q: <nop>
-  " noremap q/ <nop>
-  " noremap q? <nop>
+  noremap q: <nop>
+  noremap q/ <nop>
+  noremap q? <nop>
 
   " search for visually selected text
   vnoremap // y/<C-R>"<CR>

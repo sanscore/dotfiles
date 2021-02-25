@@ -141,38 +141,30 @@ export EDITOR=vim
 
 # __timestamp="\[\e[01;32m\][\[\e[00;37m\]"'$(history 1)'"\[\e[01;32m\]]\[\e[0m\]\n"
 # export PS0="$__timestamp"
-if declare -f __git_ps1 > /dev/null; then
-  # PS1: username@hostname:directory[history_number](git_branch)$
-  PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\$(__git_ps1 \"(%s)\")\\$ \[\e[0m\]"
-else
-  # PS1: username@hostname:directory[history_number]$
-  PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\\$ \[\e[0m\]"
-fi
+
+ps1_hide() {
+  PS1="\\$ "
+  bind 'set show-mode-in-prompt off'
+}
+ps1_min() {
+  PS1="\\W\\$ "
+  bind 'set show-mode-in-prompt off'
+}
+ps1_show() {
+  if declare -f __git_ps1 > /dev/null; then
+    # PS1: username@hostname:directory[history_number](git_branch)$
+    PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\$(__git_ps1 \"(%s)\")\\$ \[\e[0m\]"
+  else
+    # PS1: username@hostname:directory[history_number]$
+    PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\\$ \[\e[0m\]"
+  fi
+
+  bind 'set show-mode-in-prompt on'
+}
+ps1_show
 
 # Python
 export PYTHONDONTWRITEBYTECODE=1
-
-ps1_hide() {
-  if [ -z "$_PS1" ]; then
-    _PS1="$PS1"
-    PS1="\$ "
-    bind 'set show-mode-in-prompt off'
-  fi
-}
-ps1_show() {
-  if [ -n "$_PS1" ]; then
-    PS1="$_PS1"
-    unset _PS1
-    bind 'set show-mode-in-prompt on'
-  fi
-}
-
-# Vim - update plugins
-vim-up() {
-  git -C ~/.vim/pack/ submodule update --remote
-  [ -n "$(git -C ~/.vim/pack status --porcelain)" ] \
-    && git -C ~/.vim/pack commit -eam "$(date +%F) Update Plugins"
-}
 
 # curl - log SSL keyfile for inspecting https traffic
 export ENABLE_SSLKEYLOGFILE=1
