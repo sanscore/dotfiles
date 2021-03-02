@@ -1,9 +1,15 @@
 # vim: set ft=sshconfig:
 
+# Generate new SSH key
+#   $ ssh-key-gen -t rsa -b 4096 -f ~/.ssh/new_rsa_id
+# Change passphrase
+#   $ ssh-key-gen -p -f ~/.ssh/new_rsa_id
 # Copy pubkey to a host:
 #   $ ssh-copy-id -i .ssh/id_dsa.pub host.test
 # ", but portable:
 #   $ cat .ssh/id_dsa.pub | ssh host.test 'cat >> ~/.ssh/authorized_keys'
+# Test if remote is reachable, ssh is up
+#   $ ssh -o BatchMode=yes -o ConnectTimeout=5 host.test exit
 
 Host trusted.test
   # For Trusted servies, select the appropriate IdentityFile and User name.
@@ -16,6 +22,7 @@ Host trusted.test
 
   # ForwardX11 if you're into that sort of thing.
   ForwardX11 yes
+  # ...Trusted, 'no' if not supported by remote (very likely not)
   ForwardX11Trusted yes
 
 Host batch.test
