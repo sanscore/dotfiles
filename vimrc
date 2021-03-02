@@ -72,7 +72,7 @@
 "   :PlugUpdate       - Update Plugs
 "   :PlugClean[!]     - Cleanup Plugs
 "   :PlugUpgrade      - Upgrade vim-plug
-"   :PU               - (Custom) PlugUpgrade & PlugUpdate
+"   :PlugUp           - (Custom) PlugUpgrade & PlugUpdate
 "
 " TODO: checkout these plugins:
 "   ShowMarks
@@ -484,7 +484,7 @@ augroup END
 
 "---[ Plugins ]-------------------------------------------------------
 "---[ vim-plug ]------------------------------------------------------
-  command! PU PlugUpgrade | PlugClean! | PlugUpdate
+  command! PlugUp PlugUpgrade | PlugClean! | PlugUpdate
 
 "---[ airline ]-------------------------------------------------------
   nnoremap <Leader>A <Esc>:AirlineToggle<CR>
