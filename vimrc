@@ -99,7 +99,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'tomasr/molokai'
   Plug 'NLKNguyen/papercolor-theme'
 
-  " " coding
+  " coding
   Plug 'tpope/vim-projectionist'
   Plug 'tpope/vim-commentary'
   Plug 'tpope/vim-dispatch'
@@ -110,25 +110,28 @@ call plug#begin('~/.vim/plugged')
   Plug 'sheerun/vim-polyglot'
   Plug 'Chiel92/vim-autoformat'
 
-  " " git
+  " git
   Plug 'tpope/vim-fugitive'
   Plug 'airblade/vim-gitgutter'
 
-  " " python
+  " python
   " Plug 'Vimjas/vim-python-pep8-indent'
 
-  " " ruby
+  " ruby
   Plug 't9md/vim-ruby-xmpfilter'
   Plug 'tpope/vim-rails'
   Plug 'tpope/vim-rake'
   Plug 'tpope/vim-rbenv'
   Plug 'tpope/vim-bundler'
 
-  " " tmux
+  " javascript
+  Plug 'pangloss/vim-javascript'
+
+  " tmux
   Plug 'christoomey/vim-tmux-navigator'
   Plug 'sjl/vitality.vim'
 
-  " " vim
+  " vim
   Plug 'jlanzarotta/bufexplorer'
   Plug 'godlygeek/tabular'
   Plug 'majutsushi/tagbar'
