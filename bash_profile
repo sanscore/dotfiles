@@ -13,9 +13,14 @@ export HISTTIMEFORMAT='%F %T '
 ##############################
 
 __add_path() {
-  [[ -d "$1" ]] || (echo "ERR: $1 directory does not exist."; return 1)
-  if [[ ":$PATH:" != *":$1:"* ]]; then
-    export PATH="$1:$PATH"
+  if [[ -d "$1" ]]
+  then
+    if [[ ":$PATH:" != *":$1:"* ]]; then
+      export PATH="$1:$PATH"
+    fi
+  else
+    echo "ERR: $1 directory does not exist."
+    return 1
   fi
 }
 
@@ -62,7 +67,7 @@ fi
 
 # rbenv - Ruby
 export RBENV_ROOT="${HOME}/.rbenv"
-if __add_path "${HOME}/.rbenv/bin"; then
+if __add_path "${RBENV_ROOT}/bin"; then
   eval "$(rbenv init - --no-rehash)"
   up-rbenv () {
     for repo in "$RBENV_ROOT" "$RBENV_ROOT"/plugins/*; do
@@ -70,11 +75,18 @@ if __add_path "${HOME}/.rbenv/bin"; then
       ( git -C $repo pull )
     done
   }
+else
+  cat <<-EOF
+	rbenv missing!
+	  git clone https://github.com/rbenv/rbenv.git "$RBENV_ROOT"
+	  mkdir -p "$RBENV_ROOT/plugins"
+	  git clone https://github.com/rbenv/ruby-build.git "$RBENV_ROOT/plugins/ruby-build"
+	EOF
 fi
 
 # pyenv - Python
 export PYENV_ROOT="${HOME}/.pyenv"
-if __add_path "${HOME}/.pyenv/bin"; then
+if __add_path "${PYENV_ROOT}/bin"; then
   eval "$(pyenv init - --no-rehash)"
 
   up-pyenv () {
@@ -83,6 +95,11 @@ if __add_path "${HOME}/.pyenv/bin"; then
       ( git -C $repo pull )
     done
   }
+else
+  cat <<-EOF
+	pyenv missing!
+	 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+	EOF
 fi
 
 if command -v pip >/dev/null 2>&1; then
@@ -96,17 +113,24 @@ if command -v pip >/dev/null 2>&1; then
 fi
 
 # nvm - Node
-if [[ -s "${HOME}/.nvm/nvm.sh" ]]; then
-  export NVM_DIR="${HOME}/.nvm"
-  . "$NVM_DIR/nvm.sh" && . $NVM_DIR/bash_completion
+export NVM_ROOT="${HOME}/.nvm"
+if [[ -s "${NVM_ROOT}/nvm.sh" ]]; then
+  . "$NVM_ROOT/nvm.sh" && . $NVM_ROOT/bash_completion
 
   up-nvm () {
     (
-      cd "${NVM_DIR}"
+      cd "${NVM_ROOT}"
       git fetch --tags origin
       git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git  rev-list --tags --max-count=1)`
-    ) && . "$NVM_DIR/nvm.sh" && . $NVM_DIR/bash_completion
+    ) && . "$NVM_ROOT/nvm.sh" && . $NVM_ROOT/bash_completion
   }
+else
+  cat <<-EOF
+	nvm missing!
+	  git clone https://github.com/nvm-sh/nvm.git "$NVM_ROOT"
+	  cd "$NVM_ROOT"
+	  git checkout \`git describe --abbrev=0 --tags --match "v[0-9]*" \$(git rev-list --tags --max-count=1)\`
+	EOF
 fi
 
 up-up() {
