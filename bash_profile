@@ -72,7 +72,7 @@ if __add_path "${RBENV_ROOT}/bin"; then
   up-rbenv () {
     for repo in "$RBENV_ROOT" "$RBENV_ROOT"/plugins/*; do
       echo $( basename $repo )
-      ( git -C $repo pull )
+      ( git -C $repo pull --ff-only )
     done
   }
 else
@@ -92,7 +92,7 @@ if __add_path "${PYENV_ROOT}/bin"; then
   up-pyenv () {
     for repo in "$PYENV_ROOT" "$PYENV_ROOT"/plugins/*; do
       echo $( basename $repo )
-      ( git -C $repo pull )
+      ( git -C $repo pull --ff-only )
     done
   }
 else
