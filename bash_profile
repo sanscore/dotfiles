@@ -160,6 +160,7 @@ fi
 [[ -d "${HOME}/bin" ]] && __add_path "${HOME}/bin"
 # ~/local/bin
 [[ -d "${HOME}/local/bin" ]] && __add_path "${HOME}/local/bin"
+[[ -d "${HOME}/.local/bin" ]] && __add_path "${HOME}/.local/bin"
 
 
 ##############################
