@@ -2,9 +2,12 @@
 Include ~/.ssh/config.private
 Include ~/.ssh/config.work
 
-Host *
-  Protocol 2
+Match final
+  Port 22
   User root
+
+  Protocol 2
+  UseRoaming no
 
   ControlMaster auto
   ControlPath ~/.ssh/mux/%C
@@ -16,6 +19,7 @@ Host *
 
   AddKeysToAgent yes
   IdentitiesOnly yes
+  HostbasedAuthentication no
   PasswordAuthentication no
   VisualHostKey yes
 
