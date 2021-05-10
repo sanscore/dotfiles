@@ -86,7 +86,7 @@ alias groot='cd $(git rev-parse --show-toplevel)'
 ## SSL Testing
 # Remote - Check Trust Chain
 ssl_scerts() {
-  local tmp=$(mktemp -d -t ssl_scerts)
+  local tmp=$(mktemp -d ssl_scerts.XXXXXXXXXX)
 
   openssl s_client -showcerts -connect $* </dev/null 2>/dev/null \
     | awk -v tmp="$tmp/" '/-----BEGIN CERTIFICATE-----/{f=1; x=++i; buf=""} f{buf = buf $0 RS} /-----END CERTIFICATE-----/{print buf > tmp x ".cert"; f=0}'
@@ -163,6 +163,14 @@ ps1_show() {
   bind 'set show-mode-in-prompt on'
 }
 ps1_show
+
+ps4_debug() {
+  export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
+}
+ps4_no_debug(){
+  export PS4='+ '
+}
+ps4_debug
 
 # Python
 export PYTHONDONTWRITEBYTECODE=1
