@@ -1,4 +1,14 @@
 ##############################
+# Debug Echo
+##############################
+
+echo_debug() {
+  if [ ! -z "${DEBUG}" ]; then
+    echo "$@" >&2
+  fi
+}
+
+##############################
 # READLINE HISTORY
 ##############################
 
@@ -166,41 +176,51 @@ fi
 ##############################
 # SSH-AGENT
 ##############################
+start_agent() {
+  DEBUG=
 
-function start_agent {
   : Ignore GNOME Keyring - SSH
   if [[ "${SSH_AUTH_SOCK}" = "/run/user/$UID/keyring/ssh" ]]; then
+    echo_debug "unsetting SSH_AUTH_SOCK: $SSH_AUTH_SOCK"
     unset SSH_AUTH_SOCK
   fi
 
-  : Return if SSH_AUTH_SOCK is set
-  if [[ -n "${SSH_AUTH_SOCK}" ]]; then
+  : Return if SSH_AUTH_SOCK is set and the socket exists
+  if [[ ! -z "${SSH_AUTH_SOCK}" && -S ${SSH_AUTH_SOCK} ]]; then
+    echo_debug "found SSH_AUTH_SOCK: $SSH_AUTH_SOCK"
+    echo_debug "$(ls -halF $SSH_AUTH_SOCK)"
     return
   fi
 
   : Return if HOME is unset
   if [ -z "$HOME" ]; then
+    echo_debug "HOME is unset."
     return
   fi
   local ssh_env="$HOME/.ssh/env"
 
   : Check if $ssh_env exists
   if [ -f "${ssh_env}" ]; then
-      . "${ssh_env}" > /dev/null
-      : verify that $SSH_AGENT_PID is running
-      if [[ -n "${SSH_AGENT_PID}" ]]; then
-        if ps -ef | grep ${SSH_AGENT_PID}'.*[s]sh-agent' > /dev/null; then
-          return
-        fi
+    echo_debug "sourcing: $ssh_env"
+    . "${ssh_env}" > /dev/null
+
+    : verify that $SSH_AGENT_PID is running
+    if [[ ! -z "${SSH_AGENT_PID}" ]]; then
+      if ps -ef | grep ${SSH_AGENT_PID}'.*[s]sh-agent' > /dev/null; then
+        echo_debug "$SSH_AGENT_PID is running."
+        return
       fi
+    fi
   fi
 
   : If not, start a new ssh-agent
-  echo "Initialising new SSH agent..."
+  echo_debug "Initialising new SSH agent..."
   ssh-agent -t 1d | sed '/^echo/d' > "${ssh_env}"
-  echo succeeded
   chmod 600 "${ssh_env}"
   . "${ssh_env}" > /dev/null
+
+  echo_debug "SSH_AUTH_SOCK: $SSH_AUTH_SOCK"
+  echo_debug "SSH_AGENT_PID: $SSH_AGENT_PID"
   ssh-add;
 }
 start_agent
