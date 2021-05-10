@@ -105,6 +105,16 @@ if __add_path "${PYENV_ROOT}/bin"; then
       ( git -C $repo pull --ff-only )
     done
   }
+
+  each_python () 
+  { 
+      for version_path in $PYENV_ROOT/versions/*
+      do
+        local version=$(basename $version_path)
+        echo $version;
+        PYENV_VERSION=$version "$@";
+      done
+  }
 else
   cat <<-EOF
 	pyenv missing!
