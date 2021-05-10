@@ -96,6 +96,7 @@
   rmtree = "!f() { echo git worktree remove TBD }; f"
 [fetch]
   output = compact
+  prune = true
   pruneTags = true
 [rebase]
   autostash = true
