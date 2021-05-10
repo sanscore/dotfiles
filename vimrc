@@ -38,7 +38,12 @@
 "   //                " redo previous search
 "   *                 " search forward for word under cursor
 "   #                 " search backward
-"   :%s/pattern//gn   " count matches
+"   :%s/pat/rep/g     " substitute every occurence of 'pat' with 'rep'
+"   :%s/pattern//gn   " count matches, w/o replacement
+"   :g/pattern/[cmd]  " run cmd on each line which matches the pattern
+"                     " Ex: To delete all lines that contain "foobar".
+"                     "   :g/foobar/normal dd
+"   :v/pattern/[cmd]  " As above, but on lines that don't match pattern.
 " Help:
 "   $ vimtutor        " Open Vim's interactive instruction manual
 "
@@ -392,6 +397,10 @@ call plug#end()
   vnoremap <Leader>gy "+y
   vnoremap <Leader>gp "-d"+P
 
+  " base64 encode/decode
+  vnoremap <leader>64e c<c-r>=system('base64', @")<cr><esc>
+  vnoremap <leader>64d c<c-r>=system('base64 --decode', @")<cr><esc>
+
   " Inc/Dec numbers, recover C-a which is trumped by tmux
   nnoremap <Leader>a <C-a>
   nnoremap <Leader>x <C-x>
@@ -511,7 +520,7 @@ augroup END
   augroup END
 
 "---[ Fugitive ]------------------------------------------------------
-  cnoreabbrev <expr> gg getcmdtype() == ':' ? 'Ggrep' : 'gg'
+  cnoreabbrev <expr> gg getcmdtype() == ':' ? 'Git grep' : 'gg'
 
 "---[ GitGutter ]-----------------------------------------------------
   " Toggle GitGutter
@@ -567,7 +576,10 @@ augroup END
   \ 'pyls': {
   \   'workspace_config': {
   \     'pyls': {
-  \       'configurationSources': ['flake8']
+  \       'configurationSources': ['flake8'],
+  \       'plugins': {
+  \         'pydocstyle': {'enabled': v:true},
+  \       }
   \     }
   \   }
   \ },
