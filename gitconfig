@@ -94,6 +94,7 @@
   udiff = "!git diff @:$1 @{u}:${2:-$1} #"
   newtree = "!f() { local newbranch=$1; local toplevel=$(git rev-parse --show-toplevel); local upstream=$(git rev-parse --abbrev-ref=strict @{u}); local prefix=${upstream#*/}; echo git worktree add -b ${prefix}-${newbranch} --checkout ${toplevel}-${prefix}-${newbranch} ${upstream}; }; f"
   rmtree = "!f() { echo git worktree remove TBD }; f"
+	bb = for-each-ref --format='%(if)%(HEAD)%(then)* %(color:reverse bold yellow)%(else)%(if)%(worktreepath)%(then)+ %(color:cyan)%(else)  %(color:yellow)%(end)%(end)%(align:25,left)%(refname:lstrip=2)%(end)%(color:reset) %(objectname:short) %(if:notequals=*)%(HEAD)%(then)%(if)%(worktreepath)%(then)(%(color:cyan)%(worktreepath)%(color:reset)) %(end)%(end)%(if)%(upstream)%(then)[%(color: blue)%(upstream:short)%(color:reset)%(if)%(upstream:track)%(then): %(upstream:track,nobracket)%(end)] %(end)%(contents:subject)%(if)%(push:track)%(then)\n        [%(color: green)%(push:short)%(color:reset): %(push:track,nobracket)] %(end)' refs/heads
 [fetch]
   output = compact
   prune = true
