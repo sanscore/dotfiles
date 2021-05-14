@@ -23,11 +23,13 @@ export HISTTIMEFORMAT='%F %T '
 ##############################
 
 __add_path() {
+  if [[ ":$PATH:" = *":$1:"* ]]; then
+    return 0
+  fi
+
   if [[ -d "$1" ]]
   then
-    if [[ ":$PATH:" != *":$1:"* ]]; then
-      export PATH="$1:$PATH"
-    fi
+    export PATH="$1:$PATH"
   else
     echo "ERR: $1 directory does not exist."
     return 1
@@ -78,7 +80,11 @@ fi
 # rbenv - Ruby
 export RBENV_ROOT="${HOME}/.rbenv"
 if __add_path "${RBENV_ROOT}/bin"; then
-  eval "$(rbenv init - --no-rehash)"
+  if ! command -v rbenv >/dev/null 2>&1
+  then
+    eval "$(rbenv init - --no-rehash)"
+  fi
+
   up-rbenv () {
     for repo in "$RBENV_ROOT" "$RBENV_ROOT"/plugins/*; do
       echo $( basename $repo )
