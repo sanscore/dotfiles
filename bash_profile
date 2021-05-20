@@ -23,18 +23,16 @@ export HISTTIMEFORMAT='%F %T '
 ##############################
 
 __add_path() {
-  if [[ ":$PATH:" = *":$1:"* ]]; then
-    return 0
-  fi
+  [[ ! -d "$1" ]] && return 1
+  [[ ":$PATH:" = *":$1:"* ]] && return 0
 
-  if [[ -d "$1" ]]
-  then
-    export PATH="$1:$PATH"
-  else
-    echo "ERR: $1 directory does not exist."
-    return 1
-  fi
+  export PATH="$1:$PATH"
 }
+
+__add_path "${HOME}/bin"
+__add_path "${HOME}/local/bin"
+__add_path "${HOME}/.local/bin"
+
 
 # Setup PATH
 if [[ "${OSTYPE}" = "darwin"* ]]; then
@@ -80,9 +78,10 @@ fi
 # rbenv - Ruby
 export RBENV_ROOT="${HOME}/.rbenv"
 if __add_path "${RBENV_ROOT}/bin"; then
-  if ! command -v rbenv >/dev/null 2>&1
+  if [[ ":$PATH:" != *":${RBENV_ROOT}/shims:"* ]]
   then
     eval "$(rbenv init - --no-rehash)"
+    source "${RBENV_ROOT}/completions/rbenv.bash"
   fi
 
   up-rbenv () {
@@ -102,7 +101,8 @@ fi
 
 # pyenv - Python
 export PYENV_ROOT="${HOME}/.pyenv"
-if __add_path "${PYENV_ROOT}/bin"; then
+if __add_path "${PYENV_ROOT}/bin" && __add_path "${PYENV_ROOT}/shims"
+then
   eval "$(pyenv init - --no-rehash)"
 
   up-pyenv () {
@@ -181,12 +181,6 @@ if [ -f "${HOME}/.google-cloud-sdk/path.bash.inc" ]; then
     source "$GCLOUD_DIR/completion.bash.inc"
   fi
 fi
-
-# ~/bin
-[[ -d "${HOME}/bin" ]] && __add_path "${HOME}/bin"
-# ~/local/bin
-[[ -d "${HOME}/local/bin" ]] && __add_path "${HOME}/local/bin"
-[[ -d "${HOME}/.local/bin" ]] && __add_path "${HOME}/.local/bin"
 
 
 ##############################
