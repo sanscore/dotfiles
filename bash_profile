@@ -81,8 +81,9 @@ if __add_path "${RBENV_ROOT}/bin"; then
   if [[ ":$PATH:" != *":${RBENV_ROOT}/shims:"* ]]
   then
     eval "$(rbenv init - --no-rehash)"
-    source "${RBENV_ROOT}/completions/rbenv.bash"
   fi
+
+  [ -f "${RBENV_ROOT}/completions/rbenv.bash" ] && source "${RBENV_ROOT}/completions/rbenv.bash"
 
   up-rbenv () {
     for repo in "$RBENV_ROOT" "$RBENV_ROOT"/plugins/*; do
@@ -235,6 +236,13 @@ start_agent() {
 }
 start_agent
 
+
+shopt -s nullglob
+for profile in $HOME/.bash_profile.*
+do
+  source $profile
+done
+shopt -u nullglob
 
 ##############################
 # SOURCE .bashrc

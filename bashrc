@@ -50,7 +50,7 @@ env_darwin() {
 
 env_fedora() {
   command -v open &>/dev/null || { command -v xdg-open &>/dev/null && alias open='xdg-open' ; } || echo Cannot find 'open' or 'xdg-open'.
-  command -v vim &>/dev/null || { command -v vimx &>/dev/null && alias vim='vimx' ; } || echo Cannot find 'vim' or 'vimx'.
+  { command -v vimx &>/dev/null && alias vim='vimx' ; } || command -v vim &>/dev/null || echo Cannot find 'vim' or 'vimx'.
   export EDITOR=vim
   [[ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]] \
     && source /usr/share/git-core/contrib/completion/git-prompt.sh

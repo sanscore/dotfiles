@@ -12,64 +12,48 @@ gh(){
   # https://developer.github.com/enterprise/2.17/v3/previews/
   : ${cmd}
   case ${cmd} in
-    # "app" urls need JWT (JSON Web Token) Authorization
-    # app) accept='application/vnd.github.machine-man-preview+json' ;;
-    # app/installations) accept='application/vnd.github.machine-man-preview+json' ;;
-    # app/installations/*/access_tokens) accept='application/vnd.github.machine-man-preview+json' ;;
-    # app/installations/*) accept='application/vnd.github.gambit-preview+json, application/vnd.github.machine-man-preview+json' ;;
     admin/hooks) accept='application/vnd.github.superpro-preview+json' ;;
     admin/hooks/*) accept='application/vnd.github.superpro-preview+json' ;;
     admin/pre-receive-environments) accept='application/vnd.github.eye-scream-preview' ;;
     admin/pre-receive-environments/*) accept='application/vnd.github.eye-scream-preview' ;;
     codes_of_conduct) accept='application/vnd.github.scarlet-witch-preview+json' ;;
     codes_of_conduct/*) accept='application/vnd.github.scarlet-witch-preview+json' ;;
-    orgs/*/blocks) accept='application/vnd.github.giant-sentry-fist-preview+json' ;;
+    orgs/*/repos) accept='application/vnd.github.nebula-preview+json, application/vnd.github.baptiste-preview+json' ;;
     orgs/*/teams) accept='application/vnd.github.hellcat-preview+json' ;;
     orgs/*) accept='application/vnd.github.surtur-preview+json' ;;
     reactions/*) accept='application/vnd.github.squirrel-girl-preview' ;;
-    repos/*/*/branches/*/protection) accept='application/vnd.github.luke-cage-preview+json' ;;
     repos/*/*/branches/*/protection/required_pull_request_reviews) accept='application/vnd.github.luke-cage-preview+json' ;;
     repos/*/*/branches/*/protection/required_signatures) accept='application/vnd.github.zzzax-preview+json' ;;
-    repos/*/*/check-runs) accept='application/vnd.github.antiope-preview+json';;
-    repos/*/*/check-runs/*) accept='application/vnd.github.antiope-preview+json';;
-    repos/*/*/check-suites) accept='application/vnd.github.antiope-preview+json';;
-    repos/*/*/check-suites/*) accept='application/vnd.github.antiope-preview+json';;
-    repos/*/*/check-suites/*/check-runs) accept='application/vnd.github.antiope-preview+json';;
-    repos/*/*/check-suites/*/check-runs/annotations) accept='application/vnd.github.antiope-preview+json';;
-    repos/*/*/check-suites/*/rerequest) accept='application/vnd.github.antiope-preview+json';;
+    repos/*/*/branches/*/protection) accept='application/vnd.github.luke-cage-preview+json' ;;
     repos/*/*/commits/*/branches-where-head) accept='application/vnd.github.groot-preview+json' ;;
-    repos/*/*/commits/*/check-runs) accept='application/vnd.github.antiope-preview+json';;
-    repos/*/*/commits/*/check-suites) accept='application/vnd.github.antiope-preview+json';;
     repos/*/*/commits/*/pulls) accept='application/vnd.github.groot-preview+json' ;;
-    repos/*/*/deployments) accept='application/vnd.github.ant-man-preview' ;;
     repos/*/*/deployments/*/statuses) accept='application/vnd.github.flash-preview+json, application/vnd.github.ant-man-preview' ;;
     repos/*/*/deployments/*/statuses/*) accept='application/vnd.github.flash-preview+json, application/vnd.github.ant-man-preview' ;;
-    repos/*/*/issues/*/events) accept='application/vnd.github.starfox-preview+json, application/vnd.github.sailor-v-preview+json' ;;
-    repos/*/*/issues/*/labels) accept='application/vnd.github.symmetra-preview+json' ;;
-    repos/*/*/issues/*/labels/*) accept='application/vnd.github.symmetra-preview+json' ;;
-    repos/*/*/issues/*/lock) accept='application/vnd.github.sailor-v-preview+json' ;;
+    repos/*/*/deployments) accept='application/vnd.github.ant-man-preview' ;;
+    repos/*/*/issues/*/events) accept='application/vnd.github.starfox-preview+json' ;;
     repos/*/*/issues/*/timeline) accept='application/vnd.github.mockingbird-preview, application/vnd.github.starfox-preview+json' ;;
-    repos/*/*/issues/events) accept='application/vnd.github.starfox-preview+json, application/vnd.github.symmetra-preview+json, application/vnd.github.sailor-v-preview+json' ;;
-    repos/*/*/issues/events/*) accept='application/vnd.github.starfox-preview+json, application/vnd.github.symmetra-preview+json, application/vnd.github.sailor-v-preview+json' ;;
-    repos/*/*/labels) accept='application/vnd.github.symmetra-preview+json' ;;
-    repos/*/*/labels/*) accept='application/vnd.github.symmetra-preview+json' ;;
-    repos/*/*/milestones/*/labels) accept='application/vnd.github.symmetra-preview+json' ;;
-    repos/*/*/pages) accept='application/vnd.github.switcheroo-preview+json, application/vnd.github.mister-fantastic-preview+json' ;;
+    repos/*/*/issues/events) accept='application/vnd.github.starfox-preview+json' ;;
+    repos/*/*/issues/events/*) accept='application/vnd.github.starfox-preview+json' ;;
+    repos/*/*/pages) accept='application/vnd.github.switcheroo-preview+json' ;;
     repos/*/*/projects*) accept='application/vnd.github.inertia-preview+json' ;;
-    repos/*/*/pulls) accept='application/vnd.github.shadow-cat-preview+json, application/vnd.github.symmetra-preview+json, application/vnd.github.sailor-v-preview+json' ;;
-    repos/*/*/pulls/*) accept='application/vnd.github.shadow-cat-preview+json, application/vnd.github.symmetra-preview+json, application/vnd.github.sailor-v-preview+json' ;;
     repos/*/*/topics) accept='application/vnd.github.mercy-preview+json' ;;
-    repos/*/*/transfer) accept='application/vnd.github.nightshade-preview+json' ;;
+    repos/*/*/generate) accept='application/vnd.github.baptiste-preview+json' ;;
+    repos/*/*) accept='application/vnd.github.nebula-preview+json, application/vnd.github.baptiste-preview+json' ;;
     search/commits) accept='application/vnd.github.cloak-preview+json' ;;
-    search/issues) accept='application/vnd.github.symmetra-preview+json' ;;
-    search/labels) accept='application/vnd.github.symmetra-preview+json' ;;
-    teams/*/discussions) accept='application/vnd.github.echo-preview+json, application/vnd.github.squirrel-girl-preview' ;;
-    teams/*/discussions/*) accept='application/vnd.github.echo-preview+json, application/vnd.github.squirrel-girl-preview' ;;
+    teams/*/discussions) accept='application/vnd.github.squirrel-girl-preview' ;;
+    teams/*/discussions/*) accept='application/vnd.github.squirrel-girl-preview' ;;
     teams/*) accept='application/vnd.github.hellcat-preview+json' ;;
+    user/repos) accept='application/vnd.github.nebula-preview+json, application/vnd.github.baptiste-preview+json' ;;
     user/teams) accept='application/vnd.github.hellcat-preview+json' ;;
-    users/*/hovercard) accept='application/vnd.github.hagar-preview+json' ;;
     */reactions) accept='application/vnd.github.squirrel-girl-preview' ;;
-    *) accept='application/vnd.github.v3.full+json' ;;
+    *) accept='application/vnd.github.v3+json' ;;
+    # baptiste
+    # corsair
+    # dorian
+    # lydian
+    # nebula
+    # x-ray
+    #
   esac
 
   set -x

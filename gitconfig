@@ -122,3 +122,5 @@
 [advice]
 	ignoredHook = false
 	detachedHead = false
+[init]
+	defaultBranch = main
