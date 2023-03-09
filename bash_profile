@@ -39,36 +39,23 @@ if [[ "${OSTYPE}" = "darwin"* ]]; then
   export PATH=""
   . /etc/profile
 
-  # Already added by /etc/profile
-  # USR_LOCAL_BIN="/usr/local/bin"
-  # __add_path "${USR_LOCAL_BIN}"
+  if [[ -d /opt/homebrew ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  fi
 
-  USR_LOCAL_SBIN="/usr/local/sbin"
-  __add_path "${USR_LOCAL_SBIN}"
-
-  COREUTILS_GNUBIN="/usr/local/opt/coreutils/libexec/gnubin/"
-  __add_path "${COREUTILS_GNUBIN}"
-
-  FINDUTILS_GNUBIN="/usr/local/opt/findutils/libexec/gnubin"
-  __add_path "${FINDUTILS_GNUBIN}"
-
-  TAR_GNUBIN="/usr/local/opt/gnu-tar/libexec/gnubin"
-  __add_path "${TAR_GNUBIN}"
-
-  GREP_GNUBIN="/usr/local/opt/grep/libexec/gnubin"
-  __add_path "${GREP_GNUBIN}"
-
-  SED_GNUBIN="/usr/local/opt/gnu-sed/libexec/gnubin"
-  __add_path "${SED_GNUBIN}"
-
-  OPENSSL_BIN="/usr/local/opt/openssl/bin"
-  __add_path "${OPENSSL_BIN}"
-
-  CURL_OPENSSL_BIN="/usr/local/opt/curl-openssl/bin"
-  __add_path "${CURL_OPENSSL_BIN}"
-
-  GETTEXT_BIN="/usr/local/opt/gettext/bin"
-  __add_path "${GETTEXT_BIN}"
+	if type brew &>/dev/null
+	then
+		HOMEBREW_PREFIX="$(brew --prefix)"
+		if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]
+		then
+			source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+		else
+			for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*
+			do
+				[[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
+			done
+		fi
+	fi
 fi
 
 ##############################
@@ -119,7 +106,7 @@ then
       do
         local version=$(basename $version_path)
         echo $version;
-        PYENV_VERSION=$version "$@";
+        env "PATH=$version_path/bin:$PATH" "$@";
       done
   }
 else
@@ -137,7 +124,12 @@ if command -v pip >/dev/null 2>&1; then
                     PIP_AUTO_COMPLETE=1 $1 ) )
   }
   complete -o default -F _pip_completion pip
+
+  if command -v pipenv >/dev/null 2>&1; then
+    eval "$(_PIPENV_COMPLETE=bash_source pipenv)"
+  fi
 fi
+
 
 # nvm - Node
 export NVM_ROOT="${HOME}/.nvm"
@@ -257,3 +249,6 @@ if [ -f "$HOME/.gcloud/path.bash.inc" ]; then . "$HOME/.gcloud/path.bash.inc"; f
 
 # The next line enables shell command completion for gcloud.
 if [ -f "$HOME/.gcloud/completion.bash.inc" ]; then . "$HOME/.gcloud/completion.bash.inc"; fi
+
+
+export _BASH_PROFILE=1

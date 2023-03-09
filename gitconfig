@@ -59,8 +59,8 @@
   cp = cherry-pick
   dc = "!git diff --stat ${1:-HEAD} #"
   st = status
-  up = pull --rebase
-  update = pull --rebase
+  up = pull --rebase --recurse-submodules=yes
+  update = pull --rebase --recurse-submodules=yes
   amend = commit --amend --no-edit --reset-author
   reword = commit --amend --reset-author -v
   gg = grep -EIin --break --heading
@@ -124,3 +124,5 @@
 	detachedHead = false
 [init]
 	defaultBranch = main
+[credential]
+	helper = 

@@ -63,6 +63,9 @@
 " Misc:
 "   ga                " Character info
 "   :s/\v(.{120})/\1\r/g  " split long strings at 120th char
+" Plugins:
+"   :A[S|V|T]         " vim-projectionist: Switch to 'alternate' file
+"                         " [split|vsplit|tab]
 
 "---[ nocompatible ]--------------------------------------------------
   set nocompatible
@@ -300,6 +303,8 @@ call plug#end()
 
 "---[ highlighting ]--------------------------------------------------
   set termguicolors
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
   if &t_Co > 2 || has("gui_running")
     " switch syntax highlighting on, when the terminal has colors
@@ -616,6 +621,8 @@ augroup END
   vmap <silent> <Leader>t= :Tabularize /=<CR>
   nmap <silent> <Leader>t: :Tabularize /^[^:]*:\zs<CR>
   vmap <silent> <Leader>t: :Tabularize /^[^:]*:\zs<CR>
+  nmap <silent> <Leader>t<Bar> :Tabularize /<Bar><CR>
+  vmap <silent> <Leader>t<Bar> :Tabularize /<Bar><CR>
 
 "---[ Tagbar ]--------------------------------------------------------
   nnoremap <Leader>T <Esc>:TagbarToggle<CR>

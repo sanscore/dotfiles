@@ -37,15 +37,6 @@ env_darwin() {
   # alias ls='ls -G'
   # alias l.='ls -dG .*'
   alias l@='/bin/ls -halF -@eO'
-
-  # brew install bash-completion@2
-  export BASH_COMPLETION_COMPAT_DIR=/usr/local/etc/bash_completion.d
-  [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] \
-    && . "/usr/local/etc/profile.d/bash_completion.sh"
-
-  [[ -f /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh ]] \
-    && source /usr/local/opt/git/etc/bash_completion.d/git-prompt.sh \
-    && source /usr/local/opt/git/etc/bash_completion.d/git-completion.bash
 }
 
 env_fedora() {
@@ -148,7 +139,7 @@ ps1_hide() {
   bind 'set show-mode-in-prompt off'
 }
 ps1_min() {
-  PS1="\\W\\$ "
+  PS1="\[\e[01;34m\]\\W\[\e[00;37m\]\\$ \[\e[0m\]"
   bind 'set show-mode-in-prompt off'
 }
 ps1_show() {
@@ -178,3 +169,5 @@ export PYTHONDONTWRITEBYTECODE=1
 # curl - log SSL keyfile for inspecting https traffic
 export ENABLE_SSLKEYLOGFILE=1
 export SSLKEYLOGFILE="${HOME}/.ssh/tlskey"
+
+export _BASHRC=1
