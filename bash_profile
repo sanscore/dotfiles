@@ -64,7 +64,8 @@ fi
 
 # rbenv - Ruby
 export RBENV_ROOT="${HOME}/.rbenv"
-if __add_path "${RBENV_ROOT}/bin"; then
+if __add_path "${RBENV_ROOT}/bin"
+then
   if [[ ":$PATH:" != *":${RBENV_ROOT}/shims:"* ]]
   then
     eval "$(rbenv init - --no-rehash)"
@@ -89,9 +90,12 @@ fi
 
 # pyenv - Python
 export PYENV_ROOT="${HOME}/.pyenv"
-if __add_path "${PYENV_ROOT}/bin" && __add_path "${PYENV_ROOT}/shims"
+if __add_path "${PYENV_ROOT}/bin"
 then
-  eval "$(pyenv init - --no-rehash)"
+  if [[ ":$PATH:" != *":${PYENV_ROOT}/shims:"* ]]
+  then
+    eval "$(pyenv init - --no-rehash)"
+  fi
 
   up-pyenv () {
     for repo in "$PYENV_ROOT" "$PYENV_ROOT"/plugins/*; do
