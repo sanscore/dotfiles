@@ -27,6 +27,20 @@ da(){
   # local cmd=${1-info}
   # local host=${DOCKER_HOST/tcp/https}
   # shift
-  # curl -sSL --cacert $DOCKER_CERT_PATH/ca.pem --cert $DOCKER_CERT_PATH/cert.pem --key  $DOCKER_CERT_PATH/key.pem  -H "Content-Type: application/json" "$@" ${host}/${api_version}/${cmd}
-  curl -sSL --cacert $DOCKER_CERT_PATH/ca.crt --cert $DOCKER_CERT_PATH/client.cert --key  $DOCKER_CERT_PATH/client.key  -H "Content-Type: application/json" "$@"
+  curl_args=("-H" "Content-Type: application/json")
+  if [ -f $DOCKER_CERT_PATH/ca.crt ]
+  then
+    curl_args+=("--cacert" "$DOCKER_CERT_PATH/ca.crt")
+  fi
+  if [ -f $DOCKER_CERT_PATH/ca.crt ]
+  then
+    curl_args+=("--cert" "$DOCKER_CERT_PATH/client.cert")
+  fi
+  if [ -f $DOCKER_CERT_PATH/ca.crt ]
+  then
+    curl_args+=("--key"  "$DOCKER_CERT_PATH/client.key")
+  fi
+   
+  # curl -sSL "${curl_args[@]}" "$@" ${host}/${api_version}/${cmd}
+  curl -sSL "${curl_args[@]}" "$@"
 }

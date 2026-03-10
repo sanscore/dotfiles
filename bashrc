@@ -1,17 +1,61 @@
 # .bashrc
-#Disable Flow Control for interactive sessions
+## Prevent bashrc from being evaluated multiple times.
+# _BASHRC should not be exported. If it is, then remove it.
+if declare -px _BASHRC &>/dev/null; then
+  unset _BASHRC
+fi
+
+# Early exit if this file has been imported already.
+if [[ $_BASHRC -eq 1 ]]; then
+  return
+fi
+_BASHRC=1
+
+# Settings for interacive sessions
 if [[ $- == *i* ]]; then
+  #Disable Flow Control
   stty ixoff -ixon
   stty ixany
+
+  ps1_hide() {
+    PS1="\\$ "
+    bind 'set show-mode-in-prompt off'
+  }
+
+  ps1_min() {
+    PS1="\[\e[01;34m\]\\W\[\e[00;37m\]\\$ \[\e[0m\]"
+    bind 'set show-mode-in-prompt off'
+  }
+
+  ps1_show() {
+    if declare -f __git_ps1 > /dev/null; then
+      # PS1: username@hostname:directory[history_number](git_branch)$
+      PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\$(__git_ps1 \"(%s)\")\\$ \[\e[0m\]"
+    else
+      # PS1: username@hostname:directory[history_number]$
+      PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\\$ \[\e[0m\]"
+    fi
+
+    bind 'set show-mode-in-prompt on'
+  }
+
+  ps4_debug() {
+    export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
+  }
+
+  ps4_no_debug(){
+    export PS4='+ '
+  }
+
+  ps1_show
+  ps4_debug
 fi
 
 shopt -s nullglob
-for rc in $HOME/.bashrc.*
-do
+for rc in "$HOME"/.bashrc.*; do
   source $rc
 done
 shopt -u nullglob
-
 
 # Enable extended globstar '**'
 shopt -s globstar
@@ -28,7 +72,15 @@ shopt -s cmdhist
 # Append history, and
 #   commit previous command to history
 shopt -s histappend
-export PROMPT_COMMAND='history -a'
+
+# Add history incrementally. Respect pre-existing PROMPT_COMMAND.
+if [[ "${PROMPT_COMMAND[*]:-}" != *"history -a"* ]]; then
+  if [[ "$(declare -p PROMPT_COMMAND 2>/dev/null)" =~ "declare -a" ]]; then
+    PROMPT_COMMAND+='history -a'
+  else
+    PROMPT_COMMAND="history -a${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
+  fi
+fi
 
 # trim path in prompt
 export PROMPT_DIRTRIM=2
@@ -72,22 +124,25 @@ alias wget='wget -c'
 
 alias digs='dig +noall +answer +short'
 
+alias g='git'
 alias groot='cd $(git rev-parse --show-toplevel)'
 
 ## SSL Testing
 # Remote - Check Trust Chain
 ssl_scerts() {
-  local tmp=$(mktemp -d ssl_scerts.XXXXXXXXXX)
+  local tmp
+  tmp=$(mktemp -d ssl_scerts.XXXXXXXXXX)
 
-  openssl s_client -showcerts -connect $* </dev/null 2>/dev/null \
-    | awk -v tmp="$tmp/" '/-----BEGIN CERTIFICATE-----/{f=1; x=++i; buf=""} f{buf = buf $0 RS} /-----END CERTIFICATE-----/{print buf > tmp x ".cert"; f=0}'
+  openssl s_client -showcerts -connect "$@" </dev/null 2>/dev/null \
+    | cat
+    # | awk -v tmp="$tmp/" '/-----BEGIN CERTIFICATE-----/{f=1; x=++i; buf=""} f{buf = buf $0 RS} /-----END CERTIFICATE-----/{print buf > tmp x ".cert"; f=0}'
 
-  for cert in $tmp/*.cert; do
-    echo
-    openssl x509 -in $cert -out - -text
-  done
+#   for cert in "$tmp"/*.cert; do
+#     echo
+#     openssl x509 -in "$cert" -out - -text
+#   done
 
-  rm -rf "$tmp"
+#   rm -rf "$tmp"
 }
 
 ssl_strust() {
@@ -134,40 +189,9 @@ export EDITOR=vim
 # __timestamp="\[\e[01;32m\][\[\e[00;37m\]"'$(history 1)'"\[\e[01;32m\]]\[\e[0m\]\n"
 # export PS0="$__timestamp"
 
-ps1_hide() {
-  PS1="\\$ "
-  bind 'set show-mode-in-prompt off'
-}
-ps1_min() {
-  PS1="\[\e[01;34m\]\\W\[\e[00;37m\]\\$ \[\e[0m\]"
-  bind 'set show-mode-in-prompt off'
-}
-ps1_show() {
-  if declare -f __git_ps1 > /dev/null; then
-    # PS1: username@hostname:directory[history_number](git_branch)$
-    PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\$(__git_ps1 \"(%s)\")\\$ \[\e[0m\]"
-  else
-    # PS1: username@hostname:directory[history_number]$
-    PS1="\[\e[00;32m\]\u@\h\[\e[0m\]\[\e[00;37m\]:\[\e[0m\]\[\e[01;34m\]\w\[\e[0m\]\[\e[00;37m\][\\!]\\$ \[\e[0m\]"
-  fi
-
-  bind 'set show-mode-in-prompt on'
-}
-ps1_show
-
-ps4_debug() {
-  export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
-}
-ps4_no_debug(){
-  export PS4='+ '
-}
-ps4_debug
-
 # Python
 export PYTHONDONTWRITEBYTECODE=1
 
 # curl - log SSL keyfile for inspecting https traffic
 export ENABLE_SSLKEYLOGFILE=1
 export SSLKEYLOGFILE="${HOME}/.ssh/tlskey"
-
-export _BASHRC=1

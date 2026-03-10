@@ -2,6 +2,8 @@
   path = ~/.gitconfig.local
 [includeIf "gitdir:~/work/"]
   path = ~/.gitconfig.work
+[url "git@github.com:"]
+  insteadOf = "https://github.com/"
 [user]
   name = Grant Welch
   useConfigOnly = true
@@ -15,14 +17,14 @@
   ui = auto
 [color "decorate"]
   branch = bold blue
-  remoteBranch = dim red
+  remoteBranch = red
   tag = ul dim cyan
   stash = reverse bold green
   HEAD = ul green
 [color "branch"]
   current = reverse bold yellow
   local = yellow
-  remote = dim red
+  remote = red
 [color "diff"]
   meta = yellow bold
   frag = magenta bold
@@ -46,6 +48,7 @@
   prompt = false
 [merge]
   tool = vimdiff
+	conflictStyle = diff3
 [mergetool]
   prompt = false
 [rerere]
@@ -58,21 +61,22 @@
   co = checkout
   cp = cherry-pick
   dc = "!git diff --stat ${1:-HEAD} #"
+  todo = "!git grep TODO -- $GIT_PREFIX | cut -d: -f1 | uniq -c #"
   st = status
   up = pull --rebase --recurse-submodules=yes
   update = pull --rebase --recurse-submodules=yes
   amend = commit --amend --no-edit --reset-author
   reword = commit --amend --reset-author -v
-  gg = grep -EIin --break --heading
+  gg = grep -EIn --break --heading
   type = cat-file -t
   dump = cat-file -p
-  last = cat-file -p HEAD
+  latest = cat-file -p HEAD
   logs = log --stat --format=fuller
   ll = log --stat --patch --format=fuller
   a = log --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cd) %C(bold blue)%aN <%aE>\" --all
   p = log --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cd) %C(bold blue)%aN <%aE>\" 
   bip = bisect view --graph --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cd) %C(bold blue)%aN <%aE>\"
-  u = log --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cd) %C(bold blue)%aN <%aE>\" HEAD @{u}
+  u = log --pretty=format:\"%C(auto)%h -%d %s %C(green)(%cd) %C(bold blue)%aN <%aE>\" @{u}
   bleach = clean -ffdx
   dryclean = clean -ndx
   uncommit = reset HEAD^
@@ -81,20 +85,21 @@
   unstage = reset HEAD --
   b = branch -vv
   r = remote -v
-  latest = for-each-ref --sort='-authordate:iso8601' --format=' %(authordate:relative)%09%(refname:short)' refs/remotes
+  refs-latest = for-each-ref --sort='authordate:iso8601' --format=' %(authordate:relative)%09%(refname:short)' refs/remotes
   hs = shortlog -nes --no-merges
   ignore = update-index --assume-unchanged
   unignore = update-index --no-assume-unchanged
   chk = add -n .
   conflicts = diff --name-only --diff-filter=U
   root = rev-parse --show-toplevel
+  dir = rev-parse --git-dir
+  udiff = diff @{u}
+  pdiff = diff @{push}
   fixup = commit --fixup
   cm = cherry origin/HEAD
-  pr = "!f() { git fetch origin refs/pull/$1/head:pr/$1; } ; f"
-  udiff = "!git diff @:$1 @{u}:${2:-$1} #"
-  newtree = "!f() { local newbranch=$1; local toplevel=$(git rev-parse --show-toplevel); local upstream=$(git rev-parse --abbrev-ref=strict @{u}); local prefix=${upstream#*/}; echo git worktree add -b ${prefix}-${newbranch} --checkout ${toplevel}-${prefix}-${newbranch} ${upstream}; }; f"
-  rmtree = "!f() { echo git worktree remove TBD }; f"
-	bb = for-each-ref --format='%(if)%(HEAD)%(then)* %(color:reverse bold yellow)%(else)%(if)%(worktreepath)%(then)+ %(color:cyan)%(else)  %(color:yellow)%(end)%(end)%(align:25,left)%(refname:lstrip=2)%(end)%(color:reset) %(objectname:short) %(if:notequals=*)%(HEAD)%(then)%(if)%(worktreepath)%(then)(%(color:cyan)%(worktreepath)%(color:reset)) %(end)%(end)%(if)%(upstream)%(then)[%(color: blue)%(upstream:short)%(color:reset)%(if)%(upstream:track)%(then): %(upstream:track,nobracket)%(end)] %(end)%(contents:subject)%(if)%(push:track)%(then)\n        [%(color: green)%(push:short)%(color:reset): %(push:track,nobracket)] %(end)' refs/heads
+	bb = for-each-ref --format='%(if)%(HEAD)%(then)* %(color:reverse bold yellow)%(else)%(if)%(worktreepath)%(then)+ %(color:cyan)%(else) %(color:yellow)%(end)%(end)%(align:30,left)%(refname:lstrip=2)%(end)%(color:reset) %(objectname:short) %(if:notequals=*)%(HEAD)%(then)%(if)%(worktreepath)%(then)(%(color:cyan)%(worktreepath)%(color:reset)) %(end)%(end)%(if)%(upstream)%(then)[%(color: blue)%(upstream:short)%(color:reset)%(if)%(upstream:track)%(then): %(upstream:track,nobracket)%(end)] %(end)%(if)%(push:track)%(then)[%(color: green)%(push:short)%(color:reset): %(push:track,nobracket)] %(end)%(contents:subject)' refs/heads
+	cs = diff --compact-summary --relative
+	push-mkmr = push -o merge_request.create merge_request.assign='grant.w' merge_request.draft merge_request.squash
 [fetch]
   output = compact
   prune = true
@@ -106,8 +111,6 @@
   fsckObjects = no
 [commit]
   verbose = true
-[url "git@github.com:"]
-  insteadOf = "https://github.com/"
 [sendemail]
   smtpserver = smtp.gmail.com
   smtpserverport = 587

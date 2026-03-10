@@ -92,41 +92,43 @@ module SansCore; module DotFiles
 
     desc "vim", "Symlink vimrc and create bare vim/ directory"
     def vim
-      vim_dir = File.join(options[:dir], '.vim')
-
       ln_s('vim', '.vim', options[:dir], options[:force])
       ln_s('vimrc', '.vimrc', options[:dir], options[:force])
-      # TODO: vim packages??
     end
 
     no_commands do
       def cp(source_filename, target_filename, dir, force)
-        source_filename = File.join(Dir.pwd, source_filename)
+        source_filename = File.join(__dir__, source_filename)
         target_filename = File.join(File.expand_path(dir), target_filename)
 
-        unless(File.exists?(source_filename))
+        if !File.exist?(source_filename)
           print "Skipping: '#{source_filename}' doesn't exist.\n"
           return
         end
 
-        if force && File.exists?(target_filename)
-          FileUtils.rm target_filename
-        end
+        if File.exist?(target_filename)
+          if force
+            backup_filename = "#{target_filename}.bak"
+            puts "Backup '#{target_filename}' to '#{backup_filename}'"
+            FileUtils.mv target_filename, backup_filename
 
-        if(!File.exists?(target_filename))
+            puts "Copying '#{source_filename}' to '#{target_filename}'"
+            FileUtils.cp source_filename, target_filename
+          else
+            print ("Skipping: #{target_filename} already exists.\n"\
+              "\tUse '-f' to overwrite the current file.\n")
+          end
+        else
           puts "Copying '#{source_filename}' to '#{target_filename}'"
           FileUtils.cp source_filename, target_filename
-        else
-          print ("Skipping: #{target_filename} already exists.\n"\
-            "\tUse '-f' to overwrite the current file.\n")
         end
       end
 
       def ln_s(source_filename, target_filename, dir, force)
-        source_filename = File.join(Dir.pwd, source_filename)
+        source_filename = File.join(__dir__, source_filename)
         target_filename = File.join(File.expand_path(dir), target_filename)
 
-        unless(File.exists?(source_filename))
+        if !File.exist?(source_filename)
           print "Skipping: '#{source_filename}' doesn't exist.\n"
           return
         end
@@ -137,21 +139,30 @@ module SansCore; module DotFiles
           link = target_filename
         end
 
-        if(!File.exists?(target_filename) || force)
+        if File.exist?(target_filename)
+          if link == source_filename
+            print "Skipping: #{target_filename} is already installed\n"
+          else # link != source_filename
+            if force
+              backup_filename = "#{target_filename}.bak"
+              puts "Backup '#{target_filename}' to '#{backup_filename}'"
+              FileUtils.mv target_filename, backup_filename
+
+              puts "Linking '#{source_filename}' to '#{target_filename}'"
+              FileUtils.ln_s source_filename, target_filename
+            else
+              print ("Skipping: #{target_filename} already exists.\n"\
+                "\tUse '-f' to overwrite the current file.\n")
+            end
+          end
+        else # !File.exist?(target_filename)
           puts "Linking '#{source_filename}' to '#{target_filename}'"
-          FileUtils.ln_s source_filename, target_filename, force: force
-        elsif(link == source_filename)
-          print "Skipping: #{target_filename} is already installed\n"
-        else
-          print ("Skipping: #{target_filename} already exists.\n"\
-            "\tUse '-f' to overwrite the current file.\n")
+          FileUtils.ln_s source_filename, target_filename
         end
       end
 
       def mkdir_p(dir, mode: nil)
-        if File.exists?(dir)
-          print "Skipping: #{dir} already exists.\n"
-        else
+        if !File.exist?(dir)
           puts "Creating '#{dir}'"
           FileUtils.mkdir_p dir, mode: mode
         end

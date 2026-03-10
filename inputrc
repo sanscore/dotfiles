@@ -54,7 +54,7 @@ set history-preserve-point on
 "\C-x\C-f": dump-functions
 "\C-x\C-m": dump-macros
 "\C-x\C-v": dump-variables
-"\C-x\C-e": emacs-editing-mode
+"\C-x\C-x": history-and-alias-expand-line
 
 $if Bash
   # ctrl-left, -right to move one word

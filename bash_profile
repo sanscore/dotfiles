@@ -13,7 +13,7 @@ echo_debug() {
 ##############################
 
 export HISTFILESIZE=400000000
-export HISTSIZE=10000
+export HISTSIZE=1000000
 export HISTCONTROL=ignoreboth:erasedups
 export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history"
 export HISTTIMEFORMAT='%F %T '
@@ -23,21 +23,27 @@ export HISTTIMEFORMAT='%F %T '
 ##############################
 
 __add_path() {
+  # Verify that the path exists
   [[ ! -d "$1" ]] && return 1
-  [[ ":$PATH:" = *":$1:"* ]] && return 0
 
+  # PATH manipulation trick to dedupe the new path.
+  PATH=:$PATH:        # Add colons around PATH...
+  PATH=${PATH//:$1/}  # Remove the new path, if it already exists.
+  PATH=${PATH#:}      # Remove leading colon.
+  PATH=${PATH%:}      # Remove final colon.
+
+  # Add new path to the beginning to give it priority.
   export PATH="$1:$PATH"
 }
 
-__add_path "${HOME}/bin"
-__add_path "${HOME}/local/bin"
-__add_path "${HOME}/.local/bin"
-
-
 # Setup PATH
 if [[ "${OSTYPE}" = "darwin"* ]]; then
-  export PATH=""
-  . /etc/profile
+  ## XXX: Bash should have done this already
+  # if [[ "${PROFILE_LOADED:-0}" -eq 0 ]]
+  # then
+  #   . /etc/profile
+  #   export PROFILE_LOADED=1
+  # fi
 
   if [[ -d /opt/homebrew ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -58,6 +64,10 @@ if [[ "${OSTYPE}" = "darwin"* ]]; then
 	fi
 fi
 
+__add_path "${HOME}/bin"
+__add_path "${HOME}/local/bin"
+__add_path "${HOME}/.local/bin"
+
 ##############################
 # VIRTUAL MANAGERS
 ##############################
@@ -66,12 +76,7 @@ fi
 export RBENV_ROOT="${HOME}/.rbenv"
 if __add_path "${RBENV_ROOT}/bin"
 then
-  if [[ ":$PATH:" != *":${RBENV_ROOT}/shims:"* ]]
-  then
-    eval "$(rbenv init - --no-rehash)"
-  fi
-
-  [ -f "${RBENV_ROOT}/completions/rbenv.bash" ] && source "${RBENV_ROOT}/completions/rbenv.bash"
+  eval "$(rbenv init -)"
 
   up-rbenv () {
     for repo in "$RBENV_ROOT" "$RBENV_ROOT"/plugins/*; do
@@ -86,52 +91,6 @@ else
 	  mkdir -p "$RBENV_ROOT/plugins"
 	  git clone https://github.com/rbenv/ruby-build.git "$RBENV_ROOT/plugins/ruby-build"
 	EOF
-fi
-
-# pyenv - Python
-export PYENV_ROOT="${HOME}/.pyenv"
-if __add_path "${PYENV_ROOT}/bin"
-then
-  if [[ ":$PATH:" != *":${PYENV_ROOT}/shims:"* ]]
-  then
-    eval "$(pyenv init - --no-rehash)"
-  fi
-
-  up-pyenv () {
-    for repo in "$PYENV_ROOT" "$PYENV_ROOT"/plugins/*; do
-      echo $( basename $repo )
-      ( git -C $repo pull --ff-only )
-    done
-  }
-
-  each_python () 
-  { 
-      for version_path in $PYENV_ROOT/versions/*
-      do
-        local version=$(basename $version_path)
-        echo $version;
-        env "PATH=$version_path/bin:$PATH" "$@";
-      done
-  }
-else
-  cat <<-EOF
-	pyenv missing!
-	 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-	EOF
-fi
-
-if command -v pip >/dev/null 2>&1; then
-  _pip_completion()
-  {
-      COMPREPLY=( $( COMP_WORDS="${COMP_WORDS[*]}" \
-                    COMP_CWORD=$COMP_CWORD \
-                    PIP_AUTO_COMPLETE=1 $1 ) )
-  }
-  complete -o default -F _pip_completion pip
-
-  if command -v pipenv >/dev/null 2>&1; then
-    eval "$(_PIPENV_COMPLETE=bash_source pipenv)"
-  fi
 fi
 
 
@@ -157,7 +116,7 @@ else
 fi
 
 up-up() {
-  for version_manager in rbenv pyenv nvm
+  for version_manager in rbenv nvm
   do
     echo ${version_manager}
     if type up-${version_manager} &>/dev/null

@@ -52,8 +52,10 @@
 "   :h reference_toc  " reference manual toc
 "
 "   Jumping Around:
+"     :ju[mps]        " Show the jump list.
+"     C-O             " Go to previous Cursor position.
+"     C-I             " Go to newer Cursor Position.
 "     C-]             " In help, follow a link.
-"     C-O             "   ..., jump back to original position.
 "
 "   :h :<cmd>         " help with a specific command
 "   :h topic|map      " help with a topic or a normal mapping
@@ -117,16 +119,16 @@ call plug#begin('~/.vim/plugged')
   Plug 'AndrewRadev/splitjoin.vim'
   Plug 'sheerun/vim-polyglot'
   Plug 'Chiel92/vim-autoformat'
+  Plug 'dense-analysis/ale'
 
   " git
   Plug 'tpope/vim-fugitive'
   Plug 'airblade/vim-gitgutter'
 
   " python
-  " Plug 'Vimjas/vim-python-pep8-indent'
 
   " ruby
-  Plug 't9md/vim-ruby-xmpfilter'
+  Plug 'vim-ruby/vim-ruby'
   Plug 'tpope/vim-rails'
   Plug 'tpope/vim-rake'
   Plug 'tpope/vim-rbenv'
@@ -231,6 +233,7 @@ call plug#end()
   set ignorecase      " ignore case when searching
   set noincsearch     " don't search while typing
   set iskeyword-=.    " . is never, _ever_ a keyword char
+  set iskeyword+=-    " add hyphen (-) to word
   set lazyredraw      " prevent redrawing while running macros, registers, and commands
   set linebreak       " use linebreak wrapping
   set nolist          " list special chars, see listchars
@@ -263,6 +266,7 @@ call plug#end()
   set spelllang=en_us
   set splitbelow      " split under the current window
   set splitright      " split right of the current window
+  set synmaxcol=30000 " max line length for syntax highlighting
   set tabstop=2       " a tab is two spaces
   set textwidth=0     " prevent hard wrapping
   set thesaurus+=~/.vim/mthesaur.txt
@@ -508,6 +512,8 @@ augroup END
   let g:airline#extensions#whitespace#mixed_indent_algo = 1
 
 "---[ Buffer Explorer ]-----------------------------------------------
+  " Do NOT switch windows
+  let g:bufExplorerFindActive=0
   " Show no name buffers
   let g:bufExplorerShowNoName = 1
 
@@ -621,6 +627,8 @@ augroup END
   vmap <silent> <Leader>t= :Tabularize /=<CR>
   nmap <silent> <Leader>t: :Tabularize /^[^:]*:\zs<CR>
   vmap <silent> <Leader>t: :Tabularize /^[^:]*:\zs<CR>
+  nmap <silent> <Leader>t, :Tabularize /,<CR>
+  vmap <silent> <Leader>t, :Tabularize /,<CR>
   nmap <silent> <Leader>t<Bar> :Tabularize /<Bar><CR>
   vmap <silent> <Leader>t<Bar> :Tabularize /<Bar><CR>
 

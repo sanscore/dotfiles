@@ -1,2 +1,6 @@
 # vim: set ft=tmux:
 
+unbind -T copy-mode-vi 'Enter'
+bind -T copy-mode-vi 'Enter' send-keys -X copy-pipe-and-cancel "pbcopy"
+
+bind -T copy-mode-vi 'y' send-keys -X copy-pipe-and-cancel "pbcopy"
